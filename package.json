@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "nodemon --exec ts-node src/index.ts"
+    "dev": "nodemon --exec ts-node index.ts"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
     "stripe": "^15.6.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/crypto-js": "^4.2.2",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
