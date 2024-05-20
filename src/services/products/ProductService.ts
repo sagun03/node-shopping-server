@@ -1,5 +1,5 @@
 import { ProductDTO, ProductInputDTO } from "../../dto/products/ProductDTO";
-import { Product } from '../../models/mongodb/product.model';
+import { Product } from '../../models/mongodb/products.model';
 
 class ProductService {
   constructor() {}
