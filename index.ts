@@ -1,28 +1,40 @@
-// index.ts
-
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import database from './src/config/mySql';
+import connectToMySQL from './src/config/mysql';
+import connectToMongoDB from './src/config/mongodb';
+import router from './src/Router'
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` }); 
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/jk", router)
 
-// Handle database connection promise
-database.databaseConnection()
-    .then((con: any) => {
-        console.log('Database connection established!');
-        // Start your express server here
-        app.listen(3000, () => {
+// comment out if any databse is failing to connect.
+const connectDatabases = async () => {
+    try {
+        const mysqlConnection = await connectToMySQL();
+        console.log('MySQL Database connection established!');
+        
+        const mongoDBConnection = await connectToMongoDB();
+        console.log('MongoDB connection established!');
+        
+        return { mysqlConnection, mongoDBConnection };
+    } catch (error) {
+        throw new Error('Failed to connect to databases');
+    }
+};
+
+connectDatabases()
+    .then(() => {
+        app.listen(4000, () => {
             console.log('Express server started!');
         });
     })
     .catch((err: any) => {
-        console.error('Failed to connect to database:', err);
+        console.error(err.message);
     });
 
-// Your routes and other middleware
