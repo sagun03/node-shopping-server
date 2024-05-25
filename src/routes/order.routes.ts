@@ -1,5 +1,12 @@
-import { Router } from "express";
+import express, { Request, Response } from 'express';
+import OrderController from '../controllers/order.controller';
 
-const router = Router();
+const router = express.Router();
+const orderController = OrderController.getInstance();
 
-export default router
+// GET ALL orders
+router.get('/', async (req: Request, res: Response) => {
+  await orderController.getAllorders(req, res);
+});
+
+export default router;

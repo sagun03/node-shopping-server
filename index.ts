@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import connectToMySQL from './src/config/mysql';
+import {connectToMySQL} from './src/config/mysql';
 import connectToMongoDB from './src/config/mongodb';
 import router from './src/Router'
 
