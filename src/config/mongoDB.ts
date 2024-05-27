@@ -1,5 +1,5 @@
-import { MongoClient } from "mongodb";
-import dotenv from "dotenv";
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -9,13 +9,15 @@ if (!uri) {
     throw new Error("Please define the MONGODB_URI environment variable in your .env file");
 }
 
-const client = new MongoClient(uri);
-
 const connectToMongoDB = async () => {
     try {
-        await client.connect();
+        await mongoose.connect(uri, {
+            serverSelectionTimeoutMS: 5000, // 5 seconds timeout for server selection
+            socketTimeoutMS: 45000, // 45 seconds timeout for socket
+        });
         console.log("Connected to MongoDB!");
-        return client.db();
+        const db = mongoose.connection.db;
+        return db;
     } catch (error) {
         console.error("Error connecting to MongoDB:", error);
         throw error;
