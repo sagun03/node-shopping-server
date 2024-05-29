@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import {connectToMySQL} from './src/config/mysql';
-import connectToMongoDB from './src/config/mongodb';
+import {connectToMongoDB} from './src/config/mongoDB';
 import router from './src/Router'
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
@@ -16,13 +16,14 @@ app.use("/jk", router)
 // comment out if any databse is failing to connect.
 const connectDatabases = async () => {
     try {
-        const mysqlConnection = await connectToMySQL();
+        // const mysqlConnection = await connectToMySQL();
         console.log('MySQL Database connection established!');
         
-        const mongoDBConnection = await connectToMongoDB();
-        console.log('MongoDB connection established!');
+        // const mongoDBConnection = await connectToMongoDB();
+        // console.log('MongoDB connection established!');
         
-        return { mysqlConnection, mongoDBConnection };
+        return ;
+        // return { mysqlConnection, mongoDBConnection };
     } catch (error) {
         throw new Error('Failed to connect to databases');
     }

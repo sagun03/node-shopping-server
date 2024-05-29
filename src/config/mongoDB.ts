@@ -11,15 +11,17 @@ if (!uri) {
 
 const client = new MongoClient(uri);
 
-const connectToMongoDB = async () => {
+export const connectToMongoDB = async () => {
     try {
         await client.connect();
         console.log("Connected to MongoDB!");
-        return client.db();
+        return client;
     } catch (error) {
         console.error("Error connecting to MongoDB:", error);
         throw error;
     }
 }
 
-export default connectToMongoDB;
+export const disposeConnection = () => {
+    client.close();
+}
