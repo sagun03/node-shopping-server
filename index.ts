@@ -17,13 +17,12 @@ app.use("/jk", router)
 const connectDatabases = async () => {
     try {
         // const mysqlConnection = await connectToMySQL();
-        console.log('MySQL Database connection established!');
+        // console.log('MySQL Database connection established!');
         
-        // const mongoDBConnection = await connectToMongoDB();
-        // console.log('MongoDB connection established!');
+        const mongoDBConnection = await connectToMongoDB();
+        console.log('MongoDB connection established!');
         
-        return ;
-        // return { mysqlConnection, mongoDBConnection };
+        return { mongoDBConnection }; //mysqlConnection,
     } catch (error) {
         throw new Error('Failed to connect to databases');
     }

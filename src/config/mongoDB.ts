@@ -18,13 +18,18 @@ export const connectToMongoDB = async () => {
         console.log("Connected to MongoDB!");
         const db = mongoose.connection.db;
         return db;
-        return client;
     } catch (error) {
         console.error("Error connecting to MongoDB:", error);
         throw error;
     }
 }
 
-export const disposeConnection = () => {
-    client.close();
+export const disposeConnection = async () => {
+    try{
+        await mongoose.disconnect();
+        console.log("Disconnected from mongoDB!");
+    } catch(error) {
+        console.error("Error disconnecting from mongoDB");
+        throw error;
+    }
 }

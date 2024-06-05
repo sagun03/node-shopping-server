@@ -1,13 +1,10 @@
-import mongoose from "mongoose";
-import { connectToMongoDB, disposeConnection} from "../../config/mongoDB";
+
+import { disposeConnection} from "../../config/mongoDB";
 import { UserDTO } from "../../dto/products/UserDTO";
 import { User } from "../../models/mongodb/user.model";
 
 export class UserService {
     constructor() {
-        connectToMongoDB().then(client => {
-            mongoose.createConnection().setClient(client);
-        }).catch(error => console.log("Error establishing connection to mongoDB server."));
     }
 
     // map user entry to UserDTO
@@ -40,7 +37,6 @@ export class UserService {
 
     // dispose connection
     public dispose(): void {
-        mongoose.connection.close();
         disposeConnection();
     }
 }
