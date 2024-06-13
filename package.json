@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "nodemon --exec ts-node index.ts",
-    "production": "nodemon --exec ts-node index.ts"
+    "dev": "cross-env NODE_ENV=dev ts-node ./index.ts",
+    "production": "cross-env NODE_ENV=prod ts-node ./index.ts"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/sagun03/node-shopping-ui#readme",
   "dependencies": {
+    "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -32,7 +34,8 @@
     "sequelize": "^6.37.3",
     "stripe": "^15.6.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
