@@ -3,12 +3,12 @@ import { sequelize } from '../../../config/mysql';
 import { Order } from './order.model';
 
 const OrderItem = sequelize.define('OrderItem', {
-    orderItemId: {
+    OrderItemID: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    orderId: {
+    OrderID: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -16,23 +16,24 @@ const OrderItem = sequelize.define('OrderItem', {
             key: 'OrderId'
         }
     },
-    productId: {
-        type: DataTypes.INTEGER,
+    ProductID: {
+        type: DataTypes.STRING,
         allowNull: false
     },
-    quantity: {
+    Quantity: {
         type: DataTypes.INTEGER,
         defaultValue: 1
     },
-    unitPrice: {
+    UnitPrice: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     },
-    subtotal: {
+    Subtotal: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     }
 }, {
+    tableName:"OrderItem",
     timestamps: false
 });
 // OrderItem.belongsTo(Order, { x: 'OrderId', as: 'Order' });
