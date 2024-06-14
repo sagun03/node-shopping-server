@@ -8,5 +8,15 @@ const orderController = OrderController.getInstance();
 router.get('/', async (req: Request, res: Response) => {
   await orderController.getAllorders(req, res);
 });
+router.post('/', async (req: Request, res: Response) => {
+  await orderController.createOrder(req, res);
+});
+router.get('/:id', async (req: Request, res: Response) => {
+  await orderController.getOrderById(req, res);
+});
+// UPDATE an existing order
+router.put('/:id', async (req: Request, res: Response) => {
+  await orderController.updateOrder(req, res);
+});
 
 export default router;
