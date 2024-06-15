@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 // import ProductService from "../../services/products/ProductService";
-import OrderService from "../services/products/orderService";
-import { orderDTO, orderInputDTO } from "../dto/products/orderDTO";
+import OrderService from "../services/orders/orderService";
+import { orderDTO, orderInputDTO } from "../dto/orders/orderDTO";
 
 class OrderController {
   private static instance: OrderController;
