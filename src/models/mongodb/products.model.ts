@@ -32,6 +32,17 @@ productSchema.pre('save', function preSave() {
   product.id = product._id.toString();
 });
 
+categorySchema.pre('save', function preSave() {
+  const category = this;
+  category.id = category._id.toString();
+});
+
+reviewSchema.pre('save', function preSave() {
+  const review = this;
+  review.id = review._id.toString();
+});
+
+
 const Product = mongoose.model('Product', productSchema);
 const Category = mongoose.model('Category', categorySchema);
 const Review = mongoose.model('Review', reviewSchema);

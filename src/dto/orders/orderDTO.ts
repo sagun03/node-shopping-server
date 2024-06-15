@@ -1,5 +1,5 @@
 
-import { ProductDTO } from "./ProductDTO";
+import { ProductDTO } from "../products/ProductDTO";
 export interface orderDTO {
     orderID:number,
     userId: string;

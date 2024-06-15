@@ -1,10 +1,9 @@
-import { sequelize } from "../../config/mysql";
 import { orderItemInputDTO } from "../../dto/orders/orderItemsDTO";
 import { ProductDTO } from "../../dto/products/ProductDTO";
-import { orderDTO, orderInputDTO } from "../../dto/products/orderDTO";
+import { orderDTO, orderInputDTO } from "../../dto/orders/orderDTO";
 import { Order } from "../../models/sql/ordersManagement/order.model";
 import { OrderItem } from "../../models/sql/ordersManagement/orderItems.model";
-import ProductService from "./ProductService";
+import ProductService from "../products/ProductService";
 class OrderService {
   private productService : ProductService;
   constructor() {
