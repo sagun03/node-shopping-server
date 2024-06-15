@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import InventoryService from "../services/Inventory/InventoryServices";
-import { InventoryDTO, InventoryInputDTO } from "../dto/Inventory/InventoryDTO";
+import InventoryService from "../../services/Inventory/InventoryServices";
+import { InventoryDTO, InventoryInputDTO } from "../../dto/Inventory/InventoryDTO";
 
 class InventoryController {
   private static instance: InventoryController;
