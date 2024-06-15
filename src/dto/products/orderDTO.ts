@@ -9,10 +9,14 @@ export interface orderDTO {
     deliveryAddressId: number;
     paymentId: number;
     status: string;
-    // products: [{productDetails:ProductDTO[],quantity:number,subTotal:number}];
+    products?:OrderItemDTO[] ;
 
   }
-  
+  interface OrderItemDTO {
+    quantity: number;
+    subTotal: number;
+    productDetails?: ProductDTO;
+}
   export interface orderInputDTO {
     userId: string;
     pointsUsed: number;
@@ -21,8 +25,8 @@ export interface orderDTO {
     deliveryAddressId: number;
     paymentId: number;
     status: string;
-    products:[{
-        productID:number,
+    Products:[{
+        productID:string,
         Quantity:number,
         UnitPrice:number,
         subTotal:number
