@@ -67,8 +67,8 @@ class OrderController {
   }
   async deleteOrder(req: Request, res: Response): Promise<void> {
     try {
-      const productId: string = req.params.id;
-      await this.orderService.deleteOrder(productId);
+      const orderId: string = req.params.id;
+      await this.orderService.deleteOrder(orderId);
       res.status(200).json({ message: "Order has been deleted" });
     } catch (error: any) {
       res.status(500).json({ message: "Failed to delete order", error: error.message });
