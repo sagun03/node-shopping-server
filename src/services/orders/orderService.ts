@@ -91,6 +91,11 @@ class OrderService {
     }
     return this.getOrderById(orderId);
   }
+  public async deleteOrder(orderId: string): Promise<void> {
+  await OrderItem.destroy({ where: { OrderID: orderId } });
+  await Order.destroy({where:{ OrderID: orderId }})
+    
+  }
   private async mapOrderToDTO(order: any, orderItems?: any): Promise<orderDTO> {
     if (!order) {
         throw new Error("Invalid order object");
