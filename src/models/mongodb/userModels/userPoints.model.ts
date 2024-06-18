@@ -28,10 +28,12 @@ const userPointsSchema = new Schema({
     },
     referralUserId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        default: null
     },
     reason: {
-        type: String
+        type: String,
+        default: null
     }
 })
 

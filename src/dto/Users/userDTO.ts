@@ -5,22 +5,21 @@ export class userDTO {
     username: string;
     email: string;
     password: string;
-    pointsBalance: number;
-    referralCode : string;
-    referralUserId : mongoose.Types.ObjectId;
-    role: string;
+    pointsBalance ?: number;
+    referralCode ?: string;
+    referralUserId ?: mongoose.Types.ObjectId;
+    role ?: string;
 
     constructor(username: string, email: string, password: string,
-        pointsBalance: number = 500, role: string = 'customer',
-        referralCode: string = '000000', 
-        referralUserId: mongoose.Types.ObjectId = 
-        new mongoose.Types.ObjectId('000000000000000000000000')) {
+        pointsBalance ?: number, role ?: string,
+        referralCode ?: string, 
+        referralUserId ?: mongoose.Types.ObjectId) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.pointsBalance = pointsBalance;
-        this.role = role;
-        this.referralCode = referralCode;
-        this.referralUserId = referralUserId;
+        if(pointsBalance !== undefined) this.pointsBalance = pointsBalance;
+        if(role !== undefined) this.role = role;
+        if(referralCode !== undefined) this.referralCode = referralCode;
+        if(referralUserId !== undefined) this.referralUserId = referralUserId;
     }
 }

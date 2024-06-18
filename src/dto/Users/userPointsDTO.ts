@@ -6,16 +6,16 @@ export class userPointsDTO {
     points: number;
     userDescription: string;
     date: Date;
-    referralUserId : mongoose.Types.ObjectId;
-    reason : string;
+    referralUserId ?: mongoose.Types.ObjectId;
+    reason ?: string;
 
     constructor(
         userID: string,
         transactionType: string,
         points: number,
         userDescription: string,
-        referralUserId : mongoose.Types.ObjectId = new mongoose.Types.ObjectId('000000000000000000000000'),
-        reason : string = ''
+        referralUserId ?: mongoose.Types.ObjectId,
+        reason ?: string
     ) {
         this.userID = userID;
         this.points = points;
@@ -23,7 +23,7 @@ export class userPointsDTO {
         this.userDescription = userDescription;
         this.date = new Date();
         
-        this.referralUserId = referralUserId ;
-        this.reason = reason;
+        if(referralUserId !== undefined) this.referralUserId = referralUserId ;
+        if(reason !== undefined) this.reason = reason;
     }
 }

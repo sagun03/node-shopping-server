@@ -5,14 +5,19 @@ import { instanceToPlain } from "class-transformer";
 import { userDTO } from "../../dto/Users/userDTO";
 
 class UserController {
-    private serviceInstance = UserService.getServiceInstance();
+    private serviceInstance : UserService;
+    private static instance : UserController;
 
     // implement singelton pattern
-    private constructor() {};
+    private constructor() {
+        this.serviceInstance = UserService.getServiceInstance()
+    };
 
     // return controller instance
     static getControllerInstance() : UserController {
-        return new UserController();
+        if(!UserController.instance)
+            UserController.instance = new UserController;
+        return UserController.instance;
     }
 
     // creating new user
