@@ -65,6 +65,15 @@ class OrderController {
       res.status(500).json({ message: "Failed to update order", error: error.message });
     }
   }
+  async deleteOrder(req: Request, res: Response): Promise<void> {
+    try {
+      const orderId: string = req.params.id;
+      await this.orderService.deleteOrder(orderId);
+      res.status(200).json({ message: "Order has been deleted" });
+    } catch (error: any) {
+      res.status(500).json({ message: "Failed to delete order", error: error.message });
+    }
+  }
 }
 
 export default OrderController;

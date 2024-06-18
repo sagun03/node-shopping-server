@@ -18,5 +18,8 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.put('/:id', async (req: Request, res: Response) => {
   await orderController.updateOrder(req, res);
 });
+router.delete('/:id', async (req: Request, res: Response) => {
+  await orderController.deleteOrder(req, res);
+});
 
 export default router;
