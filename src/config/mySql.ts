@@ -1,9 +1,7 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
-dotenv.config({
-    path: `.env.${process.env.NODE_ENV || 'dev'}`
-});
+dotenv.config();
 
 
 const getEnvVar = (key: string) => {

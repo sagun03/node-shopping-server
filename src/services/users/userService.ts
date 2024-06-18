@@ -3,13 +3,16 @@ import User from "../../models/mongodb/userModels/user.model";
 import { instanceToPlain, plainToClass } from "class-transformer";
 
 class UserService {
+    private static serviceInstance: UserService;
 
     // implement a singelton pattern
     private constructor() {};
 
     // return service instance
     static getServiceInstance() : UserService {
-        return new UserService();
+        if(!UserService.serviceInstance)
+            UserService.serviceInstance = new UserService;
+        return UserService.serviceInstance;
     }
 
     // create user service

@@ -23,19 +23,22 @@ const userSchema = new Schema({
         required: true,
     },
     pointsBalance: {
-        type: Schema.Types.Mixed,
-        default: Number
+        type: Number,
+        default: 500
     },
     referralCode: {
-        type: String
+        type: String,
+        default: null
     },
     referralUserId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        default: null
     },
     role: {
         type: String,
-        required: true
+        required: true,
+        default: 'customer'
     }
 })
 
