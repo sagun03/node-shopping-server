@@ -5,7 +5,7 @@ import {connectToMySQL} from './src/config/mysql';
 import connectToMongoDB from './src/config/mongodb';
 import router from './src/Router'
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
+dotenv.config();
 
 const app: Application = express();
 
