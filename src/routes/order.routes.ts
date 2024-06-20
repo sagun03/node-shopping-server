@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import OrderController from '../controllers/order.controller';
-
+import { validateOrder } from '../middlewares/orderManagementMiddleware/orderMiddleware';
+import { orderSchema } from '../schemas/orderManagementSchema/orderSchema';
 const router = express.Router();
 const orderController = OrderController.getInstance();
 
@@ -15,7 +16,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   await orderController.getOrderById(req, res);
 });
 // UPDATE an existing order
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id',  validateOrder(orderSchema),async (req: Request, res: Response) => {
   await orderController.updateOrder(req, res);
 });
 router.delete('/:id', async (req: Request, res: Response) => {
