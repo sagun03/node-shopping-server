@@ -1,30 +1,31 @@
 import express, { Request, Response } from 'express';
 import OfferController from '../controllers/Inventory/Offer.controller';
+import { validateOfferData,validateOfferId } from '../middlewares/InventoryManagement/OfferMiddleware';
 
 const router = express.Router();
 const offerController = OfferController.getInstance();
 
-// CREATE a new offer
-router.post('/', async (req: Request, res: Response) => {
+// POST - CREATE a new offer
+router.post('/', validateOfferData(), async (req: Request, res: Response) => {
   await offerController.createOffer(req, res);
 });
 
-// UPDATE an existing offer
-router.put('/:id', async (req: Request, res: Response) => {
+// PUT - UPDATE an existing offer by ID
+router.put('/:id', validateOfferId(), validateOfferData(), async (req: Request, res: Response) => {
   await offerController.updateOffer(req, res);
 });
 
-// DELETE an offer
-router.delete('/:id', async (req: Request, res: Response) => {
+// DELETE - DELETE an offer by ID
+router.delete('/:id', validateOfferId(), async (req: Request, res: Response) => {
   await offerController.deleteOffer(req, res);
 });
 
-// GET an offer by ID
-router.get('/:id', async (req: Request, res: Response) => {
+// GET - GET an offer by ID
+router.get('/:id', validateOfferId(), async (req: Request, res: Response) => {
   await offerController.getOfferById(req, res);
 });
 
-// GET ALL offers
+// GET - GET ALL offers
 router.get('/', async (req: Request, res: Response) => {
   await offerController.getAllOffers(req, res);
 });
