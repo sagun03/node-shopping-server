@@ -22,7 +22,7 @@ const userAddressSchema = new Schema({
         type: String,
         required: true
     },
-    postalCode: {
+    zipCode: {
         type: String,
         required: true
     }

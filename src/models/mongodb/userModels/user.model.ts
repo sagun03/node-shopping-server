@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 
 // creating user schema
 const userSchema = new Schema({
-    userID: {
+    userId: {
         type: String,
     },
     username: {
@@ -46,8 +46,8 @@ const userSchema = new Schema({
 // creating a userID if not sent through request body
 // using mongoose pre-save hook
 userSchema.pre('save', function(next){
-    if(!this.userID) {
-        this.userID = this._id.toString();
+    if(!this.userId) {
+        this.userId = this._id.toString();
     }
     next();
 })

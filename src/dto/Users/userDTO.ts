@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export class userDTO {
-    userID ?: string;
+    userId ?: string;
     username: string;
     email: string;
     password: string;
@@ -17,9 +17,9 @@ export class userDTO {
         this.username = username;
         this.email = email;
         this.password = password;
-        if(pointsBalance !== undefined) this.pointsBalance = pointsBalance;
-        if(role !== undefined) this.role = role;
-        if(referralCode !== undefined) this.referralCode = referralCode;
-        if(referralUserId !== undefined) this.referralUserId = referralUserId;
+        this.pointsBalance = pointsBalance;
+        this.role = role;
+        this.referralCode = referralCode;
+        this.referralUserId = referralUserId;
     }
 }

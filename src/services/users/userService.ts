@@ -1,6 +1,6 @@
 import { userDTO } from "../../dto/Users/userDTO";
 import User from "../../models/mongodb/userModels/user.model";
-import { instanceToPlain, plainToClass } from "class-transformer";
+import { plainToClass } from "class-transformer";
 
 class UserService {
     private static instance : UserService;
@@ -35,17 +35,28 @@ class UserService {
         return plainToClass(userDTO, retrievedUser.toObject());
     }
 
+    // get user by login
+    async getBylogin(username: String, password: String) : Promise<userDTO> {
+        const retrievedUser = await User.findOne({
+            username,
+            password
+        })
+        if(!retrievedUser)
+            throw new Error('user not found!');
+        return plainToClass(userDTO, retrievedUser.toObject());
+    }
+
     // get user by id
-    async getById(userID: string) : Promise<userDTO> {
-        const retrievedUser = await User.findOne({userID});
+    async getById(userId: string) : Promise<userDTO> {
+        const retrievedUser = await User.findOne({userId});
         if(!retrievedUser)
             throw new Error('user not found!');
         return plainToClass(userDTO, retrievedUser.toObject());
     }
 
     // delete user service
-    async removeUser(userID: string) : Promise<boolean> {
-        const deletionResult = await User.deleteOne({userID});
+    async removeUser(userId: string) : Promise<boolean> {
+        const deletionResult = await User.deleteOne({userId});
         if(deletionResult.deletedCount == 1)
             return true;
         else

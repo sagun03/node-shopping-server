@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import UserController from '../../controllers/users/user.controller';
+import { User, validateUser} from '../../middlewares/user/userValidation';
+
 
 const router = express.Router();
 const controller = UserController.getControllerInstance();
@@ -22,9 +24,15 @@ router.get('/getuser/', async (req: Request, res: Response) => {
     await controller.getUserByNameEmail(req, res);
 });
 
+// end-point for getting user by login credentials
+// expects: username and email as request body
+router.get('/getlogin/', async (req: Request, res: Response) => {
+    await controller.loginUser(req, res);
+});
+
 // end-point for creating new user
 // expects: request body with username, email, password at least
-router.post('/create', async (req: Request, res: Response) => {
+router.post('/create', validateUser(User), async (req: Request, res: Response) => {
     await controller.createUser(req, res);
 });
 

@@ -16,7 +16,7 @@ class UserController {
     // return controller instance
     static getControllerInstance() : UserController {
         if(!UserController.instance)
-            UserController.instance = new UserController;
+            UserController.instance = new UserController();
         return UserController.instance;
     }
 
@@ -86,7 +86,7 @@ class UserController {
         })
     }
 
-     // getting user by email and username
+     // getting all users
      async getallUsers(req: Request, res: Response) : Promise<void> {
         this.serviceInstance.getAllUsers()
         .then(data => {
@@ -127,6 +127,26 @@ class UserController {
         })
     }
 
+    // login user
+    async loginUser(req: Request, res: Response) : Promise<void> {
+        const { username, password } = req.body;
+        this.serviceInstance.getBylogin(username, password)
+        .then(data => {
+            data.password 
+            const message = new messageDTO(
+                200,
+                'user details fetch success!',
+                data
+            )
+        })
+        .catch(error => {
+            const message = new messageDTO(
+                500,
+                error
+            )
+            res.status(500).send(instanceToPlain(message))
+        })
+    }
 }
 
 export default UserController;

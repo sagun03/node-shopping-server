@@ -1,29 +1,28 @@
 import mongoose from "mongoose";
 
 export class userPointsDTO {
-    userID: string;
-    transactionType: string;
-    points: number;
-    userDescription: string;
+    userId: string;
+    transactionType ?: string;
+    points ?: number;
+    userDescription ?: string;
     date: Date;
     referralUserId ?: mongoose.Types.ObjectId;
     reason ?: string;
 
     constructor(
-        userID: string,
-        transactionType: string,
-        points: number,
-        userDescription: string,
+        userId: string,
+        transactionType ?: string,
+        points ?: number,
+        userDescription ?: string,
         referralUserId ?: mongoose.Types.ObjectId,
         reason ?: string
     ) {
-        this.userID = userID;
+        this.userId = userId;
         this.points = points;
         this.transactionType = transactionType;
         this.userDescription = userDescription;
         this.date = new Date();
-        
-        if(referralUserId !== undefined) this.referralUserId = referralUserId ;
-        if(reason !== undefined) this.reason = reason;
+        this.referralUserId = referralUserId ;
+        this.reason = reason;
     }
 }
