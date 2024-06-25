@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+
 const getEnvVar = (key: string) => {
     const value = process.env[key];
     if (!value) {
@@ -11,10 +12,10 @@ const getEnvVar = (key: string) => {
     return value;
 };
 
-const host = getEnvVar('DB_HOST');
-const user = getEnvVar('DB_USER');
-const password = getEnvVar('DB_PASSWORD');
-const database = getEnvVar('DB_DATABASE');
+const host : string = getEnvVar('DB_HOST');
+const user : string = getEnvVar('DB_USER');
+const password : string = getEnvVar('DB_PASSWORD');
+const database : string = getEnvVar('DB_DATABASE');
 
 const sequelize = new Sequelize(database, user, password, {
     host: host,
