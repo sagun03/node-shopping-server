@@ -6,6 +6,7 @@ import connectToMongoDB from './src/config/mongodb';
 import router from './src/Router'
 
 dotenv.config();
+dotenv.config();
 
 const app: Application = express();
 

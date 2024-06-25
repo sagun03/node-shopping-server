@@ -6,6 +6,7 @@ import InventoryRouters from './routes/inventory.routes'
 import UserRouters from './routes/user/user.routes'
 import UserPointsRouters from './routes/user/userPoints.routes'
 import UserAddressRouters from './routes/user/userAddress.routes'
+import UserRouters from './routes/user/user.routes'
 
 const router = Router();
 
@@ -15,6 +16,6 @@ router.use("/products", ProductRouters)
 router.use("/Inventory",InventoryRouters)
 router.use("/user", UserRouters)
 router.use("/user/points", UserPointsRouters)
-router.use("/user/address", UserAddressRouters)
+router.use("/user/address", UserAddressRouters)router.use("/user", UserRouters)
 
 export default router

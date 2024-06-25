@@ -11,7 +11,7 @@ const Order = sequelize.define('Order', {
        
     },
     UserId: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
         allowNull: false,
           },
     PointsUsed: {
