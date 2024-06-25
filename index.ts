@@ -4,6 +4,8 @@ import cors from "cors";
 import {connectToMySQL} from './src/config/mysql';
 import connectToMongoDB from './src/config/mongodb';
 import router from './src/Router'
+import setupSwagger from './swagger';
+
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
@@ -11,6 +13,8 @@ const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
+setupSwagger(app)
+
 app.use("/jk", router)
 
 // comment out if any databse is failing to connect.
