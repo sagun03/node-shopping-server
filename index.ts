@@ -5,15 +5,16 @@ import {connectToMySQL} from './src/config/mysql';
 import connectToMongoDB from './src/config/mongodb';
 import router from './src/Router'
 import setupSwagger from './swagger';
-
-
-dotenv.config();
-dotenv.config();
+import emailTransporter from './src/emailConfig/emailTransporter';
+import bodyParser from 'body-parser';
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 setupSwagger(app)
 
 app.use("/jk", router)
@@ -28,13 +29,11 @@ const connectDatabases = async () => {
         console.log('MongoDB connection established!');
 
         
-        // return { mongoDBConnection };
-        return { mysqlConnection, mongoDBConnection };
+        return {mysqlConnection, mongoDBConnection };
     } catch (error) {
         throw new Error('Failed to connect to databases');
     }
 };
-
 connectDatabases()
     .then(() => {
         app.listen(process.env.PORT || 4000, () => {
