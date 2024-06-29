@@ -1,26 +1,27 @@
 import express, { Request, Response } from 'express';
 import ProductController from '../controllers/products/product.controller';
+import { validateProductIdParam, validateProductPostBody } from '../middlewares/product/productMiddleware';
 
 const router = express.Router();
 const productController = ProductController.getInstance();
 
 // CREATE a new product
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', validateProductPostBody, async (req: Request, res: Response) => {
   await productController.createProduct(req, res);
 });
 
 // UPDATE an existing product
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', validateProductIdParam, async (req: Request, res: Response) => {
   await productController.updateProduct(req, res);
 });
 
 // DELETE a product
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', validateProductIdParam, async (req: Request, res: Response) => {
   await productController.deleteProduct(req, res);
 });
 
 // GET a product by ID
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', validateProductIdParam, async (req: Request, res: Response) => {
   await productController.getProductById(req, res);
 });
 
