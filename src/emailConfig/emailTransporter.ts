@@ -6,6 +6,9 @@ dotenv.config(); // Load environment variables from .env file
 
 const OAuth2 = google.auth.OAuth2;
 
+
+// for client it may replace with jwt token 
+
 const oauth2Client = new OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,
