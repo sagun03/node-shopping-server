@@ -16,7 +16,7 @@ router.use('/auth', AuthRoutes);
 router.use('/orders', OrderRoutes);
 router.use("/products", ProductRoutes);
 router.use("/inventory", InventoryRoutes);
-router.use("/offer", OfferRoutes); // Use OfferRoutes with correct casing
+router.use("/offer", OfferRoutes);
 router.use('/reviews', ReviewRoutes);
 router.use('/categories', CategoryRoutes);
 router.use("/user", UserRouters)
