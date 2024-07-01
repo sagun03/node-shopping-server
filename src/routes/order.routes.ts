@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import OrderController from '../controllers/order.controller';
 import { validateOrder,validateOrderId } from '../middlewares/orderManagementMiddleware/orderMiddleware';
-import { orderSchema } from '../middlewareSchema/orderManagementSchema/orderSchema';
+import { orderSchema } from '../schemas/orderManagementSchema/orderSchema';
 const router = express.Router();
 const orderController = OrderController.getInstance();
 /**
