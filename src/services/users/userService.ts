@@ -6,7 +6,7 @@ class UserService {
     private static instance : UserService;
 
     // implement a singelton pattern
-    private constructor() {};
+    public constructor() {};
 
     // return service instance
     static getServiceInstance() : UserService {

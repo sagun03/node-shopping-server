@@ -3,6 +3,7 @@ import { messageDTO } from "../../dto/messageDTO";
 import UserService from "../../services/users/userService";
 import { instanceToPlain } from "class-transformer";
 import { userDTO } from "../../dto/Users/userDTO";
+import { generateToken } from "../../middlewares/auth/jwt";
 
 class UserController {
     private serviceInstance : UserService;
@@ -131,13 +132,16 @@ class UserController {
     async loginUser(req: Request, res: Response) : Promise<void> {
         const { username, password } = req.body;
         this.serviceInstance.getBylogin(username, password)
-        .then(data => {
-            data.password 
+        .then(async data => {
+            // generate token
+            const token = generateToken(data);
+            data.token = await token;
             const message = new messageDTO(
                 200,
                 'user details fetch success!',
                 data
             )
+            res.status(200).send(instanceToPlain(message));
         })
         .catch(error => {
             const message = new messageDTO(
