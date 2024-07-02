@@ -4,7 +4,10 @@ import cors from "cors";
 import {connectToMySQL} from './src/config/mysql';
 import connectToMongoDB from './src/config/mongodb';
 import router from './src/Router'
-import setupSwagger from "./swagger";
+import setupSwagger from './swagger';
+ import emailTransporter from './src/emailConfig/emailTransporter';
+ import bodyParser from 'body-parser';
+ dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 dotenv.config();
 
