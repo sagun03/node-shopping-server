@@ -12,9 +12,10 @@ const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+setupSwagger(app);
 app.use("/jk", router)
-setupSwagger(app)
-
 
 // comment out if any databse is failing to connect.
 const connectDatabases = async () => {
@@ -35,6 +36,7 @@ const connectDatabases = async () => {
         throw new Error('Failed to connect to databases');
     }
 };
+
 connectDatabases()
     .then(() => {
         app.listen(process.env.PORT, () => {

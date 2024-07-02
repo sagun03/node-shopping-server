@@ -8,8 +8,6 @@
     "build": "tsc",
     "dev": "cross-env NODE_ENV=dev ts-node ./index.ts",
     "production": "cross-env NODE_ENV=prod ts-node ./index.ts"
-    "dev": "cross-env NODE_ENV=dev ts-node ./index.ts",
-    "production": "cross-env NODE_ENV=prod ts-node ./index.ts"
   },
   "repository": {
     "type": "git",
