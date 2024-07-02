@@ -6,9 +6,9 @@ import { OrderItem } from "../../models/sql/ordersManagement/orderItems.model";
 import ProductService from "../products/ProductService";
 class OrderService {
   private productService : ProductService;
-  constructor() {
+    constructor() {
     this.productService = new ProductService()
-  }
+      }
 
   // GET ALL orders
   public async getAllOrders(): Promise<orderDTO[]> {
@@ -25,12 +25,12 @@ class OrderService {
     const orderDTOs: orderDTO[] = await Promise.all(orderDTOsPromises);
     return orderDTOs;
   }
-    // CREATE a new product
-  public async createOrder(orderInput: orderInputDTO): Promise<orderDTO> {
+    // CREATE a new order
+  public async createOrder(orderInput: orderInputDTO): Promise<orderDTO | null> {
    
       const orders = await Order.create(orderInput as any);
       const createdOrderID = orders?.dataValues?.OrderId;
-      orderInput?.Products.map(async (prodData:any)=>{
+         orderInput?.Products.map(async (prodData:any)=>{
         const sampleData:orderItemInputDTO={
           OrderID: createdOrderID,
           ProductID: prodData?.productID,
@@ -41,7 +41,7 @@ class OrderService {
         const orderItemss = await OrderItem.create(sampleData as any);
 
       })
-      return this.mapOrderToDTO(orders)
+      return this.getOrderById(createdOrderID);
       // return this.mapProductToDTO(savedProduct);
      
   

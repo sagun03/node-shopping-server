@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import OrderController from '../controllers/order.controller';
-import { validateOrder,validateOrderId } from '../middlewares/orderManagementMiddleware/orderMiddleware';
-import { orderSchema } from '../schemas/orderManagementSchema/orderSchema';
+
 import { verifyToken } from '../middlewares/auth/jwt';
 
 const router = express.Router();

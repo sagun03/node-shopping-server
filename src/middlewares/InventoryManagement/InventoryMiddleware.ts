@@ -1,6 +1,6 @@
 // middleware/inventoryMiddleware.ts
 import { Request, Response, NextFunction } from 'express';
-import { z, ZodError } from 'zod';
+import { ZodError } from 'zod';
 import { inventorySchema } from '../../schemas/InventoryManagement/InventorySchema';
 
 // Middleware function to validate inventory data against inventorySchema
