@@ -1,12 +1,7 @@
 import express, { Request, Response } from 'express';
 import OfferController from '../controllers/Inventory/Offer.controller';
-<<<<<<< HEAD
 import { validateOfferData,validateOfferId } from '../middlewares/InventoryManagement/OfferMiddleware';
 import { verifyToken } from '../middlewares/auth/jwt';
-=======
-import { validateOfferData, validateOfferId } from '../middlewares/InventoryManagement/OfferMiddleware';
->>>>>>> 7a353fa127ae2b8be75d3b2b69317f1c7076d368
-
 const router = express.Router();
 const offerController = OfferController.getInstance();
 

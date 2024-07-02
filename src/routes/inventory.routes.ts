@@ -1,6 +1,9 @@
 import express, { Request, Response } from 'express';
-import InventoryController from '../controllers/inventory.controller';
 import { verifyToken } from '../middlewares/auth/jwt';
+import InventoryController from '../controllers/Inventory/inventory.controller';
+import { validateInventoryData, validateInventoryId } from '../middlewares/InventoryManagement/InventoryMiddleware';
+import { inventorySchema } from '../schemas/InventoryManagement/InventorySchema';
+
 
 const router = express.Router();
 const inventoryController = InventoryController.getInstance();
