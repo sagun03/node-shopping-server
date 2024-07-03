@@ -37,12 +37,13 @@ class ProductService {
   // Utility function to map Product model to ProductDTO
   private mapProductToDTO(product: any): ProductDTO {
     return {
-      id: product._id,
+      id: product._id.toString(),
       name: product.name,
       description: product.description,
       price: product.price,
-      category: product.category,
-      imageURL: product.imageURL
+      categoryId: product.categoryId?.toString(),
+      imageURL: product.imageURL,
+      reviews: product.reviews.map((reviewId: string) => reviewId.toString())
     };
   }
 }

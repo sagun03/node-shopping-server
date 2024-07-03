@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema({
     userID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
-    productID: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'products', required: true },
     rating: { type: Number, min: 1, max: 5, required: true },
     description: { type: String, required: true },
     title: { type: String, required: true },
@@ -11,21 +11,37 @@ const reviewSchema = new mongoose.Schema({
     isApproved: { type: Boolean, default: false }
 });
 
-const productSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    price: { type: Number, required: true },
-    categoryID: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
-    imageURL: { type: String, required: true }, 
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }] 
-});
+const productSchema = new mongoose.Schema({ 
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: false },
+  imageURL: { type: String, required: true }, 
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }] 
+})
 
 const categorySchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     imageURL: { type: String, required: true }, 
-    productIDs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
+    productIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }]
 });
+
+productSchema.pre('save', function preSave() {
+  const product = this;
+  product.id = product._id.toString();
+});
+
+categorySchema.pre('save', function preSave() {
+  const category = this;
+  category.id = category._id.toString();
+});
+
+reviewSchema.pre('save', function preSave() {
+  const review = this;
+  review.id = review._id.toString();
+});
+
 
 const Product = mongoose.model('Product', productSchema);
 const Category = mongoose.model('Category', categorySchema);

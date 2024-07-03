@@ -3,14 +3,16 @@ export interface ProductDTO {
     name: string;
     description: string;
     price: number;
-    category: string;
+    categoryId: string; 
     imageURL: string;
+    reviews?: string[];
   }
   
   export interface ProductInputDTO {
     name: string;
     description: string;
     price: number;
-    category: string;
+    categoryId: string; 
     imageURL: string;
-  }
+    reviews?: string[];
+}
