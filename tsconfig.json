@@ -9,7 +9,7 @@
   },
   "include": [
     "./src/**/*.ts" 
-  ],
+, "src/Router.ts", "swagger.ts"  ],
   "exclude": [
     "node_modules"
   ]
