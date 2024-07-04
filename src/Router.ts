@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import OrderRoutes from './routes/order.routes';
 import AuthRoutes from './routes/auth.routes';
 import ProductRoutes from './routes/product.routes';
@@ -11,6 +11,11 @@ import UserAddressRouters from './routes/user/userAddress.routes'
 import UserRouters from './routes/user/user.routes'
 
 const router = Router();
+// Health Check
+router.get("/health-check", (req: Request, res: Response) => {
+    console.log("Server is running");
+    res.send("Server is running");
+  });
 
 router.use('/auth', AuthRoutes);
 router.use('/orders', OrderRoutes);
