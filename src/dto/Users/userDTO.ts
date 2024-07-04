@@ -9,6 +9,7 @@ export class userDTO {
     referralCode ?: string;
     referralUserId ?: mongoose.Types.ObjectId;
     role ?: string;
+    token ?: string;
 
     constructor(username: string, email: string, password: string,
         pointsBalance ?: number, role ?: string,

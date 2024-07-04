@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import InventoryController from '../controllers/Inventory/inventory.controller';
 import { validateInventoryData, validateInventoryId } from '../middlewares/InventoryManagement/InventoryMiddleware';
 import { inventorySchema } from '../schemas/InventoryManagement/InventorySchema';
-
+import { verifyToken } from './verifyToken.routes';
 const router = express.Router();
 const inventoryController = InventoryController.getInstance();
 
@@ -71,7 +71,7 @@ const inventoryController = InventoryController.getInstance();
  *       400:
  *         description: Invalid input
  */
-router.post('/', validateInventoryData(), async (req: Request, res: Response) => {
+router.post('/', verifyToken, validateInventoryData(), async (req: Request, res: Response) => {
   await inventoryController.createInventory(req, res);
 });
 
@@ -106,7 +106,7 @@ router.post('/', validateInventoryData(), async (req: Request, res: Response) =>
  *       404:
  *         description: Inventory not found
  */
-router.put('/:id', validateInventoryId(), validateInventoryData(), async (req: Request, res: Response) => {
+router.put('/:id', verifyToken, validateInventoryId(), validateInventoryData(), async (req: Request, res: Response) => {
   await inventoryController.updateInventory(req, res);
 });
 
@@ -129,7 +129,7 @@ router.put('/:id', validateInventoryId(), validateInventoryData(), async (req: R
  *       404:
  *         description: Inventory not found
  */
-router.delete('/:id', validateInventoryId(), async (req: Request, res: Response) => {
+router.delete('/:id', verifyToken, validateInventoryId(), async (req: Request, res: Response) => {
   await inventoryController.deleteInventory(req, res);
 });
 
@@ -156,7 +156,7 @@ router.delete('/:id', validateInventoryId(), async (req: Request, res: Response)
  *       404:
  *         description: Inventory not found
  */
-router.get('/:id', validateInventoryId(), async (req: Request, res: Response) => {
+router.get('/:id', verifyToken, validateInventoryId(), async (req: Request, res: Response) => {
   await inventoryController.getInventoryById(req, res);
 });
 
@@ -176,7 +176,7 @@ router.get('/:id', validateInventoryId(), async (req: Request, res: Response) =>
  *               items:
  *                 $ref: '#/components/schemas/InventoryDTO'
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', verifyToken, async (req: Request, res: Response) => {
   await inventoryController.getAllInventories(req, res);
 });
 
