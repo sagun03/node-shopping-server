@@ -8,6 +8,11 @@ import setupSwagger from './swagger';
 import emailTransporter from './src/emailConfig/emailTransporter';
 import bodyParser from 'body-parser';
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+import consumerMessages from'./src/utilities/consumer'
+
+
+dotenv.config();
+dotenv.config();
 
 const app: Application = express();
 
@@ -34,7 +39,17 @@ const connectDatabases = async () => {
         throw new Error('Failed to connect to databases');
     }
 };
-connectDatabases()
+
+const startKafkaConsumer = async () => {
+    try {
+ await consumerMessages()
+        console.log('Kafka consumer started and listening...');
+    } catch (error) {
+        console.error('Error starting Kafka consumer:', error);
+    }
+};
+
+Promise.all([connectDatabases(), startKafkaConsumer()])
     .then(() => {
         app.listen(process.env.PORT || 4000, () => {
             console.log('Express server started!');
