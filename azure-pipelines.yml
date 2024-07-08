@@ -15,7 +15,7 @@ variables:
   containerRegistry: 'jkbackend.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/dockerfile'
   tag: '$(Build.BuildId)'
-  azureSubscription: 'e31a3d6b-8855-474a-959a-162bfac936a3'
+  azureSubscription: 'jk-backend'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -51,6 +51,6 @@ stages:
     - task: AzureRmWebAppDeployment@4
       displayName: Azure App Service Deploy
       inputs:
-        azureSubscription: ${azureSubscription}
+        azureSubscription: 'jk-backend'
         appName: $(imageRepository)
         containers: $(dockerRegistryServiceConnection)/$(imageRepository):$(tag)
