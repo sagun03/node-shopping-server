@@ -1,8 +1,8 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import {connectToMySQL} from './src/config/mysql';
-import connectToMongoDB from './src/config/mongodb';
+import {connectToMySQL} from './src/config/mySql';
+import connectToMongoDB from './src/config/mongoDB';
 import router from './src/Router'
 import setupSwagger from './swagger';
 import emailTransporter from './src/emailConfig/emailTransporter';

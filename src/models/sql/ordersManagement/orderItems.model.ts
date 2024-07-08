@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../../../config/mysql';
 import { Order } from './order.model';
+import { sequelize } from '../../../config/mySql';
 
 const OrderItem = sequelize.define('OrderItem', {
     OrderItemID: {
