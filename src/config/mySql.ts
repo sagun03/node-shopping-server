@@ -16,7 +16,8 @@ const host: string = getEnvVar('DB_HOST');
 const user: string = getEnvVar('DB_USER');
 const password: string = getEnvVar('DB_PASSWORD');
 const database: string = getEnvVar('DB_DATABASE');
-const caCertPath: string = getEnvVar('DB_CA_CERT_PATH');  // Path to the CA certificate
+// commenting for deployment
+// const caCertPath: string = getEnvVar('DB_CA_CERT_PATH');  // Path to the CA certificate
 
 const sequelize = new Sequelize(database, user, password, {
     host: host,
@@ -24,7 +25,9 @@ const sequelize = new Sequelize(database, user, password, {
     dialectOptions: {
         ssl: {
             rejectUnauthorized: true,  // For production chnage to true
-            ca: fs.readFileSync(caCertPath),
+            // commenting for deployment
+
+            // ca: fs.readFileSync(caCertPath),
         }
     }
 });
