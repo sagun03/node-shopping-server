@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import ProductService from "../../services/products/ProductService";
 import { ProductDTO, ProductInputDTO } from "../../dto/products/ProductDTO";
+import { uploadImageToBlob } from '../../services/productandcategoryazureBlobService';
 
 class ProductController {
   private static instance: ProductController;
@@ -21,6 +22,12 @@ class ProductController {
   async createProduct(req: Request, res: Response): Promise<void> {
     try {
       const productInput: ProductInputDTO = req.body;
+      
+      if (req.file) {
+        const imageURL = await uploadImageToBlob(req.file);
+        productInput.imageURL = imageURL;
+      }
+
       const createdProduct: ProductDTO = await this.productService.createProduct(productInput);
       res.status(201).json(createdProduct);
     } catch (error: any) {
@@ -33,6 +40,12 @@ class ProductController {
     try {
       const productId: string = req.params.id;
       const productInput: ProductInputDTO = req.body;
+      
+      if (req.file) {
+        const imageUrl = await uploadImageToBlob(req.file);
+        productInput.imageURL = imageUrl;
+      }
+
       const updatedProduct: ProductDTO | null = await this.productService.updateProduct(productId, productInput);
       if (updatedProduct) {
         res.status(200).json(updatedProduct);

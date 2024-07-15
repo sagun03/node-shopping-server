@@ -21,15 +21,15 @@ app.use("/jk", router)
 // comment out if any databse is failing to connect.
 const connectDatabases = async () => {
     try {
-        const mysqlConnection = await connectToMySQL();
-        console.log('MySQL Database connection established!');
+        // const mysqlConnection = await connectToMySQL();
+        // console.log('MySQL Database connection established!');
         
         const mongoDBConnection = await connectToMongoDB();
         console.log('MongoDB connection established!');
 
         
-        // return { mongoDBConnection };
-        return { mysqlConnection, mongoDBConnection };
+        // return { mysqlConnection };
+        return {  mongoDBConnection };
     } catch (error) {
         throw new Error('Failed to connect to databases');
     }
