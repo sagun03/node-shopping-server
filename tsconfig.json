@@ -8,7 +8,7 @@
     "esModuleInterop": true
   },
   "include": [
-    "./src/**/*.ts" , "./src/Router.ts", "./src/swagger.ts"  ],
+    "./src/**/*.ts" , "./src/Router.ts", "./src/swagger.ts", "swagger.ts" ],
   "exclude": [
     "node_modules"
   ]

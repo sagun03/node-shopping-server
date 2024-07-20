@@ -1,8 +1,12 @@
 import express, { Request, Response } from 'express';
+import multer from 'multer';
 import ProductController from '../controllers/products/product.controller';
 import { validateProductIdParam, validateProductPostBody } from '../middlewares/product/productMiddleware';
+import { validateImageUpload } from '../middlewares/Products/ProductsCategoryMiddleware';
+
 
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 const productController = ProductController.getInstance();
 
 /**
@@ -35,7 +39,7 @@ const productController = ProductController.getInstance();
  *       400:
  *         description: Invalid request body
  */
-router.post('/', validateProductPostBody, async (req: Request, res: Response) => {
+router.post('/',  upload.single('image'), validateImageUpload, validateProductPostBody, async (req: Request, res: Response) => {
   await productController.createProduct(req, res);
 });
 
@@ -70,7 +74,7 @@ router.post('/', validateProductPostBody, async (req: Request, res: Response) =>
  *       404:
  *         description: Product not found
  */
-router.put('/:id', validateProductIdParam, async (req: Request, res: Response) => {
+router.put('/:id',  upload.single('image'), validateImageUpload, validateProductIdParam, async (req: Request, res: Response) => {
   await productController.updateProduct(req, res);
 });
 
