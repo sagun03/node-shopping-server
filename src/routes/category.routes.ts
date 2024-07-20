@@ -37,7 +37,7 @@ const categoryController = CategoryController.getInstance();
  *       400:
  *         description: Invalid request body
  */
-router.post('/', upload.single('image'), validateCategoryPostBody, async (req: Request, res: Response) => {
+router.post('/', upload.single('image'), validateImageUpload, validateCategoryPostBody, async (req: Request, res: Response) => {
   await categoryController.createCategory(req, res);
 });
 
