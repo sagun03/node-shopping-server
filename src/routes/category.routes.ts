@@ -1,8 +1,11 @@
 import express, { Request, Response } from 'express';
+import multer from 'multer';
 import CategoryController from '../controllers/products/category.controller';
 import { validateCategoryIdParam, validateCategoryPostBody } from '../middlewares/product/categoryMiddleware';
+import { validateImageUpload } from '../middlewares/Products/ProductsCategoryMiddleware';
 
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 const categoryController = CategoryController.getInstance();
 
 /**
@@ -34,7 +37,7 @@ const categoryController = CategoryController.getInstance();
  *       400:
  *         description: Invalid request body
  */
-router.post('/', validateCategoryPostBody, async (req: Request, res: Response) => {
+router.post('/', upload.single('image'), validateImageUpload, validateCategoryPostBody, async (req: Request, res: Response) => {
   await categoryController.createCategory(req, res);
 });
 
@@ -69,7 +72,7 @@ router.post('/', validateCategoryPostBody, async (req: Request, res: Response) =
  *       404:
  *         description: Category not found
  */
-router.put('/:id', validateCategoryIdParam, async (req: Request, res: Response) => {
+router.put('/:id',  upload.single('image'), validateImageUpload, validateCategoryIdParam, async (req: Request, res: Response) => {
   await categoryController.updateCategory(req, res);
 });
 
@@ -144,4 +147,3 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 export default router;
-

@@ -2,7 +2,6 @@ import { DataTypes } from 'sequelize';
 import { OrderItem } from './orderItems.model';
 import { sequelize } from '../../../config/mySql';
 
-
 const Order = sequelize.define('Order', {
     OrderId: {
         type: DataTypes.BIGINT,

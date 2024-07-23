@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import CategoryService from "../../services/products/CategoryService";
 import { CategoryDTO, CategoryInputDTO } from "../../dto/products/CategoryDTO";
+import { uploadImageToBlob } from '../../services/productandcategoryazureBlobService';
 
 class CategoryController {
   private static instance: CategoryController;
@@ -21,6 +22,12 @@ class CategoryController {
   async createCategory(req: Request, res: Response): Promise<void> {
     try {
       const categoryInput: CategoryInputDTO = req.body;
+      
+      if (req.file) {
+        const imageURL = await uploadImageToBlob(req.file);
+        categoryInput.imageURL = imageURL;
+      }
+
       const createdCategory: CategoryDTO = await this.categoryService.createCategory(categoryInput);
       res.status(201).json(createdCategory);
     } catch (error: any) {
@@ -33,6 +40,12 @@ class CategoryController {
     try {
       const categoryId: string = req.params.id;
       const categoryInput: CategoryInputDTO = req.body;
+      
+      if (req.file) {
+        const imageUrl = await uploadImageToBlob(req.file);
+        categoryInput.imageURL = imageUrl;
+      }
+
       const updatedCategory: CategoryDTO | null = await this.categoryService.updateCategory(categoryId, categoryInput);
       if (updatedCategory) {
         res.status(200).json(updatedCategory);
