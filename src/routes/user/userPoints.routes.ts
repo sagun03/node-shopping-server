@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import UserPointsController from '../../controllers/users/userPoints.contoller';
-import { verifyToken } from '../verifyToken.routes';
+import { verifyFirebaseToken } from '../../middlewares/auth/firebaseJWT';
 const router = express.Router();
 const controller = UserPointsController.getControllerInstance();
 
@@ -35,7 +35,7 @@ const controller = UserPointsController.getControllerInstance();
  *             schema:
  *               $ref: '#/components/schemas/UserPointsDTO'
  */
-router.get('/get/:id', verifyToken, async (req: Request, res: Response) => {
+router.get('/get/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
     await controller.getEntry(req, res);
 });
 
@@ -58,7 +58,7 @@ router.get('/get/:id', verifyToken, async (req: Request, res: Response) => {
  *       200:
  *         description: User points created
  */
-router.post('/create/', verifyToken, async (req: Request, res: Response) => {
+router.post('/create/', verifyFirebaseToken, async (req: Request, res: Response) => {
     await controller.putEntry(req, res);
 });
 
@@ -82,7 +82,7 @@ router.post('/create/', verifyToken, async (req: Request, res: Response) => {
  *       200:
  *         description: User points deleted
  */
-router.delete('/remove/:id', verifyToken, async (req: Request, res: Response) => {
+router.delete('/remove/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
     await controller.deleteEntry(req, res);
 });
 

@@ -34,7 +34,7 @@ class OrderController {
       const orderInput: orderInputDTO = req.body;
       const createdOrder = await this.orderService.createOrder(orderInput);
       if (createdOrder) {
-        const user = await this.userService.getById(createdOrder.userId);
+        const user = await this.userService.getByUid(createdOrder.userId);
         const recipients = [user?.email];
         const limitedSendEmail = limiter.wrap(sendEmail);
         const emailPromises = recipients.map((recipient: string) => limitedSendEmail(createdOrder, recipient));

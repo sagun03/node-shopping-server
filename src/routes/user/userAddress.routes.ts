@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import UserAddressController from '../../controllers/users/userAddress.controller';
 import { addressSchema, validateAddress } from '../../middlewares/user/userAddressValidation';
-import { verifyToken } from '../verifyToken.routes';
+import { verifyFirebaseToken } from '../../middlewares/auth/firebaseJWT';
 const router = express.Router();
 const controller = UserAddressController.getControllerInstance();
 
@@ -36,7 +36,7 @@ const controller = UserAddressController.getControllerInstance();
  *             schema:
  *               $ref: '#/components/schemas/UserAddressDTO'
  */
-router.get('/get/:id', verifyToken, async (req: Request, res: Response) => {
+router.get('/get/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
     await controller.getEntry(req, res);
 });
 
@@ -62,7 +62,7 @@ router.get('/get/:id', verifyToken, async (req: Request, res: Response) => {
  *         description: Invalid request body
  */
 
-router.post('/create/', verifyToken, validateAddress(addressSchema), async (req: Request, res: Response) => {
+router.post('/create/', verifyFirebaseToken, validateAddress(addressSchema), async (req: Request, res: Response) => {
     await controller.putEntry(req, res);
 });
 
@@ -88,7 +88,7 @@ router.post('/create/', verifyToken, validateAddress(addressSchema), async (req:
  *       400:
  *         description: Invalid request body
  */
-router.delete('/remove/:id', verifyToken, async (req: Request, res: Response) => {
+router.delete('/remove/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
     await controller.deleteEntry(req, res);
 });
 

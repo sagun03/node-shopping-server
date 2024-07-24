@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import { messageDTO } from "../../dto/messageDTO";
 import UserService from "../../services/users/userService";
-import { instanceToPlain } from "class-transformer";
 import { userDTO } from "../../dto/Users/userDTO";
-import { generateToken } from "../../middlewares/auth/jwt";
+import { Session } from "inspector";
+import { access } from "fs";
 
 class UserController {
     private serviceInstance : UserService;
@@ -24,131 +23,134 @@ class UserController {
     // creating new user
     async createUser(req: Request, res: Response) : Promise<void> {
         const userDetails = new userDTO(
-            req.body.username,
+            req.body.uid,
             req.body.email,
-            req.body.password
+            req.body.RFtoken,
+            req.body.role
         );
         this.serviceInstance.createNewUser(userDetails)
-        .then(data => {
-            const message = new messageDTO(
-                200,
-                'user created successfully!',
-                data
-            )
-            res.status(200).send(instanceToPlain(message));
+        .then(async data => {
+            if(req.headers.authorization)
+            res.status(201).send({
+                message: 'user created at admin',
+                accessToken: req.headers.authorization.split(' ')[1],
+            });
         })
         .catch(error => {
-            const message = new messageDTO(
-                500,
-                error
-            )
-            res.status(500).send(instanceToPlain(message))
-        })
-    }
-
-    // getting user by id
-    async getUserByID(req: Request, res: Response) : Promise<void> {
-        this.serviceInstance.getById(req.params.id as string)
-        .then(data => {
-            const message = new messageDTO(
-                200,
-                'user details fetch success!',
-                data
-            )
-            res.status(200).send(instanceToPlain(message));
-        })
-        .catch(error => {
-            const message = new messageDTO(
-                500,
-                error
-            )
-            res.status(500).send(instanceToPlain(message))
+            res.status(500).send({
+                message: 'user creation failed at admin',
+                error: error
+            })
         })
     }
 
     // getting user by email and username
-    async getUserByNameEmail(req: Request, res: Response) : Promise<void> {
-        const { username, email } = req.query as { username:string, email:string};
-        this.serviceInstance.getByNameEmail(username, email)
+    async getUserByEmail(req: Request, res: Response) : Promise<void> {
+        const { email } = req.query as { email: string };
+        this.serviceInstance.getByEmail(email)
         .then(data => {
-            const message = new messageDTO(
-                200,
-                'user details fetch success!',
-                data
-            )
-            res.status(200).send(instanceToPlain(message));
+            res.status(200).send({
+                message: 'user details fetch success!',
+                data: data
+            });
         })
         .catch(error => {
-            const message = new messageDTO(
-                500,
-                error
-            )
-            res.status(500).send(instanceToPlain(message))
+            res.status(500).send({
+                message: 'user details fetch failed!',
+                error: error
+            })
         })
     }
 
-     // getting all users
+    // getting all users
+    // admin only
      async getallUsers(req: Request, res: Response) : Promise<void> {
         this.serviceInstance.getAllUsers()
         .then(data => {
-            const message = new messageDTO(
-                200,
-                'user details fetch success!',
-                data
-            )
-            res.status(200).send(instanceToPlain(message));
+            res.status(200).send({
+                message: 'All users fetch success!',
+                data: data
+            });
         })
         .catch(error => {
-            const message = new messageDTO(
-                500,
-                error
-            )
-            res.status(500).send(instanceToPlain(message))
+            res.status(500).send({
+                message: 'All users fetch failed!',
+                error: error
+            })
         })
     }
 
 
-    // delete existing user 
+    // delete existing user
+    //  admin only
     async deleteUser(req: Request, res: Response) : Promise<void> {
         this.serviceInstance.removeUser(req.params.userID as string)
         .then(data => {
-            const message = new messageDTO(
-                200,
-                'user removal success!',
-                data
-            )
-            res.status(200).send(instanceToPlain(message));
+            res.status(200).send({
+                message: 'user deletion success!',
+            });
         })
         .catch(error => {
-            const message = new messageDTO(
-                500,
-                error
-            )
-            res.status(500).send(instanceToPlain(message))
+            res.status(500).send({
+                message: 'user deletion failed!',
+                error: error
+            })
+        })
+    }
+
+    async findUid(uid: string) : Promise<userDTO> {
+        try{
+            const user = await this.serviceInstance.getByUid(uid);
+            return user;
+        } catch (error) {
+            throw new Error('user not found');
+        }
+    }
+
+    // get user by id
+    // admin only
+    async getUserByID(req: Request, res: Response) : Promise<void> {
+        const uid = req.params.uid;
+        this.findUid(uid)
+        .then(data => {
+            res.status(200).send({
+                message: 'user details fetch success!',
+            });
+        })
+        .catch(error => {
+            res.status(500).send({
+                message: 'user details fetch failed!',
+                error: error
+            })
         })
     }
 
     // login user
-    async loginUser(req: Request, res: Response) : Promise<void> {
-        const { username, password } = req.body;
-        this.serviceInstance.getBylogin(username, password)
-        .then(async data => {
-            const token = await generateToken(data);
-            data.token = token;
-            const message = new messageDTO(
-                200,
-                'user details fetch success!',
-                data
-            )
-        })
-        .catch(error => {
-            const message = new messageDTO(
-                500,
-                error
-            )
-            res.status(500).send(instanceToPlain(message))
+    async loginUser(req: Request, res: Response): Promise<void> {
+        const { uid, IDtoken } = req.body;
+        const user  = await this.findUid(uid)
+        .then(async (data) => {
+            try {
+                // update the RFtoken
+                await this.serviceInstance.updateRFtoken(uid, req.body.RFtoken);
+                if(req.headers.authorization)
+                res.status(200).send({
+                    message: 'user login success!',
+                    accessToken: req.headers.authorization.split(' ')[1],
+                });
+            } catch (error) {
+                res.status(500).send({
+                    message: 'user login failed!',
+                    error: error
+                })
+            }
+        }).catch(error => {
+            // create new user if not found
+            this.createUser(req, res);
         })
     }
+        
 }
+
 
 export default UserController;

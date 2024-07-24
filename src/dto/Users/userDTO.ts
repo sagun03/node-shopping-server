@@ -1,26 +1,25 @@
 import mongoose from "mongoose";
 
 export class userDTO {
-    userId ?: string;
-    username: string;
+    uid ?: string;
     email: string;
-    password: string;
     pointsBalance ?: number;
     referralCode ?: string;
     referralUserId ?: mongoose.Types.ObjectId;
     role ?: string;
-    token ?: string;
+    RFtoken ?: string;
 
-    constructor(username: string, email: string, password: string,
-        pointsBalance ?: number, role ?: string,
-        referralCode ?: string, 
+    constructor(uid: string, email: string,
+        RFToken ?: string, role ?: string,
+        pointsBalance ?: number, referralCode ?: string, 
         referralUserId ?: mongoose.Types.ObjectId) {
-        this.username = username;
+        this.uid = uid;
         this.email = email;
-        this.password = password;
+        this.RFtoken = RFToken;
         this.pointsBalance = pointsBalance;
         this.role = role;
         this.referralCode = referralCode;
         this.referralUserId = referralUserId;
     }
+
 }
