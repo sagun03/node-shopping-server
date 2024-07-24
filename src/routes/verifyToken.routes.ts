@@ -5,7 +5,7 @@ interface AuthRequest extends Request {
   user?: any;
 }
 
-const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+const verifyFirebaseToken = (req: AuthRequest, res: Response, next: NextFunction) => {
   const authHeader = req.headers.token as string;
   if (authHeader) {
     const token = authHeader.split(" ")[1];
@@ -19,8 +19,8 @@ const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
   }
 };
 
-const verifyTokenAndAuthorization = (req: AuthRequest, res: Response, next: NextFunction) => {
-  verifyToken(req, res, () => {
+const verifyFirebaseTokenAndAuthorization = (req: AuthRequest, res: Response, next: NextFunction) => {
+  verifyFirebaseToken(req, res, () => {
     if (req.user && (req.user.id === req.params.id || req.user.isAdmin)) {
       next();
     } else {
@@ -29,8 +29,8 @@ const verifyTokenAndAuthorization = (req: AuthRequest, res: Response, next: Next
   });
 };
 
-const verifyTokenAndAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
-  verifyToken(req, res, () => {
+const verifyFirebaseTokenAndAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
+  verifyFirebaseToken(req, res, () => {
     if (req.user && req.user.isAdmin) {
       next();
     } else {
@@ -39,4 +39,4 @@ const verifyTokenAndAdmin = (req: AuthRequest, res: Response, next: NextFunction
   });
 };
 
-export { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin };
+export { verifyFirebaseToken, verifyFirebaseTokenAndAuthorization, verifyFirebaseTokenAndAdmin };

@@ -25,30 +25,16 @@ class UserService {
     }
 
     // get user by username and email service
-    async getByNameEmail(username: String, email: String) : Promise<userDTO> {
-        const retrievedUser = await User.findOne({
-            username,
-            email
-        })
+    async getByEmail(email: String) : Promise<userDTO> {
+        const retrievedUser = await User.findOne({ email })
         if(!retrievedUser)
             throw new Error('user not found!');
         return plainToClass(userDTO, retrievedUser.toObject());
     }
 
-    // get user by login
-    async getBylogin(username: String, password: String) : Promise<userDTO> {
-        const retrievedUser = await User.findOne({
-            username,
-            password
-        })
-        if(!retrievedUser)
-            throw new Error('user not found!');
-        return plainToClass(userDTO, retrievedUser.toObject());
-    }
-
-    // get user by id
-    async getById(userId: string) : Promise<userDTO> {
-        const retrievedUser = await User.findOne({userId});
+    // get user by uid
+    async getByUid(uid: String) : Promise<userDTO> {
+        const retrievedUser = await User.findOne({ uid })
         if(!retrievedUser)
             throw new Error('user not found!');
         return plainToClass(userDTO, retrievedUser.toObject());
@@ -71,6 +57,18 @@ class UserService {
         retrievedUsers.forEach((user) => plainToClass(userDTO, user));
         return retrievedUsers;
     }
+
+    // update RFtoken in user
+    async updateRFtoken(uid: string, RFtoken: string) : Promise<userDTO> {
+        const updatedUser = await User.findOneAndUpdate({ uid },
+            {$set: {RFtoken: RFtoken}},
+            {new: true}
+        )
+        if(!updatedUser)
+            throw new Error('user not found!');
+        return plainToClass(userDTO, updatedUser.toObject());
+    }
+    
 }
 
 export default UserService;

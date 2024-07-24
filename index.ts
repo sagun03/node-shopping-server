@@ -10,11 +10,18 @@ import consumerMessages from './src/utilities/consumer';
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
+import admin from 'firebase-admin';
+import { env } from "process";
+
+import cookieParser from 'cookie-parser';
+import { buffer } from "stream/consumers";
+
 const app: Application = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 setupSwagger(app);
@@ -28,9 +35,14 @@ app.use((req: Request, res: Response) => {
 });
 
 // Database Connections
+admin.initializeApp({
+    credential: admin.credential.applicationDefault()
+});
+
+
+// comment out if any databse is failing to connect.
 const connectDatabases = async () => {
     try {
-        // Uncomment to connect to MySQL if needed
         // const mysqlConnection = await connectToMySQL();
         // console.log('MySQL Database connection established!');
         
@@ -66,3 +78,14 @@ Promise.all([connectDatabases(), startKafkaConsumer()])
         console.error(err.message);
         process.exit(1); // Exit process on error
     });
+
+
+Promise.all([connectDatabases()])
+.then(() => {
+    app.listen(process.env.PORT || 4000, () => {
+        console.log('Express server started!');
+    });
+})
+.catch((err: any) => {
+    console.error(err.message);
+});

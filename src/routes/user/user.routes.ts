@@ -1,6 +1,6 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import UserController from '../../controllers/users/user.controller';
-import { verifyToken } from '../verifyToken.routes';
+import { revokeRefreshToken, verifyFirebaseToken } from '../../middlewares/auth/firebaseJWT';
 
 const router = express.Router();
 const controller = UserController.getControllerInstance();
@@ -31,7 +31,7 @@ const controller = UserController.getControllerInstance();
  *               items:
  *                 $ref: '#/components/schemas/UserDTO'
  */
-router.get('/', verifyToken, async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     await controller.getallUsers(req, res);
 });
 
@@ -59,7 +59,7 @@ router.get('/', verifyToken, async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/UserDTO'
  */
-router.get('/getuser/:id', verifyToken, async (req: Request, res: Response) => {
+router.get('/getuser/:id', async (req: Request, res: Response) => {
     await controller.getUserByID(req, res);
 });
 
@@ -93,8 +93,8 @@ router.get('/getuser/:id', verifyToken, async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/UserDTO'
  */
-router.get('/getuser/', verifyToken, async (req: Request, res: Response) => {
-    await controller.getUserByNameEmail(req, res);
+router.get('/getuser/', async (req: Request, res: Response) => {
+    await controller.getUserByEmail(req, res);
 });
 
 // end-point for deleting user
@@ -121,8 +121,95 @@ router.get('/getuser/', verifyToken, async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/UserDTO'
  */
-router.delete('/remove/:userID', verifyToken, async (req: Request, res: Response) => {
+router.delete('/remove/:userID', async (req: Request, res: Response) => {
     await controller.deleteUser(req, res);
+});
+
+// end-point for registering user
+// expects: username, email, password as body parameters
+// swagger
+/**
+ * @swagger
+ * /user/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserDTO'
+ *     responses:
+ *       200:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserDTO'
+ */
+
+router.post('/register', (req: Request, res: Response, next: NextFunction) => {
+    console.log('registering user');
+    console.log(req.body);
+    next();
+}, verifyFirebaseToken, async (req: Request, res: Response) => {
+    await controller.createUser(req, res);
+})
+
+// end-point for login
+// expects: username, password as body parameters
+// swagger
+/**
+ * @swagger
+ * /user/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserDTO'
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserDTO'
+ */
+
+router.post('/login', verifyFirebaseToken, async (req: Request, res: Response) => {
+    await controller.loginUser(req, res);
+});
+
+// end-point for signing out
+// expects: uid as body parameter
+// swagger
+/**
+ * @swagger
+ * /user/logout:
+ *   post:
+ *     summary: Logout user
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserDTO'
+ *     responses:
+ *       200:
+ *         description: User logged out successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserDTO'
+ */
+router.post('/logout', revokeRefreshToken, async (req: Request, res: Response) => {
+    res.status(200).send({ message: 'User logged out successfully' });
 });
 
 export default router;

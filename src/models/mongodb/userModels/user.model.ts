@@ -6,21 +6,16 @@ const { Schema } = mongoose;
 
 // creating user schema
 const userSchema = new Schema({
-    userId: {
+    uid: {
         type: String,
     },
     username: {
-        type: String,
-        required: true
+        type: String
     },
     email: {
         type: String,
         required: true,
         lowercase: true
-    },
-    password: {
-        type: String,
-        required: true,
     },
     pointsBalance: {
         type: Number,
@@ -37,19 +32,12 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        required: true,
-        default: 'customer'
+        required: true
+    },
+    RFtoken: {
+        type: String,
+        default: null
     }
-})
-
-
-// creating a userID if not sent through request body
-// using mongoose pre-save hook
-userSchema.pre('save', function(next){
-    if(!this.userId) {
-        this.userId = this._id.toString();
-    }
-    next();
 })
 
 // creating user model
