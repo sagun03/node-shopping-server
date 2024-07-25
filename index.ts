@@ -56,18 +56,19 @@ const connectDatabases = async () => {
     }
 };
 
-// Kafka Consumer
-const startKafkaConsumer = async () => {
-    try {
-        await consumerMessages();
-        console.log('Kafka consumer started and listening...');
-    } catch (error) {
-        console.error('Error starting Kafka consumer:', error);
-    }
-};
+// // Kafka Consumer
+// const startKafkaConsumer = async () => {
+//     try {
+//         await consumerMessages();
+//         console.log('Kafka consumer started and listening...');
+//     } catch (error) {
+//         console.error('Error starting Kafka consumer:', error);
+//     }
+// };
 
 // Start server after connecting databases and starting Kafka consumer
-Promise.all([connectDatabases(), startKafkaConsumer()])
+// Promise.all([connectDatabases(), startKafkaConsumer()])
+Promise.all([connectDatabases()])
     .then(() => {
         const port = process.env.PORT || 4000;
         app.listen(port, () => {
@@ -78,14 +79,3 @@ Promise.all([connectDatabases(), startKafkaConsumer()])
         console.error(err.message);
         process.exit(1); // Exit process on error
     });
-
-
-Promise.all([connectDatabases()])
-.then(() => {
-    app.listen(process.env.PORT || 4000, () => {
-        console.log('Express server started!');
-    });
-})
-.catch((err: any) => {
-    console.error(err.message);
-});
