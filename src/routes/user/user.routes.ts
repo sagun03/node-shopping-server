@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import UserController from '../../controllers/users/user.controller';
-import { revokeRefreshToken, verifyFirebaseToken } from '../../middlewares/auth/firebaseJWT';
+import { verifyFirebaseToken } from '../../middlewares/auth/firebaseJWT';
 
 const router = express.Router();
 const controller = UserController.getControllerInstance();
@@ -149,11 +149,7 @@ router.delete('/remove/:userID', async (req: Request, res: Response) => {
  *               $ref: '#/components/schemas/UserDTO'
  */
 
-router.post('/register', (req: Request, res: Response, next: NextFunction) => {
-    console.log('registering user');
-    console.log(req.body);
-    next();
-}, verifyFirebaseToken, async (req: Request, res: Response) => {
+router.post('/register', verifyFirebaseToken, async (req: Request, res: Response) => {
     await controller.createUser(req, res);
 })
 
@@ -208,7 +204,7 @@ router.post('/login', verifyFirebaseToken, async (req: Request, res: Response) =
  *             schema:
  *               $ref: '#/components/schemas/UserDTO'
  */
-router.post('/logout', revokeRefreshToken, async (req: Request, res: Response) => {
+router.post('/logout', async (req: Request, res: Response) => {
     res.status(200).send({ message: 'User logged out successfully' });
 });
 

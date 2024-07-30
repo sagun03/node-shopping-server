@@ -7,15 +7,12 @@ export class userDTO {
     referralCode ?: string;
     referralUserId ?: mongoose.Types.ObjectId;
     role ?: string;
-    RFtoken ?: string;
 
-    constructor(uid: string, email: string,
-        RFToken ?: string, role ?: string,
+    constructor(uid: string, email: string, role ?: string,
         pointsBalance ?: number, referralCode ?: string, 
         referralUserId ?: mongoose.Types.ObjectId) {
         this.uid = uid;
         this.email = email;
-        this.RFtoken = RFToken;
         this.pointsBalance = pointsBalance;
         this.role = role;
         this.referralCode = referralCode;
