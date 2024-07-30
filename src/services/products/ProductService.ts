@@ -40,9 +40,14 @@ class ProductService {
       id: product._id.toString(),
       name: product.name,
       description: product.description,
-      price: product.price,
-      categoryId: product.categoryId?.toString(),
-      imageURL: product.imageURL,
+      categoryId: product.categoryId?.toString() || "",
+      category: product.category,
+      sizes: product.sizes.map((size: any) => ({
+        size: size.size,
+        price: size.price,
+        images: size.images,
+        inStock: size.inStock
+      })),
       reviews: product.reviews.map((reviewId: string) => reviewId.toString())
     };
   }

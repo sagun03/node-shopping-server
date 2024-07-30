@@ -22,30 +22,53 @@ class ProductController {
   async createProduct(req: Request, res: Response): Promise<void> {
     try {
       const productInput: ProductInputDTO = req.body;
-      
-      if (req.file) {
-        const imageURL = await uploadImageToBlob(req.file);
-        productInput.imageURL = imageURL;
-      }
-
+      // need rework when admin pannel is read
+      // if (req.files && Array.isArray(req.files)) {
+      //   const sizeImageMap: { [key: string]: string[] } = {};
+  
+      //   // Group files by size using the fieldname
+      //   req.files.forEach((file: any) => {
+      //     const sizeKey = file.fieldname.split('_')[1]; // Extract size from fieldname
+      //     if (!sizeImageMap[sizeKey]) {
+      //       sizeImageMap[sizeKey] = [];
+      //     }
+      //     sizeImageMap[sizeKey].push(file);
+      //   });
+  
+      //   // Assign uploaded images to corresponding sizes
+      //   for (const size of productInput.sizes) {
+      //     if (sizeImageMap[size.size]) {
+      //       const uploadedImages = await Promise.all(sizeImageMap[size.size].map(async (file: any) => {
+      //         return await uploadImageToBlob(file);
+      //       }));
+      //       size.images = uploadedImages;
+      //     }
+      //   }
+      // }
+  
       const createdProduct: ProductDTO = await this.productService.createProduct(productInput);
       res.status(201).json(createdProduct);
     } catch (error: any) {
       res.status(500).json({ message: "Failed to create product", error: error.message });
     }
   }
+  
 
   // UPDATE an existing product
   async updateProduct(req: Request, res: Response): Promise<void> {
     try {
       const productId: string = req.params.id;
       const productInput: ProductInputDTO = req.body;
-      
-      if (req.file) {
-        const imageUrl = await uploadImageToBlob(req.file);
-        productInput.imageURL = imageUrl;
-      }
-
+    
+      // need rework when admin pannel is read
+    // if (req.files && Array.isArray(req.files)) {
+    //   for (const size of productInput.sizes) {
+    //     const uploadedImages = await Promise.all(req.files.map(async (file) => {
+    //       return await uploadImageToBlob(file);
+    //     }));
+    //     size.images = uploadedImages;
+    //   }
+    // }
       const updatedProduct: ProductDTO | null = await this.productService.updateProduct(productId, productInput);
       if (updatedProduct) {
         res.status(200).json(updatedProduct);
