@@ -6,7 +6,7 @@ import { validateImageUpload } from '../middlewares/Products/ProductsCategoryMid
 
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ dest: 'uploads/' });
 const productController = ProductController.getInstance();
 
 /**
@@ -39,9 +39,10 @@ const productController = ProductController.getInstance();
  *       400:
  *         description: Invalid request body
  */
-router.post('/',  upload.single('image'), validateImageUpload, validateProductPostBody, async (req: Request, res: Response) => {
+router.post('/',  upload.any(), validateProductPostBody, async (req: Request, res: Response) => {
   await productController.createProduct(req, res);
 });
+
 
 /**
  * @swagger

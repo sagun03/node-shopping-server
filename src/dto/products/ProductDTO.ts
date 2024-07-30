@@ -1,18 +1,29 @@
 export interface ProductDTO {
-    id: string;
-    name: string;
-    description: string;
+  id: string;
+  name: string;
+  description: string;
+  categoryId: string;
+  category: string;
+  sizes: Array<{
+    size: string;
     price: number;
-    categoryId: string; 
-    imageURL: string;
-    reviews?: string[];
-  }
-  
-  export interface ProductInputDTO {
-    name: string;
-    description: string;
+    images: string[];
+    inStock: boolean;
+  }>;
+  reviews?: string[];
+}
+
+
+export interface ProductInputDTO {
+  name: string;
+  description: string;
+  categoryId: string;
+  category: string;
+  sizes: Array<{
+    size: string;
     price: number;
-    categoryId: string; 
-    imageURL: string;
-    reviews?: string[];
+    images: string[];
+    inStock: boolean;
+  }>;
+  reviews?: string[];
 }
