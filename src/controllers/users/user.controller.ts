@@ -25,15 +25,12 @@ class UserController {
         const userDetails = new userDTO(
             req.body.uid,
             req.body.email,
-            req.body.RFtoken,
             req.body.role
         );
         this.serviceInstance.createNewUser(userDetails)
         .then(async data => {
-            if(req.headers.authorization)
             res.status(201).send({
-                message: 'user created at admin',
-                accessToken: req.headers.authorization.split(' ')[1],
+                message: 'user created at admin'
             });
         })
         .catch(error => {
@@ -132,11 +129,8 @@ class UserController {
         .then(async (data) => {
             try {
                 // update the RFtoken
-                await this.serviceInstance.updateRFtoken(uid, req.body.RFtoken);
-                if(req.headers.authorization)
                 res.status(200).send({
-                    message: 'user login success!',
-                    accessToken: req.headers.authorization.split(' ')[1],
+                    message: 'user login success!'
                 });
             } catch (error) {
                 res.status(500).send({
