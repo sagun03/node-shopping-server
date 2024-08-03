@@ -5,7 +5,7 @@ import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { orderSchemaDTO,orderInputSchemaDTO } from './src/swaggerSchema/orderManagementSchema';
 import { productSchemaDTO } from './src/swaggerSchema/productSchema';
-
+import { cartSchemaDTO,cartInputSchemaDTO } from './src/swaggerSchema/cartManagementSchema';
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -23,7 +23,9 @@ const options = {
       schemas: {
         OrderDTO: orderSchemaDTO,
         ProductDTO: productSchemaDTO,
-        orderInputDTO:orderInputSchemaDTO
+        orderInputDTO:orderInputSchemaDTO,
+        cartDTO :cartSchemaDTO,
+        cartInputDTO :cartInputSchemaDTO
       },
     },
   },

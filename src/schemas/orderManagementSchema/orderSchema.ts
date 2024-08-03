@@ -7,7 +7,7 @@ const orderProductSchema = z.object({
   });
   
   export const orderSchema = z.object({
-    UserId: z.string(),
+    userId: z.string(),
     PointsUsed: z.number(),
     TotalAmount: z.string(),
     DeliveryAddressID: z.number().nullable(),

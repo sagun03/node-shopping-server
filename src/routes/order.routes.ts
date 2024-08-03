@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import OrderController from '../controllers/order.controller';
 import { validateOrder,validateOrderId } from '../middlewares/orderManagementMiddleware/orderMiddleware';
 import { orderSchema } from '../schemas/orderManagementSchema/orderSchema';
-import { verifyFirebaseToken } from '../middlewares/auth/firebaseJWT';
+// import { verifyFirebaseToken } from '../middlewares/auth/firebaseJWT';
 
 const router = express.Router();
 const orderController = OrderController.getInstance();
@@ -30,7 +30,7 @@ const orderController = OrderController.getInstance();
  *               items:
  *                 $ref: '#/components/schemas/OrderDTO'
  */
-router.get('/', verifyFirebaseToken, async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   await orderController.getAllorders(req, res);
 });
 
@@ -54,7 +54,7 @@ router.get('/', verifyFirebaseToken, async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/OrderDTO'
  */
-router.post('/', verifyFirebaseToken, validateOrder(orderSchema), async (req: Request, res: Response) => {
+router.post('/', validateOrder(orderSchema), async (req: Request, res: Response) => {
   await orderController.createOrder(req, res);
 });
 
@@ -81,7 +81,7 @@ router.post('/', verifyFirebaseToken, validateOrder(orderSchema), async (req: Re
  *       404:
  *         description: Order not found
  */
-router.get('/:id', verifyFirebaseToken, validateOrderId(), async (req: Request, res: Response) => {
+router.get('/:id', validateOrderId(), async (req: Request, res: Response) => {
   await orderController.getOrderById(req, res);
 });
 
@@ -115,7 +115,7 @@ router.get('/:id', verifyFirebaseToken, validateOrderId(), async (req: Request, 
  *         description: Order not found
  */
 // UPDATE an existing order
-router.put('/:id',  verifyFirebaseToken, validateOrder(orderSchema), async (req: Request, res: Response) => {
+router.put('/:id', validateOrder(orderSchema), async (req: Request, res: Response) => {
   await orderController.updateOrder(req, res);
 });
 /**
@@ -138,7 +138,7 @@ router.put('/:id',  verifyFirebaseToken, validateOrder(orderSchema), async (req:
  *       404:
  *         description: Order not found
  */
-router.delete('/:id', verifyFirebaseToken, validateOrderId(), async (req: Request, res: Response) => {
+router.delete('/:id', validateOrderId(), async (req: Request, res: Response) => {
   await orderController.deleteOrder(req, res);
 });
 

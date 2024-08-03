@@ -46,7 +46,7 @@ export const orderInputSchemaDTO={
   title: "Order",
   type: "object",
   properties: {
-    UserId: {
+    userId: {
       type: "string"
     },
     PointsUsed: {
@@ -104,7 +104,7 @@ export const orderInputSchemaDTO={
     }
   },
   required: [
-    "UserId",
+    "userId",
     "PointsUsed",
     "TotalAmount",
     "Status",

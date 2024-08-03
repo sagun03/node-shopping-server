@@ -9,7 +9,7 @@ const Order = sequelize.define('Order', {
         autoIncrement: true,
        
     },
-    UserId: {
+    userId: {
         type: DataTypes.STRING,
         allowNull: false,
           },
