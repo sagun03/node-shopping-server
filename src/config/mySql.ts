@@ -24,7 +24,7 @@ const sequelize = new Sequelize(database, user, password, {
     dialect: 'mysql',
     dialectOptions: {
         ssl: {
-            rejectUnauthorized: true,  // For production chnage to true
+            rejectUnauthorized: false,  // For production chnage to true
             // commenting for deployment
 
             // ca: fs.readFileSync(caCertPath),

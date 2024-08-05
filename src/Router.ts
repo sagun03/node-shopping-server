@@ -8,7 +8,7 @@ import CategoryRoutes from './routes/category.routes';
 import UserPointsRouters from './routes/user/userPoints.routes'
 import UserAddressRouters from './routes/user/userAddress.routes'
 import UserRouters from './routes/user/user.routes'
-
+import cartRoutes from './routes/cart.routes'
 const router = Router();
 // Health Check
 router.get("/health-check", (req: Request, res: Response) => {
@@ -17,6 +17,7 @@ router.get("/health-check", (req: Request, res: Response) => {
   });
 // Routes
 router.use('/orders', OrderRoutes);
+router.use('/cart',cartRoutes)
 router.use("/products", ProductRoutes);
 router.use("/inventory", InventoryRoutes);
 router.use("/offer", OfferRoutes);

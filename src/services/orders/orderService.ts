@@ -4,6 +4,7 @@ import { orderDTO, orderInputDTO } from "../../dto/orders/orderDTO";
 import { Order } from "../../models/sql/ordersManagement/order.model";
 import { OrderItem } from "../../models/sql/ordersManagement/orderItems.model";
 import ProductService from "../products/ProductService";
+import { sequelize } from "../../config/mySql";
 class OrderService {
   private productService : ProductService;
     constructor() {
@@ -26,27 +27,97 @@ class OrderService {
     return orderDTOs;
   }
     // CREATE a new order
-  public async createOrder(orderInput: orderInputDTO): Promise<orderDTO | null> {
-   
-      const orders = await Order.create(orderInput as any);
-      const createdOrderID = orders?.dataValues?.OrderId;
-         orderInput?.Products.map(async (prodData:any)=>{
-        const sampleData:orderItemInputDTO={
-          OrderID: createdOrderID,
-          ProductID: prodData?.productID,
-          Quantity : prodData?.Quantity,
-          UnitPrice:prodData?.UnitPrice,
-          Subtotal:prodData?.subTotal
-        }
-        const orderItemss = await OrderItem.create(sampleData as any);
-
-      })
-      return this.getOrderById(createdOrderID);
-      // return this.mapProductToDTO(savedProduct);
-     
-  
+    public async createOrder(orderInput: orderInputDTO): Promise<orderDTO | null> {
+      const t = await sequelize.transaction();
     
-  }
+      try {
+        // Find existing order for the given user
+        const existingOrder = await Order.findOne({ where: { userId: orderInput?.userId }, transaction: t });
+    
+        let createdOrderID: string;
+    
+        if (existingOrder) {
+          // Order exists, use its ID
+          createdOrderID = existingOrder.dataValues.OrderId;
+          console.log(`Existing order found with ID: ${createdOrderID}`);
+    
+          // Update or create order items
+          await Promise.all(
+            orderInput.Products.map(async (prodData: any) => {
+              await this.createOrUpdateOrderItem(t, createdOrderID, prodData);
+            })
+          );
+        } else {
+          // No existing order found, create a new order
+          console.log('No existing order found. Creating a new order.');
+          const newOrder = await Order.create(orderInput as any, { transaction: t });
+          createdOrderID = newOrder.dataValues.OrderId;
+          console.log(`Created new order with ID: ${createdOrderID}`);
+    
+          // Create order items for the new order
+          await Promise.all(
+            orderInput.Products.map(async (prodData: any) => {
+              await this.createOrderItem(t, createdOrderID, prodData);
+            })
+          );
+        }
+    
+        await t.commit();
+        return this.getOrderById(createdOrderID);
+      } catch (error) {
+        await t.rollback();
+        console.error("Failed to create order:", error);
+        throw new Error("Failed to create order");
+      }
+    }
+    
+    
+    public createOrderItem = async (
+      transaction: any,
+      orderID: string,
+      prodData: any
+    ): Promise<void> => {
+      const sampleData: orderItemInputDTO = {
+        OrderID: orderID,
+        ProductID: prodData?.productID,
+        Quantity: prodData?.Quantity,
+        UnitPrice: prodData?.UnitPrice,
+        Subtotal: prodData?.subTotal.toFixed(2),
+      };
+      const newOrderItem = await OrderItem.create(sampleData as any, { transaction: transaction });
+      console.log(`Created new OrderItem: ${newOrderItem}`);
+    };
+    public createOrUpdateOrderItem = async (
+      transaction: any,
+      orderID: string,
+      prodData: any
+    ): Promise<void> => {
+      const existingOrderItem = await OrderItem.findOne({
+        where: { OrderID: orderID, ProductID: prodData?.productID },
+        transaction: transaction
+      });
+    
+      if (existingOrderItem) {
+        // Update existing order item
+        const updatedQuantity = existingOrderItem.dataValues.Quantity + prodData?.Quantity;
+        const updatedSubtotal = (parseFloat(existingOrderItem.dataValues.Subtotal) + parseFloat(prodData?.subTotal)).toFixed(2);
+    
+        await OrderItem.update(
+          {
+            Quantity: updatedQuantity,
+            Subtotal: updatedSubtotal
+          },
+          {
+            where: { OrderID: orderID, ProductID: prodData?.productID },
+            transaction: transaction
+          }
+        );
+      } else {
+        // Create new order item
+        await this.createOrderItem(transaction, orderID, prodData);
+      }
+    };
+    
   public async getOrderById(orderID: string): Promise<orderDTO | null> {
     const order = await Order.findByPk(orderID);
     const orderItems = await OrderItem.findAll({
@@ -123,7 +194,7 @@ class OrderService {
 
     return {
         orderID: order.OrderId,
-        userId: order.UserId,
+        userId: order.userId,
         pointsUsed: order.PointsUsed,
         totalAmount: order.TotalAmount,
         orderDate: order.OrderDate,

@@ -43,14 +43,15 @@ admin.initializeApp({
 // comment out if any databse is failing to connect.
 const connectDatabases = async () => {
     try {
-        // const mysqlConnection = await connectToMySQL();
-        // console.log('MySQL Database connection established!');
+        // Uncomment to connect to MySQL if needed
+        const mysqlConnection = await connectToMySQL();
+        console.log('MySQL Database connection established!');
         
         const mongoDBConnection = await connectToMongoDB();
         console.log('MongoDB connection established!');
         
-        // return { mysqlConnection, mongoDBConnection };
-        return { mongoDBConnection };
+        return { mysqlConnection, mongoDBConnection };
+        // return { mongoDBConnection };
     } catch (error) {
         throw new Error('Failed to connect to databases');
     }
@@ -67,7 +68,6 @@ const connectDatabases = async () => {
 // };
 
 // Start server after connecting databases and starting Kafka consumer
-// Promise.all([connectDatabases(), startKafkaConsumer()])
 Promise.all([connectDatabases()])
     .then(() => {
         const port = process.env.PORT || 4000;

@@ -7,7 +7,7 @@ import sendEmail from "../utilities/sendMail";
 import UserService from "../services/users/userService";
 import { generateOrderSummary } from "../utilities/smsMapper";
 import sendSms from "../utilities/sendSms";
-import sendMessage from "../utilities/sendMessage";
+// import sendMessage from "../utilities/sendMessage";
 import consumer from "../utilities/consumer";
 
 class OrderController {
@@ -34,16 +34,19 @@ class OrderController {
       const orderInput: orderInputDTO = req.body;
       const createdOrder = await this.orderService.createOrder(orderInput);
       if (createdOrder) {
-        const user = await this.userService.getByUid(createdOrder.userId);
-        const recipients = [user?.email];
-        const limitedSendEmail = limiter.wrap(sendEmail);
-        const emailPromises = recipients.map((recipient: string) => limitedSendEmail(createdOrder, recipient));
-        await Promise.all(emailPromises);
-        const userContact = {
-          phone: '+917046048033' // User's phone number , for now it is static
-        };
-        const orderSummaryMessage = generateOrderSummary(createdOrder);
-        sendSms(userContact.phone,orderSummaryMessage)
+
+        // Sending order through sms and email , uncpmment when it will be used
+
+        // const user = await this.userService.getById(createdOrder.userId);
+        // const recipients = [user?.email];
+        // const limitedSendEmail = limiter.wrap(sendEmail);
+        // const emailPromises = recipients.map((recipient: string) => limitedSendEmail(createdOrder, recipient));
+        // await Promise.all(emailPromises);
+        // const userContact = {
+        //   phone: '+917046048033' // User's phone number , for now it is static
+        // };
+        // const orderSummaryMessage = generateOrderSummary(createdOrder);
+        // sendSms(userContact.phone,orderSummaryMessage)
         res.status(200).json(createdOrder);
       }
     } catch (error: any) {
@@ -54,7 +57,7 @@ class OrderController {
   async getAllorders(req: Request, res: Response): Promise<void> {
     try {
       const orders: orderDTO[] = await this.orderService.getAllOrders();
-      sendMessage("order-topic", JSON.stringify(orders))
+      // sendMessage("order-topic", JSON.stringify(orders))
       res.status(200).json(orders);
     } catch (error: any) {
             res.status(500).json({ message: "Failed to get orders", error: error.message });
@@ -64,31 +67,31 @@ class OrderController {
     try {
       const orderID: string = req.params.id;
       const product: orderDTO | null = await this.orderService.getOrderById(orderID);
-      const topic = 'order-topic';
-      const message = JSON.stringify({
-        orderId: 400023,
-        userId: '667d5f1c4ae8f18073cb5334',
-        pointsUsed: 800,
-        totalAmount: '900.99',
-        orderDate: '2024-06-27T13:13:46.000Z',
-        status: 'Pending',
-        products: [
-          {
-            quantity: 1,
-            subTotal: '200.99',
-            productDetails: {
-              id: '6654c76522930dc2de3c93f7',
-              name: 'Dish Gel 6',
-              price: 200.99,
-              imageURL: 'https://thejkproducts.com/static/media/dishgel500ml.953a47586f8c4f471fc6.png',
-            },
-          },
-        ],
-      });
+      // const topic = 'order-topic';
+      // const message = JSON.stringify({
+      //   orderId: 400023,
+      //   userId: '667d5f1c4ae8f18073cb5334',
+      //   pointsUsed: 800,
+      //   totalAmount: '900.99',
+      //   orderDate: '2024-06-27T13:13:46.000Z',
+      //   status: 'Pending',
+      //   products: [
+      //     {
+      //       quantity: 1,
+      //       subTotal: '200.99',
+      //       productDetails: {
+      //         id: '6654c76522930dc2de3c93f7',
+      //         name: 'Dish Gel 6',
+      //         price: 200.99,
+      //         imageURL: 'https://thejkproducts.com/static/media/dishgel500ml.953a47586f8c4f471fc6.png',
+      //       },
+      //     },
+      //   ],
+      // });
       
-      sendMessage(topic, message)
-  .then(() => console.log('Message sent successfully'))
-  .catch((error) => console.error('Error sending message:', error));
+      // sendMessage(topic, message)
+  // .then(() => console.log('Message sent successfully'))
+  // .catch((error) => console.error('Error sending message:', error));
       if (product) {
                res.status(200).json(product);
       } else {
