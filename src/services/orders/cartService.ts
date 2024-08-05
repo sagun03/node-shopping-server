@@ -105,7 +105,7 @@ class cartService {
     });
     if (existingCartItem) {
       // Update existing order item
-      const updatedQuantity = type=="create" ?existingCartItem.dataValues.Quantity + prodData?.Quantity:prodData?.Quantity;
+      const updatedQuantity = type=="create" ?existingCartItem.dataValues.Quantity + prodData?.quantity:prodData?.quantity;
 
       await CartItem.update(
         {

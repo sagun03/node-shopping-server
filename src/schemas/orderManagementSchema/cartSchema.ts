@@ -1,7 +1,7 @@
 import { z } from 'zod';
 const cartProductSchema = z.object({
     productID: z.string(),
-    Quantity: z.number(),
+    quantity: z.number(),
     unitPrice: z.number(),
     size: z.string()
   });
