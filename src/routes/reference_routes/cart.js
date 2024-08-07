@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable quotes */
 const Cart = require("../models/Cart");
 const {
   verifyFirebaseToken,
@@ -47,14 +49,18 @@ router.delete("/:id", verifyFirebaseTokenAndAuthorization, async (req, res) => {
 });
 
 //GET USER CART
-router.get("/find/:userId", verifyFirebaseTokenAndAuthorization, async (req, res) => {
-  try {
-    const cart = await Cart.findOne({ userId: req.params.userId });
-    res.status(200).json(cart);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+router.get(
+  "/find/:userId",
+  verifyFirebaseTokenAndAuthorization,
+  async (req, res) => {
+    try {
+      const cart = await Cart.findOne({ userId: req.params.userId });
+      res.status(200).json(cart);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+);
 
 // //GET ALL
 

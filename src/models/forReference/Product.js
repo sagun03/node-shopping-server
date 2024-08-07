@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable quotes */
 const mongoose = require("mongoose");
 
 const ProducrSchema = new mongoose.Schema(

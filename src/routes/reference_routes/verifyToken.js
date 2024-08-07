@@ -1,3 +1,5 @@
+/* eslint-disable quotes */
+/* eslint-disable no-undef */
 const jwt = require("jsonwebtoken");
 
 const verifyFirebaseToken = (req, res, next) => {

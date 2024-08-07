@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 const User = require("../models/User");
 const router = require("express").Router();
 const CryptoJS = require("crypto-js");
@@ -27,7 +30,7 @@ router.get("/health-Check", (req, res) => {
   res.send("runing");
 });
 
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({
       userName: req.body.user_name,
