@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable quotes */
+/* eslint-disable no-undef */
 const router = require("express").Router();
 const {
   verifyFirebaseTokenAndAuthorization,

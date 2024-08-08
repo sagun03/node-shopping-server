@@ -1,3 +1,7 @@
+/* eslint-disable no-undef */
+/* eslint-disable prettier/prettier */
+/* eslint-disable quotes */
+// eslint-disable-next-line no-undef
 const mongoose = require("mongoose");
 
 const OrderSchema = new mongoose.Schema(

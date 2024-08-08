@@ -1,3 +1,5 @@
+/* eslint-disable quotes */
+/* eslint-disable no-undef */
 const mongoose = require("mongoose");
 
 const CartSchema = new mongoose.Schema(
