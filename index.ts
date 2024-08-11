@@ -34,9 +34,11 @@ app.use((req: Request, res: Response) => {
     res.status(404).send({ error: 'Not found' });
 });
 
-// Database Connections
+// firebase admin sdk setup
+const base64ServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64 as string;
+const serviceAccount = JSON.parse(Buffer.from(base64ServiceAccount, 'base64').toString('utf-8'));
 admin.initializeApp({
-    credential: admin.credential.applicationDefault()
+    credential: admin.credential.cert(serviceAccount)
 });
 
 
