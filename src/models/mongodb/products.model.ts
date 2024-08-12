@@ -11,21 +11,24 @@ const reviewSchema = new mongoose.Schema({
     isApproved: { type: Boolean, default: false }
 });
 
-const productSchema = new mongoose.Schema({ 
+const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   category: { type: String, required: true },
   categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+  isPopular: { type: Boolean, default: false },
   sizes: [
     {
       size: { type: String, required: true },
       price: { type: Number, required: true },
       images: [{ type: String, required: true }],
-      inStock: { type: Boolean, required: true }
+      inStock: { type: Boolean, required: true },
+      isPopular: { type: Boolean, default: false },
+      subTitle: { type: String }  
     }
   ],
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }] 
-})
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }]
+});
 
 const categorySchema = new mongoose.Schema({
     name: { type: String, required: true },

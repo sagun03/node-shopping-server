@@ -42,11 +42,14 @@ class ProductService {
       description: product.description,
       categoryId: product.categoryId?.toString() || "",
       category: product.category,
+      isPopular: product.isPopular,
       sizes: product.sizes.map((size: any) => ({
         size: size.size,
         price: size.price,
         images: size.images,
-        inStock: size.inStock
+        inStock: size.inStock,
+        isPopular: size.isPopular,
+        subTitle: size.subTitle
       })),
       reviews: product.reviews.map((reviewId: string) => reviewId.toString())
     };
