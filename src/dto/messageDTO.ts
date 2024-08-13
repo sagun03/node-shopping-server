@@ -1,11 +1,11 @@
 export class messageDTO {
-    status : number;
-    message : string;
-    processObject : Object;
+  status: number;
+  message: string;
+  processObject: object;
 
-    constructor(status:number, message:string, processObject:Object = {}) {
-        this.message = message;
-        this.status = status;
-        this.processObject =processObject;
-    }
+  constructor(status: number, message: string, processObject: object = {}) {
+    this.message = message;
+    this.status = status;
+    this.processObject = processObject;
+  }
 }

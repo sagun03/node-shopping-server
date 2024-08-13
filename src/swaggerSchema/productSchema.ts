@@ -1,45 +1,52 @@
 export const productSchemaDTO = {
-  type: 'object',
+  type: "object",
   properties: {
     quantity: {
-      type: 'integer',
+      type: "integer",
     },
     subTotal: {
-      type: 'string',
-      format: 'decimal',
+      type: "string",
+      format: "decimal",
     },
     productDetails: {
-      type: 'object',
+      type: "object",
       properties: {
         id: {
-          type: 'string',
+          type: "string",
         },
         name: {
-          type: 'string',
+          type: "string",
         },
         description: {
-          type: 'string',
+          type: "string",
         },
         price: {
-          type: 'number',
-          format: 'float',
+          type: "number",
+          format: "float",
         },
         categoryId: {
-          type: 'string',
+          type: "string",
         },
         imageURL: {
-          type: 'string',
-          format: 'url',
+          type: "string",
+          format: "url",
         },
         reviews: {
-          type: 'array',
+          type: "array",
           items: {
-            type: 'object',  // This assumes reviews are objects; adjust as needed
+            type: "object", // This assumes reviews are objects; adjust as needed
           },
         },
       },
-      required: ['id', 'name', 'description', 'price', 'categoryId', 'imageURL'],
+      required: [
+        "id",
+        "name",
+        "description",
+        "price",
+        "categoryId",
+        "imageURL",
+      ],
     },
   },
-  required: ['quantity', 'subTotal', 'productDetails'],
+  required: ["quantity", "subTotal", "productDetails"],
 };

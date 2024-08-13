@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
@@ -47,7 +49,7 @@ router.post("/login", async (req, res) => {
 
     const inputPassword = req.body.password;
 
-    originalPassword != inputPassword && res.status(401).json("Wrong Password");
+    originalPassword !== inputPassword && res.status(401).json("Wrong Password");
 
     const accessToken = jwt.sign(
       {

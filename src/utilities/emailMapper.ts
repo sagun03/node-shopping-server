@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function generateOrderEmail(order: any): { text: string; html: string } {
-    const text = `
+  const text = `
   Order Confirmation
   
   Order ID: ${order.orderID}
@@ -10,17 +11,21 @@ export function generateOrderEmail(order: any): { text: string; html: string } {
   
   
   Products:
-  ${order.products.map((product: any) => `
+  ${order.products
+    .map(
+      (product: any) => `
     Product Name: ${product.productDetails.name}
     Description: ${product.productDetails.description}
     Quantity: ${product.quantity}
     Price per unit: $${product.productDetails.price}
     Subtotal: $${product.subTotal}
     Image URL: ${product.productDetails.imageURL}
-  `).join('\n')}
+  `,
+    )
+    .join("\n")}
   `;
-  
-    const html = `
+
+  const html = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -115,12 +120,14 @@ export function generateOrderEmail(order: any): { text: string; html: string } {
                 <p><strong>Total Amount:</strong> $${order.totalAmount}</p>
                 <p><strong>Order Date:</strong> ${new Date(order.orderDate).toDateString()}</p>
                 <p><strong>Status:</strong> ${order.status}</p>
-                <p><strong>Delivery Address:</strong> ${order.deliveryAddressId ? order.deliveryAddressId : 'Not provided'}</p>
-                <p><strong>Payment ID:</strong> ${order.paymentId ? order.paymentId : 'Not provided'}</p>
+                <p><strong>Delivery Address:</strong> ${order.deliveryAddressId ? order.deliveryAddressId : "Not provided"}</p>
+                <p><strong>Payment ID:</strong> ${order.paymentId ? order.paymentId : "Not provided"}</p>
             </div>
             <div class="products">
                 <h2>Products:</h2>
-                ${order.products.map((product: any) => `
+                ${order.products
+                  .map(
+                    (product: any) => `
                 <div class="product">
                     <img src="${product.productDetails.imageURL}" alt="${product.productDetails.name}">
                     <div class="product-details">
@@ -132,14 +139,15 @@ export function generateOrderEmail(order: any): { text: string; html: string } {
                         <p><strong>Category ID:</strong> ${product.productDetails.categoryId}</p>
                     </div>
                 </div>
-                `).join('')}
+                `,
+                  )
+                  .join("")}
             </div>
         </div>
     </body>
     </html>
     
   `;
-  
-    return { text, html };
-  }
-  
+
+  return { text, html };
+}

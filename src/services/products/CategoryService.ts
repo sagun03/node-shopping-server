@@ -8,8 +8,15 @@ class CategoryService {
     return category.toObject() as CategoryDTO;
   }
 
-  async updateCategory(categoryId: string, categoryInput: CategoryInputDTO): Promise<CategoryDTO | null> {
-    const category = await Category.findByIdAndUpdate(categoryId, categoryInput, { new: true });
+  async updateCategory(
+    categoryId: string,
+    categoryInput: CategoryInputDTO,
+  ): Promise<CategoryDTO | null> {
+    const category = await Category.findByIdAndUpdate(
+      categoryId,
+      categoryInput,
+      { new: true },
+    );
     return category ? (category.toObject() as CategoryDTO) : null;
   }
 
@@ -24,7 +31,7 @@ class CategoryService {
 
   async getAllCategories(): Promise<CategoryDTO[]> {
     const categories = await Category.find();
-    return categories.map(category => category.toObject() as CategoryDTO);
+    return categories.map((category) => category.toObject() as CategoryDTO);
   }
 }
 

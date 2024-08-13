@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import InventoryService from "../../services/Inventory/InventoryServices";
-import { InventoryDTO, InventoryInputDTO } from "../../dto/Inventory/InventoryDTO";
+import {
+  InventoryDTO,
+  InventoryInputDTO,
+} from "../../dto/Inventory/InventoryDTO";
 
 class InventoryController {
   private static instance: InventoryController;
@@ -21,10 +24,13 @@ class InventoryController {
   async createInventory(req: Request, res: Response): Promise<void> {
     try {
       const inventoryInput: InventoryInputDTO = req.body;
-      const createdInventory: InventoryDTO = await this.inventoryService.createInventory(inventoryInput);
+      const createdInventory: InventoryDTO =
+        await this.inventoryService.createInventory(inventoryInput);
       res.status(201).json(createdInventory);
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to create inventory", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to create inventory", error: error.message });
     }
   }
 
@@ -33,14 +39,20 @@ class InventoryController {
     try {
       const inventoryId: string = req.params.id;
       const inventoryInput: InventoryInputDTO = req.body;
-      const updatedInventory: InventoryDTO | null = await this.inventoryService.updateInventory(inventoryId, inventoryInput);
+      const updatedInventory: InventoryDTO | null =
+        await this.inventoryService.updateInventory(
+          inventoryId,
+          inventoryInput,
+        );
       if (updatedInventory) {
         res.status(200).json(updatedInventory);
       } else {
         res.status(404).json({ message: "Inventory not found" });
       }
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to update inventory", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to update inventory", error: error.message });
     }
   }
 
@@ -51,7 +63,9 @@ class InventoryController {
       await this.inventoryService.deleteInventory(inventoryId);
       res.status(200).json({ message: "Inventory has been deleted" });
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to delete inventory", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to delete inventory", error: error.message });
     }
   }
 
@@ -59,24 +73,30 @@ class InventoryController {
   async getInventoryById(req: Request, res: Response): Promise<void> {
     try {
       const inventoryId: string = req.params.id;
-      const inventory: InventoryDTO | null = await this.inventoryService.getInventoryById(inventoryId);
+      const inventory: InventoryDTO | null =
+        await this.inventoryService.getInventoryById(inventoryId);
       if (inventory) {
         res.status(200).json(inventory);
       } else {
         res.status(404).json({ message: "Inventory not found" });
       }
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to get inventory", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to get inventory", error: error.message });
     }
   }
 
-//   GET ALL inventories
+  //   GET ALL inventories
   async getAllInventories(req: Request, res: Response): Promise<void> {
     try {
-      const inventories: InventoryDTO[] = await this.inventoryService.getAllInventory();
+      const inventories: InventoryDTO[] =
+        await this.inventoryService.getAllInventory();
       res.status(200).json(inventories);
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to get inventories", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to get inventories", error: error.message });
     }
   }
 }

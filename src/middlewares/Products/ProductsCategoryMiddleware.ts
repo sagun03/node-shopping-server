@@ -1,7 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
-import { imageUploadSchema } from '../../schemas/Products/ProductsCategorySchema';
+import { Request, Response, NextFunction } from "express";
+import { imageUploadSchema } from "../../schemas/Products/ProductsCategorySchema";
 
-export const validateImageUpload = (req: Request, res: Response, next: NextFunction) => {
+export const validateImageUpload = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { file } = req;
     const validationResult = imageUploadSchema.safeParse({
@@ -15,6 +19,6 @@ export const validateImageUpload = (req: Request, res: Response, next: NextFunct
 
     next();
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    res.status(500).json({ message: "Server error", error });
   }
 };

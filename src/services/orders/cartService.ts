@@ -1,8 +1,9 @@
-import { orderItemInputDTO } from "../../dto/orders/orderItemsDTO";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// import { orderItemInputDTO } from "../../dto/orders/orderItemsDTO";
 import { ProductDTO } from "../../dto/products/ProductDTO";
-import { orderDTO, orderInputDTO } from "../../dto/orders/orderDTO";
-import { Order } from "../../models/sql/ordersManagement/order.model";
-import { OrderItem } from "../../models/sql/ordersManagement/orderItems.model";
+// import { orderDTO, orderInputDTO } from "../../dto/orders/orderDTO";
+// import { Order } from "../../models/sql/ordersManagement/order.model";
+// import { OrderItem } from "../../models/sql/ordersManagement/orderItems.model";
 import ProductService from "../products/ProductService";
 import { sequelize } from "../../config/mySql";
 import { cartDTO, cartInputDTO } from "../../dto/orders/cartDTO";
@@ -31,14 +32,16 @@ class cartService {
     return cartDTos;
   }
 
-
   // CREATE a new order
   public async createCart(cartInput: cartInputDTO): Promise<cartDTO | null> {
     const t = await sequelize.transaction();
 
     try {
       // Find existing order for the given user
-      const existingCart = await Cart.findOne({ where: { userId: cartInput?.userId }, transaction: t });
+      const existingCart = await Cart.findOne({
+        where: { userId: cartInput?.userId },
+        transaction: t,
+      });
 
       let createdCartId: string;
 
@@ -50,13 +53,20 @@ class cartService {
         // Update or create order items
         await Promise.all(
           cartInput.Products.map(async (prodData: any) => {
-            await this.createOrUpdateCartItem(t, createdCartId, prodData,"create");
-          })
+            await this.createOrUpdateCartItem(
+              t,
+              createdCartId,
+              prodData,
+              "create",
+            );
+          }),
         );
       } else {
         // No existing order found, create a new order
-        console.log('No existing order found. Creating a new order.');
-        const newOrder = await Cart.create(cartInput as any, { transaction: t });
+        console.log("No existing order found. Creating a new order.");
+        const newOrder = await Cart.create(cartInput as any, {
+          transaction: t,
+        });
         createdCartId = newOrder.dataValues.CartID;
         console.log(`Created new order with ID: ${createdCartId}`);
 
@@ -64,7 +74,7 @@ class cartService {
         await Promise.all(
           cartInput.Products.map(async (prodData: any) => {
             await this.createCartItem(t, createdCartId, prodData);
-          })
+          }),
         );
       }
 
@@ -80,16 +90,18 @@ class cartService {
   public createCartItem = async (
     transaction: any,
     CartID: string,
-    prodData: any
+    prodData: any,
   ): Promise<void> => {
     const sampleData: cartInputItemInputDTO = {
       CartID: CartID,
       ProductID: prodData?.productID,
       Quantity: prodData?.Quantity,
       unitPrice: prodData?.unitPrice,
-      size: prodData?.size
+      size: prodData?.size,
     };
-    const newOrderItem = await CartItem.create(sampleData as any, { transaction: transaction });
+    const newOrderItem = await CartItem.create(sampleData as any, {
+      transaction: transaction,
+    });
     console.log(`Created new OrderItem: ${newOrderItem}`);
   };
 
@@ -97,24 +109,35 @@ class cartService {
     transaction: any,
     CartID: string,
     prodData: any,
-    type:string
+    type: string,
   ): Promise<void> => {
     const existingCartItem = await CartItem.findOne({
-      where: { CartID: CartID, ProductID: prodData?.productID, size: prodData?.size },
-      transaction: transaction
+      where: {
+        CartID: CartID,
+        ProductID: prodData?.productID,
+        size: prodData?.size,
+      },
+      transaction: transaction,
     });
     if (existingCartItem) {
       // Update existing order item
-      const updatedQuantity = type=="create" ?existingCartItem.dataValues.Quantity + prodData?.quantity:prodData?.quantity;
+      const updatedQuantity =
+        type === "create"
+          ? existingCartItem.dataValues.Quantity + prodData?.quantity
+          : prodData?.quantity;
 
       await CartItem.update(
         {
           Quantity: updatedQuantity,
         },
         {
-          where: { CartID: CartID, ProductID: prodData?.productID, size: prodData?.size },
-          transaction: transaction
-        }
+          where: {
+            CartID: CartID,
+            ProductID: prodData?.productID,
+            size: prodData?.size,
+          },
+          transaction: transaction,
+        },
       );
     } else {
       // Create new order item
@@ -125,7 +148,7 @@ class cartService {
   public async getCartById(CartID: string): Promise<cartDTO | null> {
     const cart = await Cart.findByPk(CartID);
     const cartItems = await CartItem.findAll({
-      where: { CartID: CartID }
+      where: { CartID: CartID },
     });
 
     return cart ? this.mapCartToDTO(cart, cartItems) : null;
@@ -137,7 +160,7 @@ class cartService {
     });
     if (existingCart) {
       const cartItems = await CartItem.findAll({
-        where: { CartID: existingCart?.dataValues?.CartID }
+        where: { CartID: existingCart?.dataValues?.CartID },
       });
       return this.mapCartToDTO(existingCart, cartItems);
     } else {
@@ -160,13 +183,16 @@ class cartService {
   }
 
   // UPDATE an existing cart
-  public async updateCart(CartID: string, cartInput: cartInputDTO): Promise<cartDTO | null> {
+  public async updateCart(
+    CartID: string,
+    cartInput: cartInputDTO,
+  ): Promise<cartDTO | null> {
     if (cartInput.Products?.length > 0) {
       // Update or create cart items
       await Promise.all(
         cartInput.Products.map(async (prodData: any) => {
-          await this.createOrUpdateCartItem(null, CartID, prodData,"update");
-        })
+          await this.createOrUpdateCartItem(null, CartID, prodData, "update");
+        }),
       );
     }
     return this.getCartById(CartID);
@@ -176,9 +202,11 @@ class cartService {
     await CartItem.destroy({ where: { CartID: CartID } });
     await Cart.destroy({ where: { CartID: CartID } });
   }
-  public async deleteCartProduct(productId: string,CartID:string): Promise<void> {
+  public async deleteCartProduct(
+    productId: string,
+    CartID: string,
+  ): Promise<void> {
     await CartItem.destroy({ where: { ProductID: productId, CartID: CartID } });
-  
   }
 
   private async mapCartToDTO(cart: any, cartItems?: any): Promise<cartDTO> {
@@ -195,33 +223,44 @@ class cartService {
 
       for (const item of cartItems) {
         totalQuantity += item.Quantity;
-        const defaultSizes: { size: string; price: number; images: string[]; inStock: boolean; }[][] = [];
+        const defaultSizes: {
+          size: string;
+          price: number;
+          images: string[];
+          inStock: boolean;
+        }[][] = [];
         if (item && item.ProductID) {
-          const productDetailsPromise = this.getProductById(item.ProductID)
-            .then(productDetails => {
-              if (productDetails) {
-                defaultSizes.push(productDetails?.sizes);
-                // Find the size object that matches the cart item's size
-                const sizeMatch = productDetails.sizes.filter((sizeObj: any) => sizeObj.size === item.size);
-                if (sizeMatch) {
-                  // If a matching size is found, assign it to productDetails.sizes
-                  productDetails.sizes = sizeMatch;
-                } else {
-                  // Handle the case where no matching size is found
-                  productDetails.sizes = [];
-                }
-
-                return {
-                  quantity: item.Quantity || 0,
-                  productDetails: { ...productDetails, defaultSizes: defaultSizes },
-                };
+          const productDetailsPromise = this.getProductById(
+            item.ProductID,
+          ).then((productDetails) => {
+            if (productDetails) {
+              defaultSizes.push(productDetails?.sizes);
+              // Find the size object that matches the cart item's size
+              const sizeMatch = productDetails.sizes.filter(
+                (sizeObj: any) => sizeObj.size === item.size,
+              );
+              if (sizeMatch) {
+                // If a matching size is found, assign it to productDetails.sizes
+                productDetails.sizes = sizeMatch;
               } else {
-                return {
-                  quantity: item.Quantity || 0,
-                  productDetails: null,
-                };
+                // Handle the case where no matching size is found
+                productDetails.sizes = [];
               }
-            });
+
+              return {
+                quantity: item.Quantity || 0,
+                productDetails: {
+                  ...productDetails,
+                  defaultSizes: defaultSizes,
+                },
+              };
+            } else {
+              return {
+                quantity: item.Quantity || 0,
+                productDetails: null,
+              };
+            }
+          });
           productDetailsPromises.push(productDetailsPromise);
         }
       }

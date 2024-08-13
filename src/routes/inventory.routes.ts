@@ -1,8 +1,11 @@
-import express, { Request, Response } from 'express';
-import InventoryController from '../controllers/Inventory/inventory.controller';
-import { validateInventoryData, validateInventoryId } from '../middlewares/InventoryManagement/InventoryMiddleware';
-import { inventorySchema } from '../schemas/InventoryManagement/InventorySchema';
-import { verifyFirebaseToken } from '../middlewares/auth/firebaseJWT';
+import express, { Request, Response } from "express";
+import InventoryController from "../controllers/Inventory/inventory.controller";
+import {
+  validateInventoryData,
+  validateInventoryId,
+} from "../middlewares/InventoryManagement/InventoryMiddleware";
+// import { inventorySchema } from "../schemas/InventoryManagement/InventorySchema";
+import { verifyFirebaseToken } from "../middlewares/auth/firebaseJWT";
 const router = express.Router();
 const inventoryController = InventoryController.getInstance();
 
@@ -71,9 +74,14 @@ const inventoryController = InventoryController.getInstance();
  *       400:
  *         description: Invalid input
  */
-router.post('/', verifyFirebaseToken, validateInventoryData(), async (req: Request, res: Response) => {
-  await inventoryController.createInventory(req, res);
-});
+router.post(
+  "/",
+  verifyFirebaseToken,
+  validateInventoryData(),
+  async (req: Request, res: Response) => {
+    await inventoryController.createInventory(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -106,9 +114,15 @@ router.post('/', verifyFirebaseToken, validateInventoryData(), async (req: Reque
  *       404:
  *         description: Inventory not found
  */
-router.put('/:id', verifyFirebaseToken, validateInventoryId(), validateInventoryData(), async (req: Request, res: Response) => {
-  await inventoryController.updateInventory(req, res);
-});
+router.put(
+  "/:id",
+  verifyFirebaseToken,
+  validateInventoryId(),
+  validateInventoryData(),
+  async (req: Request, res: Response) => {
+    await inventoryController.updateInventory(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -129,9 +143,14 @@ router.put('/:id', verifyFirebaseToken, validateInventoryId(), validateInventory
  *       404:
  *         description: Inventory not found
  */
-router.delete('/:id', verifyFirebaseToken, validateInventoryId(), async (req: Request, res: Response) => {
-  await inventoryController.deleteInventory(req, res);
-});
+router.delete(
+  "/:id",
+  verifyFirebaseToken,
+  validateInventoryId(),
+  async (req: Request, res: Response) => {
+    await inventoryController.deleteInventory(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -156,9 +175,14 @@ router.delete('/:id', verifyFirebaseToken, validateInventoryId(), async (req: Re
  *       404:
  *         description: Inventory not found
  */
-router.get('/:id', verifyFirebaseToken, validateInventoryId(), async (req: Request, res: Response) => {
-  await inventoryController.getInventoryById(req, res);
-});
+router.get(
+  "/:id",
+  verifyFirebaseToken,
+  validateInventoryId(),
+  async (req: Request, res: Response) => {
+    await inventoryController.getInventoryById(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -176,7 +200,7 @@ router.get('/:id', verifyFirebaseToken, validateInventoryId(), async (req: Reque
  *               items:
  *                 $ref: '#/components/schemas/InventoryDTO'
  */
-router.get('/', verifyFirebaseToken, async (req: Request, res: Response) => {
+router.get("/", verifyFirebaseToken, async (req: Request, res: Response) => {
   await inventoryController.getAllInventories(req, res);
 });
 

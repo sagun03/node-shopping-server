@@ -8,8 +8,13 @@ class ReviewService {
     return review.toObject() as ReviewDTO;
   }
 
-  async updateReview(reviewId: string, reviewInput: ReviewInputDTO): Promise<ReviewDTO | null> {
-    const review = await Review.findByIdAndUpdate(reviewId, reviewInput, { new: true });
+  async updateReview(
+    reviewId: string,
+    reviewInput: ReviewInputDTO,
+  ): Promise<ReviewDTO | null> {
+    const review = await Review.findByIdAndUpdate(reviewId, reviewInput, {
+      new: true,
+    });
     return review ? (review.toObject() as ReviewDTO) : null;
   }
 
@@ -24,7 +29,7 @@ class ReviewService {
 
   async getAllReviews(): Promise<ReviewDTO[]> {
     const reviews = await Review.find();
-    return reviews.map(review => review.toObject() as ReviewDTO);
+    return reviews.map((review) => review.toObject() as ReviewDTO);
   }
 }
 
