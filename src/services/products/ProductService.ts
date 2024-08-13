@@ -1,19 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ProductDTO, ProductInputDTO } from "../../dto/products/ProductDTO";
-import { Product } from '../../models/mongodb/products.model';
+import { Product } from "../../models/mongodb/products.model";
 
 class ProductService {
   constructor() {}
 
   // CREATE a new product
-  public async createProduct(productInput: ProductInputDTO): Promise<ProductDTO> {
+  public async createProduct(
+    productInput: ProductInputDTO,
+  ): Promise<ProductDTO> {
     const newProduct = new Product(productInput);
     const savedProduct = await newProduct.save();
     return this.mapProductToDTO(savedProduct);
   }
 
   // UPDATE an existing product
-  public async updateProduct(productId: string, productInput: ProductInputDTO): Promise<ProductDTO | null> {
-    const updatedProduct = await Product.findByIdAndUpdate(productId, productInput, { new: true });
+  public async updateProduct(
+    productId: string,
+    productInput: ProductInputDTO,
+  ): Promise<ProductDTO | null> {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      productInput,
+      { new: true },
+    );
     return updatedProduct ? this.mapProductToDTO(updatedProduct) : null;
   }
 
@@ -49,9 +59,9 @@ class ProductService {
         images: size.images,
         inStock: size.inStock,
         isPopular: size.isPopular,
-        subTitle: size.subTitle
+        subTitle: size.subTitle,
       })),
-      reviews: product.reviews.map((reviewId: string) => reviewId.toString())
+      reviews: product.reviews.map((reviewId: string) => reviewId.toString()),
     };
   }
 }

@@ -1,8 +1,11 @@
-import express, { Request, Response } from 'express';
-import multer from 'multer';
-import CategoryController from '../controllers/products/category.controller';
-import { validateCategoryIdParam, validateCategoryPostBody } from '../middlewares/product/categoryMiddleware';
-import { validateImageUpload } from '../middlewares/Products/ProductsCategoryMiddleware';
+import express, { Request, Response } from "express";
+import multer from "multer";
+import CategoryController from "../controllers/products/category.controller";
+import {
+  validateCategoryIdParam,
+  validateCategoryPostBody,
+} from "../middlewares/product/categoryMiddleware";
+import { validateImageUpload } from "../middlewares/Products/ProductsCategoryMiddleware";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -37,9 +40,15 @@ const categoryController = CategoryController.getInstance();
  *       400:
  *         description: Invalid request body
  */
-router.post('/', upload.single('image'), validateImageUpload, validateCategoryPostBody, async (req: Request, res: Response) => {
-  await categoryController.createCategory(req, res);
-});
+router.post(
+  "/",
+  upload.single("image"),
+  validateImageUpload,
+  validateCategoryPostBody,
+  async (req: Request, res: Response) => {
+    await categoryController.createCategory(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -72,9 +81,15 @@ router.post('/', upload.single('image'), validateImageUpload, validateCategoryPo
  *       404:
  *         description: Category not found
  */
-router.put('/:id',  upload.single('image'), validateImageUpload, validateCategoryIdParam, async (req: Request, res: Response) => {
-  await categoryController.updateCategory(req, res);
-});
+router.put(
+  "/:id",
+  upload.single("image"),
+  validateImageUpload,
+  validateCategoryIdParam,
+  async (req: Request, res: Response) => {
+    await categoryController.updateCategory(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -95,9 +110,13 @@ router.put('/:id',  upload.single('image'), validateImageUpload, validateCategor
  *       404:
  *         description: Category not found
  */
-router.delete('/:id', validateCategoryIdParam, async (req: Request, res: Response) => {
-  await categoryController.deleteCategory(req, res);
-});
+router.delete(
+  "/:id",
+  validateCategoryIdParam,
+  async (req: Request, res: Response) => {
+    await categoryController.deleteCategory(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -122,9 +141,13 @@ router.delete('/:id', validateCategoryIdParam, async (req: Request, res: Respons
  *       404:
  *         description: Category not found
  */
-router.get('/:id', validateCategoryIdParam, async (req: Request, res: Response) => {
-  await categoryController.getCategoryById(req, res);
-});
+router.get(
+  "/:id",
+  validateCategoryIdParam,
+  async (req: Request, res: Response) => {
+    await categoryController.getCategoryById(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -142,7 +165,7 @@ router.get('/:id', validateCategoryIdParam, async (req: Request, res: Response) 
  *               items:
  *                 $ref: '#/components/schemas/CategoryDTO'
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   await categoryController.getAllCategories(req, res);
 });
 

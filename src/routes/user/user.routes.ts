@@ -1,6 +1,6 @@
-import express, { NextFunction, Request, Response } from 'express';
-import UserController from '../../controllers/users/user.controller';
-import { verifyFirebaseToken } from '../../middlewares/auth/firebaseJWT';
+import express, { Request, Response } from "express";
+import UserController from "../../controllers/users/user.controller";
+import { verifyFirebaseToken } from "../../middlewares/auth/firebaseJWT";
 
 const router = express.Router();
 const controller = UserController.getControllerInstance();
@@ -31,8 +31,8 @@ const controller = UserController.getControllerInstance();
  *               items:
  *                 $ref: '#/components/schemas/UserDTO'
  */
-router.get('/', async (req: Request, res: Response) => {
-    await controller.getallUsers(req, res);
+router.get("/", async (req: Request, res: Response) => {
+  await controller.getallUsers(req, res);
 });
 
 // end-point for getting user by id
@@ -59,8 +59,8 @@ router.get('/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/UserDTO'
  */
-router.get('/getuser/:id', async (req: Request, res: Response) => {
-    await controller.getUserByID(req, res);
+router.get("/getuser/:id", async (req: Request, res: Response) => {
+  await controller.getUserByID(req, res);
 });
 
 // end-point for getting user by name and email
@@ -93,8 +93,8 @@ router.get('/getuser/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/UserDTO'
  */
-router.get('/getuser/', async (req: Request, res: Response) => {
-    await controller.getUserByEmail(req, res);
+router.get("/getuser/", async (req: Request, res: Response) => {
+  await controller.getUserByEmail(req, res);
 });
 
 // end-point for deleting user
@@ -121,8 +121,8 @@ router.get('/getuser/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/UserDTO'
  */
-router.delete('/remove/:userID', async (req: Request, res: Response) => {
-    await controller.deleteUser(req, res);
+router.delete("/remove/:userID", async (req: Request, res: Response) => {
+  await controller.deleteUser(req, res);
 });
 
 // end-point for registering user
@@ -149,9 +149,13 @@ router.delete('/remove/:userID', async (req: Request, res: Response) => {
  *               $ref: '#/components/schemas/UserDTO'
  */
 
-router.post('/register', verifyFirebaseToken, async (req: Request, res: Response) => {
+router.post(
+  "/register",
+  verifyFirebaseToken,
+  async (req: Request, res: Response) => {
     await controller.createUser(req, res);
-})
+  },
+);
 
 // end-point for login
 // expects: username, password as body parameters
@@ -177,9 +181,13 @@ router.post('/register', verifyFirebaseToken, async (req: Request, res: Response
  *               $ref: '#/components/schemas/UserDTO'
  */
 
-router.post('/login', verifyFirebaseToken, async (req: Request, res: Response) => {
+router.post(
+  "/login",
+  verifyFirebaseToken,
+  async (req: Request, res: Response) => {
     await controller.loginUser(req, res);
-});
+  },
+);
 
 // end-point for signing out
 // expects: uid as body parameter
@@ -204,8 +212,8 @@ router.post('/login', verifyFirebaseToken, async (req: Request, res: Response) =
  *             schema:
  *               $ref: '#/components/schemas/UserDTO'
  */
-router.post('/logout', async (req: Request, res: Response) => {
-    res.status(200).send({ message: 'User logged out successfully' });
+router.post("/logout", async (req: Request, res: Response) => {
+  res.status(200).send({ message: "User logged out successfully" });
 });
 
 export default router;

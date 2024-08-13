@@ -1,4 +1,4 @@
-import { OfferDTO,OfferInputDTO } from "../../dto/Inventory/OfferDTO";
+import { OfferDTO, OfferInputDTO } from "../../dto/Inventory/OfferDTO";
 import { Offer } from "../../models/mongodb/inventory.model";
 
 class OfferService {
@@ -8,8 +8,13 @@ class OfferService {
     return this.mapOfferToDTO(savedOffer);
   }
 
-  public async updateOffer(offerId: string, offerInput: OfferInputDTO): Promise<OfferDTO | null> {
-    const updatedOffer = await Offer.findByIdAndUpdate(offerId, offerInput, { new: true });
+  public async updateOffer(
+    offerId: string,
+    offerInput: OfferInputDTO,
+  ): Promise<OfferDTO | null> {
+    const updatedOffer = await Offer.findByIdAndUpdate(offerId, offerInput, {
+      new: true,
+    });
     return updatedOffer ? this.mapOfferToDTO(updatedOffer) : null;
   }
 
@@ -41,4 +46,4 @@ class OfferService {
   }
 }
 
-export default  OfferService;
+export default OfferService;

@@ -4,7 +4,7 @@ export interface ProductDTO {
   description: string;
   categoryId: string;
   category: string;
-  isPopular: boolean; 
+  isPopular: boolean;
   sizes: Array<{
     size: string;
     price: number;

@@ -1,6 +1,9 @@
-import express, { Request, Response } from 'express';
-import OfferController from '../controllers/Inventory/Offer.controller';
-import { validateOfferData, validateOfferId } from '../middlewares/InventoryManagement/OfferMiddleware';
+import express, { Request, Response } from "express";
+import OfferController from "../controllers/Inventory/Offer.controller";
+import {
+  validateOfferData,
+  validateOfferId,
+} from "../middlewares/InventoryManagement/OfferMiddleware";
 
 const router = express.Router();
 const offerController = OfferController.getInstance();
@@ -64,7 +67,7 @@ const offerController = OfferController.getInstance();
  *       400:
  *         description: Invalid input
  */
-router.post('/', validateOfferData(), async (req: Request, res: Response) => {
+router.post("/", validateOfferData(), async (req: Request, res: Response) => {
   await offerController.createOffer(req, res);
 });
 
@@ -99,9 +102,14 @@ router.post('/', validateOfferData(), async (req: Request, res: Response) => {
  *       404:
  *         description: Offer not found
  */
-router.put('/:id', validateOfferId(), validateOfferData(), async (req: Request, res: Response) => {
-  await offerController.updateOffer(req, res);
-});
+router.put(
+  "/:id",
+  validateOfferId(),
+  validateOfferData(),
+  async (req: Request, res: Response) => {
+    await offerController.updateOffer(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -122,9 +130,13 @@ router.put('/:id', validateOfferId(), validateOfferData(), async (req: Request, 
  *       404:
  *         description: Offer not found
  */
-router.delete('/:id', validateOfferId(), async (req: Request, res: Response) => {
-  await offerController.deleteOffer(req, res);
-});
+router.delete(
+  "/:id",
+  validateOfferId(),
+  async (req: Request, res: Response) => {
+    await offerController.deleteOffer(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -149,7 +161,7 @@ router.delete('/:id', validateOfferId(), async (req: Request, res: Response) => 
  *       404:
  *         description: Offer not found
  */
-router.get('/:id', validateOfferId(), async (req: Request, res: Response) => {
+router.get("/:id", validateOfferId(), async (req: Request, res: Response) => {
   await offerController.getOfferById(req, res);
 });
 
@@ -169,7 +181,7 @@ router.get('/:id', validateOfferId(), async (req: Request, res: Response) => {
  *               items:
  *                 $ref: '#/components/schemas/OfferDTO'
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   await offerController.getAllOffers(req, res);
 });
 

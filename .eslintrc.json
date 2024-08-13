@@ -1,37 +1,47 @@
 {
+    "root": true,
     "env": {
-        "node": true,
-        "es2021": true
+      "node": true,
+      "es2021": true
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
+      "eslint:recommended",                     
+      "plugin:@typescript-eslint/recommended",  
+      "plugin:prettier/recommended"             
     ],
-    "parser": "@typescript-eslint/parser",
+    "parser": "@typescript-eslint/parser",      
     "parserOptions": {
-        "ecmaVersion": 2020,
-        "sourceType": "module",
-        "project": "./tsconfig.json"
+      "ecmaVersion": 2021,                      
+      "sourceType": "module"                    
     },
-    "plugins": [
-        "@typescript-eslint",
-        "prettier"
-    ],
+    "plugins": ["@typescript-eslint", "prettier"],
     "rules": {
-        "no-console": "off",
-        "no-undef": "off",
-        "quotes": ["error", "double"],
-        "max-params": ["error", 5],
-        "semi": "off",
-        "multiline-ternary": "off",
-        "@typescript-eslint/no-unused-vars": ["error"],
-        "@typescript-eslint/no-explicit-any": "warn",
-        "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/no-var-requires": "off"
+      "no-console": "off",                       
+      "no-undef": "off",                        
+      "quotes": ["error", "double"],            
+      "semi": ["error", "always"],              
+      "no-unused-vars": "warn",                 
+      "prefer-const": "error",                  
+      "eqeqeq": ["error", "always"],            
+      "curly": "error",                        
+      "max-params": ["error", 5],
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "no-unused-expressions": "off",         
+      "prettier/prettier": ["error"]            
     },
-    "globals": {
-        "console": "readonly",
-        "module": "readonly"
-    }
-}
+    "overrides": [
+      {
+        "files": ["**/*.ts", "**/*.tsx"],       
+        "rules": {
+          "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+          "@typescript-eslint/no-explicit-any": "off",
+          "@typescript-eslint/explicit-function-return-type": "off",
+          "@typescript-eslint/no-var-requires": "off",
+          "@typescript-eslint/no-require-imports": "off",
+          "@typescript-eslint/no-unused-expressions": "off"
+        }
+      }
+    ]
+  }
+  

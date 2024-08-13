@@ -1,7 +1,10 @@
-import express, { Request, Response } from 'express';
-import UserAddressController from '../../controllers/users/userAddress.controller';
-import { addressSchema, validateAddress } from '../../middlewares/user/userAddressValidation';
-import { verifyFirebaseToken } from '../../middlewares/auth/firebaseJWT';
+import express, { Request, Response } from "express";
+import UserAddressController from "../../controllers/users/userAddress.controller";
+import {
+  addressSchema,
+  validateAddress,
+} from "../../middlewares/user/userAddressValidation";
+import { verifyFirebaseToken } from "../../middlewares/auth/firebaseJWT";
 const router = express.Router();
 const controller = UserAddressController.getControllerInstance();
 
@@ -36,9 +39,13 @@ const controller = UserAddressController.getControllerInstance();
  *             schema:
  *               $ref: '#/components/schemas/UserAddressDTO'
  */
-router.get('/get/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
+router.get(
+  "/get/:id",
+  verifyFirebaseToken,
+  async (req: Request, res: Response) => {
     await controller.getEntry(req, res);
-});
+  },
+);
 
 // end-point for creating new user address entry
 // expects: request body with { userId, street, city, country, zipCode }
@@ -62,9 +69,14 @@ router.get('/get/:id', verifyFirebaseToken, async (req: Request, res: Response) 
  *         description: Invalid request body
  */
 
-router.post('/create/', verifyFirebaseToken, validateAddress(addressSchema), async (req: Request, res: Response) => {
+router.post(
+  "/create/",
+  verifyFirebaseToken,
+  validateAddress(addressSchema),
+  async (req: Request, res: Response) => {
     await controller.putEntry(req, res);
-});
+  },
+);
 
 // end-point for deleting user address
 // expects: user id as url parameter
@@ -88,8 +100,12 @@ router.post('/create/', verifyFirebaseToken, validateAddress(addressSchema), asy
  *       400:
  *         description: Invalid request body
  */
-router.delete('/remove/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
+router.delete(
+  "/remove/:id",
+  verifyFirebaseToken,
+  async (req: Request, res: Response) => {
     await controller.deleteEntry(req, res);
-});
+  },
+);
 
 export default router;

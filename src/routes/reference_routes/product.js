@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable quotes */
 const Product = require("../models/Product");
 const {
-  verifyFirebaseToken,
-  verifyFirebaseTokenAndAuthorization,
+  // verifyFirebaseToken,
+  // verifyFirebaseTokenAndAuthorization,
   verifyFirebaseTokenAndAdmin,
 } = require("./verifyFirebaseToken");
 

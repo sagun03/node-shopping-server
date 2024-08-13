@@ -1,18 +1,17 @@
-import nodemailer from 'nodemailer';
-import { google } from 'googleapis';
-import dotenv from 'dotenv';
+import nodemailer from "nodemailer";
+import { google } from "googleapis";
+import dotenv from "dotenv";
 
 dotenv.config(); // Load environment variables from .env file
 
 const OAuth2 = google.auth.OAuth2;
 
-
-// for client it may replace with jwt token 
+// for client it may replace with jwt token
 
 const oauth2Client = new OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,
-  'https://developers.google.com/oauthplayground'
+  "https://developers.google.com/oauthplayground",
 );
 
 oauth2Client.setCredentials({
@@ -24,23 +23,23 @@ async function createTransporter() {
     const accessToken = await oauth2Client.getAccessToken();
 
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
+      host: "smtp.gmail.com",
       port: 465,
       secure: true,
       auth: {
-        type: 'OAuth2',
-        user: 'ybandhara@gmail.com',
+        type: "OAuth2",
+        user: "ybandhara@gmail.com",
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken: process.env.REFRESH_TOKEN,
-        accessToken: accessToken.token || '',
+        accessToken: accessToken.token || "",
       },
     } as nodemailer.TransportOptions);
 
     return transporter;
   } catch (error) {
-    console.error('Error creating transporter:', error);
-    throw new Error('Failed to create transporter');
+    console.error("Error creating transporter:", error);
+    throw new Error("Failed to create transporter");
   }
 }
 

@@ -1,4 +1,4 @@
-import Bottleneck from 'bottleneck';
+import Bottleneck from "bottleneck";
 
 // Create a new limiter
 const limiter = new Bottleneck({
