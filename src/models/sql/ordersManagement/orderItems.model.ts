@@ -31,14 +31,16 @@ const OrderItem = sequelize.define(
       allowNull: false,
     },
     Subtotal: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false
     },
-  },
-  {
-    tableName: "OrderItem",
-    timestamps: false,
-  },
-);
+    size: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+}, {
+    tableName:"OrderItem",
+    timestamps: false
+});
 // OrderItem.belongsTo(Order, { x: 'OrderId', as: 'Order' });
 export { OrderItem };

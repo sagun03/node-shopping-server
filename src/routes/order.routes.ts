@@ -1,10 +1,8 @@
-import express, { Request, Response } from "express";
-import OrderController from "../controllers/order.controller";
-import {
-  validateOrder,
-  validateOrderId,
-} from "../middlewares/orderManagementMiddleware/orderMiddleware";
-import { orderSchema } from "../schemas/orderManagementSchema/orderSchema";
+import express, { Request, Response } from 'express';
+import OrderController from '../controllers/order.controller';
+import { validateOrder,validateOrderId } from '../middlewares/orderManagementMiddleware/orderMiddleware';
+import { orderSchema } from '../schemas/orderManagementSchema/orderSchema';
+import { validateUserID } from '../middlewares/orderManagementMiddleware/cartMiddleware';
 // import { verifyFirebaseToken } from '../middlewares/auth/firebaseJWT';
 
 const router = express.Router();
@@ -88,7 +86,7 @@ router.post(
  *       404:
  *         description: Order not found
  */
-router.get("/:id", validateOrderId(), async (req: Request, res: Response) => {
+router.get('/byUserID', validateUserID(), async (req: Request, res: Response) => {
   await orderController.getOrderById(req, res);
 });
 

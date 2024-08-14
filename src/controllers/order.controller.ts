@@ -66,9 +66,12 @@ class OrderController {
   }
   async getOrderById(req: Request, res: Response): Promise<void> {
     try {
-      const orderID: string = req.params.id;
-      const product: orderDTO | null =
-        await this.orderService.getOrderById(orderID);
+      const userId = req?.query?.userId as string | undefined;
+      if (!userId) {
+        res.status(400).json({ message: "User ID is required" });
+        return;
+      }
+      const product: orderDTO | null = await this.orderService.getOrderById(userId);
       // const topic = 'order-topic';
       // const message = JSON.stringify({
       //   orderId: 400023,
