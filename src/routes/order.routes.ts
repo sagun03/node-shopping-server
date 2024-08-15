@@ -1,9 +1,12 @@
-import express, { Request, Response } from 'express';
-import OrderController from '../controllers/order.controller';
-import { validateOrder,validateOrderId } from '../middlewares/orderManagementMiddleware/orderMiddleware';
-import { orderSchema } from '../schemas/orderManagementSchema/orderSchema';
-import { validateUserID } from '../middlewares/orderManagementMiddleware/cartMiddleware';
-// import { verifyFirebaseToken } from '../middlewares/auth/firebaseJWT';
+import express, { Request, Response } from "express";
+import OrderController from "../controllers/order.controller";
+import {
+  validateOrder,
+  validateOrderId,
+} from "../middlewares/orderManagementMiddleware/orderMiddleware";
+import { orderSchema } from "../schemas/orderManagementSchema/orderSchema";
+import { validateUserID } from "../middlewares/orderManagementMiddleware/cartMiddleware";
+// import { verifyFirebaseToken } from "../middlewares/auth/firebaseJWT";
 
 const router = express.Router();
 const orderController = OrderController.getInstance();
@@ -29,7 +32,7 @@ const orderController = OrderController.getInstance();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/OrderDTO'
+ *                 $ref: "#/components/schemas/OrderDTO"
  */
 router.get("/", async (req: Request, res: Response) => {
   await orderController.getAllorders(req, res);
@@ -46,14 +49,14 @@ router.get("/", async (req: Request, res: Response) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/orderInputDTO'
+ *             $ref: "#/components/schemas/orderInputDTO"
  *     responses:
  *       200:
  *         description: Order created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/OrderDTO'
+ *               $ref: "#/components/schemas/OrderDTO"
  */
 router.post(
   "/",
@@ -82,13 +85,17 @@ router.post(
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/OrderDTO'
+ *               $ref: "#/components/schemas/OrderDTO"
  *       404:
  *         description: Order not found
  */
-router.get('/byUserID', validateUserID(), async (req: Request, res: Response) => {
-  await orderController.getOrderById(req, res);
-});
+router.get(
+  "/byUserID",
+  validateUserID(),
+  async (req: Request, res: Response) => {
+    await orderController.getOrderById(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -108,14 +115,14 @@ router.get('/byUserID', validateUserID(), async (req: Request, res: Response) =>
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/orderInputDTO'
+ *             $ref: "#/components/schemas/orderInputDTO"
  *     responses:
  *       200:
  *         description: Order updated successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/OrderDTO'
+ *               $ref: "#/components/schemas/OrderDTO"
  *       404:
  *         description: Order not found
  */
