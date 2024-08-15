@@ -70,7 +70,7 @@ class OrderService {
       }
 
       await t.commit();
-      return this.getOrderById(createdOrderID);
+      return this.getOrderById(orderInput?.userId);
     } catch (error) {
       await t.rollback();
       console.error("Failed to create order:", error);
@@ -89,6 +89,7 @@ class OrderService {
       Quantity: prodData?.Quantity,
       UnitPrice: prodData?.UnitPrice,
       Subtotal: prodData?.subTotal.toFixed(2),
+      size: prodData?.size,
     };
     const newOrderItem = await OrderItem.create(sampleData as any, {
       transaction: transaction,
@@ -130,13 +131,30 @@ class OrderService {
     }
   };
 
-  public async getOrderById(orderID: string): Promise<orderDTO | null> {
-    const order = await Order.findByPk(orderID);
-    const orderItems = await OrderItem.findAll({
-      where: { OrderId: orderID },
+  public async getOrderById(userId: string): Promise<orderDTO | null> {
+    const currentDate = new Date();
+    const existingOrder = await Order.findOne({
+      where: { userId: userId },
     });
-
-    return order ? this.mapOrderToDTO(order, orderItems) : null;
+    console.log(existingOrder, "existingOrder");
+    if (existingOrder) {
+      const orderItems = await OrderItem.findAll({
+        where: { OrderID: existingOrder?.dataValues?.OrderId },
+      });
+      return this.mapOrderToDTO(existingOrder, orderItems);
+    } else {
+      return {
+        orderID: 0,
+        userId: userId,
+        pointsUsed: 0,
+        totalAmount: "0",
+        orderDate: currentDate,
+        deliveryAddressId: 0,
+        paymentId: 0,
+        status: "",
+        products: [],
+      };
+    }
   }
 
   public async getProductById(productId: string): Promise<ProductDTO | null> {
@@ -156,6 +174,7 @@ class OrderService {
     const [updatedRowsCount] = await Order.update(orderInput, {
       where: { OrderId: orderId },
     });
+    console.log(updatedRowsCount);
 
     if (updatedRowsCount > 0 && orderInput.Products?.length > 0) {
       // Delete existing order items
@@ -170,13 +189,14 @@ class OrderService {
             Quantity: prodData.Quantity,
             UnitPrice: prodData.UnitPrice,
             Subtotal: prodData.subTotal,
+            size: prodData.size,
           };
           return OrderItem.create(sampleData as any);
         },
       );
       await Promise.all(orderItemsPromises);
     }
-    return this.getOrderById(orderId);
+    return this.getOrderById(orderInput?.userId);
   }
   public async deleteOrder(orderId: string): Promise<void> {
     await OrderItem.destroy({ where: { OrderID: orderId } });
@@ -193,15 +213,48 @@ class OrderService {
       const productDetailsPromises: Promise<any>[] = [];
 
       orderItems.forEach((item: any) => {
+        const defaultSizes: {
+          size: string;
+          price: number;
+          images: string[];
+          inStock: boolean;
+        }[][] = [];
         if (item && item.ProductID) {
-          const productDetailsPromise = this.getProductById(
-            item.ProductID,
-          ).then((productDetails) => ({
-            quantity: item.Quantity || 0,
-            subTotal: item.Subtotal || 0,
-            productDetails: productDetails,
-          }));
-          productDetailsPromises.push(productDetailsPromise);
+          if (item && item.ProductID) {
+            const productDetailsPromise = this.getProductById(
+              item.ProductID,
+            ).then((productDetails) => {
+              if (productDetails) {
+                defaultSizes.push(productDetails?.sizes);
+                // Find the size object that matches the cart item"s size
+                const sizeMatch = productDetails.sizes.filter(
+                  (sizeObj: any) => sizeObj.size === item.size,
+                );
+                if (sizeMatch) {
+                  // If a matching size is found, assign it to productDetails.sizes
+                  productDetails.sizes = sizeMatch;
+                } else {
+                  // Handle the case where no matching size is found
+                  productDetails.sizes = [];
+                }
+
+                return {
+                  quantity: item.Quantity || 0,
+                  productDetails: {
+                    ...productDetails,
+                    defaultSizes: defaultSizes,
+                  },
+                  subTotal: item.Subtotal || 0,
+                };
+              } else {
+                return {
+                  quantity: item.Quantity || 0,
+                  productDetails: null,
+                };
+              }
+            });
+            productDetailsPromises.push(productDetailsPromise);
+          }
         }
       });
 

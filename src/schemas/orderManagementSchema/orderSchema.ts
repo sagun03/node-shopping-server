@@ -4,6 +4,7 @@ const orderProductSchema = z.object({
   Quantity: z.number(),
   UnitPrice: z.number(),
   subTotal: z.number(),
+  size: z.string(),
 });
 
 export const orderSchema = z.object({

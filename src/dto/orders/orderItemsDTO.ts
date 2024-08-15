@@ -4,4 +4,5 @@ export interface orderItemInputDTO {
   Quantity: number;
   UnitPrice: number;
   Subtotal: number;
+  size: string;
 }

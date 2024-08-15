@@ -66,34 +66,13 @@ class OrderController {
   }
   async getOrderById(req: Request, res: Response): Promise<void> {
     try {
-      const orderID: string = req.params.id;
+      const userId = req?.query?.userId as string | undefined;
+      if (!userId) {
+        res.status(400).json({ message: "User ID is required" });
+        return;
+      }
       const product: orderDTO | null =
-        await this.orderService.getOrderById(orderID);
-      // const topic = 'order-topic';
-      // const message = JSON.stringify({
-      //   orderId: 400023,
-      //   userId: '667d5f1c4ae8f18073cb5334',
-      //   pointsUsed: 800,
-      //   totalAmount: '900.99',
-      //   orderDate: '2024-06-27T13:13:46.000Z',
-      //   status: 'Pending',
-      //   products: [
-      //     {
-      //       quantity: 1,
-      //       subTotal: '200.99',
-      //       productDetails: {
-      //         id: '6654c76522930dc2de3c93f7',
-      //         name: 'Dish Gel 6',
-      //         price: 200.99,
-      //         imageURL: 'https://thejkproducts.com/static/media/dishgel500ml.953a47586f8c4f471fc6.png',
-      //       },
-      //     },
-      //   ],
-      // });
-
-      // sendMessage(topic, message)
-      // .then(() => console.log('Message sent successfully'))
-      // .catch((error) => console.error('Error sending message:', error));
+        await this.orderService.getOrderById(userId);
       if (product) {
         res.status(200).json(product);
       } else {
