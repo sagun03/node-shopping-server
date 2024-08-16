@@ -27,11 +27,37 @@ const productController = ProductController.getInstance();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/ProductInputDTO'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               categoryId:
+ *                 type: string
+ *               sizes:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     size:
+ *                       type: string
+ *                     price:
+ *                       type: number
+ *                     images:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     inStock:
+ *                       type: boolean
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
- *       200:
+ *       201:
  *         description: The product was successfully created
  *         content:
  *           application/json:
@@ -65,9 +91,35 @@ router.post(
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/ProductInputDTO'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               categoryId:
+ *                 type: string
+ *               sizes:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     size:
+ *                       type: string
+ *                     price:
+ *                       type: number
+ *                     images:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     inStock:
+ *                       type: boolean
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       200:
  *         description: The product was successfully updated

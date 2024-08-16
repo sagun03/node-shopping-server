@@ -127,6 +127,31 @@ class ProductController {
         .json({ message: "Failed to get products", error: error.message });
     }
   }
+
+  // GET similar products
+  async getSimilarProducts(req: Request, res: Response): Promise<void> {
+    try {
+      const productId: string = req.params.productId;
+      const product: ProductDTO | null =
+        await this.productService.getProductById(productId);
+      if (!product) {
+        res.status(404).json({ message: "Product not found" });
+        return; // Return to ensure no further code is executed after sending the response
+      }
+
+      const similarProducts: ProductDTO[] =
+        await this.productService.getSimilarProducts(
+          product.category,
+          productId,
+        );
+      res.status(200).json(similarProducts);
+    } catch (error: any) {
+      res.status(500).json({
+        message: "Failed to get similar products",
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default ProductController;

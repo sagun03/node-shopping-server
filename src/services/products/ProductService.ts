@@ -44,6 +44,18 @@ class ProductService {
     return products.map(this.mapProductToDTO);
   }
 
+  // GET similar products
+  public async getSimilarProducts(
+    category: string,
+    excludeProductId: string,
+  ): Promise<ProductDTO[]> {
+    const similarProducts = await Product.find({
+      category,
+      _id: { $ne: excludeProductId }, // Exclude the current product
+    });
+    return similarProducts.map(this.mapProductToDTO);
+  }
+
   // Utility function to map Product model to ProductDTO
   private mapProductToDTO(product: any): ProductDTO {
     return {

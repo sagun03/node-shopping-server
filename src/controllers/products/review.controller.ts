@@ -17,10 +17,11 @@ class ReviewController {
     return ReviewController.instance;
   }
 
-  // CREATE a new review
-  async createReview(req: Request, res: Response): Promise<void> {
+  // CREATE a new review by productId
+  async createReviewByProductId(req: Request, res: Response): Promise<void> {
     try {
-      const reviewInput: ReviewInputDTO = req.body;
+      const { productId } = req.params; // Get the productId from route params
+      const reviewInput: ReviewInputDTO = { ...req.body, productId }; // Add productId to the review data
       const createdReview: ReviewDTO =
         await this.reviewService.createReview(reviewInput);
       res.status(201).json(createdReview);
@@ -31,7 +32,8 @@ class ReviewController {
     }
   }
 
-  // UPDATE an existing review
+  // Other methods remain unchanged...
+
   async updateReview(req: Request, res: Response): Promise<void> {
     try {
       const reviewId: string = req.params.id;
@@ -50,7 +52,6 @@ class ReviewController {
     }
   }
 
-  // DELETE a review
   async deleteReview(req: Request, res: Response): Promise<void> {
     try {
       const reviewId: string = req.params.id;
@@ -63,7 +64,6 @@ class ReviewController {
     }
   }
 
-  // GET a review by ID
   async getReviewById(req: Request, res: Response): Promise<void> {
     try {
       const reviewId: string = req.params.id;
@@ -81,10 +81,22 @@ class ReviewController {
     }
   }
 
-  // GET ALL reviews
   async getAllReviews(req: Request, res: Response): Promise<void> {
     try {
       const reviews: ReviewDTO[] = await this.reviewService.getAllReviews();
+      res.status(200).json(reviews);
+    } catch (error: any) {
+      res
+        .status(500)
+        .json({ message: "Failed to get reviews", error: error.message });
+    }
+  }
+
+  async getReviewsByProductId(req: Request, res: Response): Promise<void> {
+    try {
+      const { productId } = req.params;
+      const reviews: ReviewDTO[] =
+        await this.reviewService.getReviewsByProductId(productId);
       res.status(200).json(reviews);
     } catch (error: any) {
       res
