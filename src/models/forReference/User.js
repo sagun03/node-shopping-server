@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable quotes */
 /* eslint-disable no-undef */
 import { Schema, model } from "mongoose";

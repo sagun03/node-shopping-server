@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-undef */
 /* eslint-disable quotes */
 const mongoose = require("mongoose");

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable quotes */
 /* eslint-disable no-undef */
 const Order = require("../models/Order");

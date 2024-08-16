@@ -17,79 +17,75 @@ class ReviewController {
     return ReviewController.instance;
   }
 
-  // CREATE a new review
-  async createReview(req: Request, res: Response): Promise<void> {
+  // CREATE a new review by productId
+  async createReviewByProductId(req: Request, res: Response): Promise<void> {
     try {
-      const reviewInput: ReviewInputDTO = req.body;
-      const createdReview: ReviewDTO =
-        await this.reviewService.createReview(reviewInput);
+      const { productId } = req.params; // Get the productId from route params
+      const reviewInput: ReviewInputDTO = { ...req.body, productId }; // Add productId to the review data
+      const createdReview: ReviewDTO = await this.reviewService.createReview(reviewInput);
       res.status(201).json(createdReview);
     } catch (error: any) {
-      res
-        .status(500)
-        .json({ message: "Failed to create review", error: error.message });
+      res.status(500).json({ message: "Failed to create review", error: error.message });
     }
   }
 
-  // UPDATE an existing review
+  // Other methods remain unchanged...
+
   async updateReview(req: Request, res: Response): Promise<void> {
     try {
       const reviewId: string = req.params.id;
       const reviewInput: ReviewInputDTO = req.body;
-      const updatedReview: ReviewDTO | null =
-        await this.reviewService.updateReview(reviewId, reviewInput);
+      const updatedReview: ReviewDTO | null = await this.reviewService.updateReview(reviewId, reviewInput);
       if (updatedReview) {
         res.status(200).json(updatedReview);
       } else {
         res.status(404).json({ message: "Review not found" });
       }
     } catch (error: any) {
-      res
-        .status(500)
-        .json({ message: "Failed to update review", error: error.message });
+      res.status(500).json({ message: "Failed to update review", error: error.message });
     }
   }
 
-  // DELETE a review
   async deleteReview(req: Request, res: Response): Promise<void> {
     try {
       const reviewId: string = req.params.id;
       await this.reviewService.deleteReview(reviewId);
       res.status(200).json({ message: "Review has been deleted" });
     } catch (error: any) {
-      res
-        .status(500)
-        .json({ message: "Failed to delete review", error: error.message });
+      res.status(500).json({ message: "Failed to delete review", error: error.message });
     }
   }
 
-  // GET a review by ID
   async getReviewById(req: Request, res: Response): Promise<void> {
     try {
       const reviewId: string = req.params.id;
-      const review: ReviewDTO | null =
-        await this.reviewService.getReviewById(reviewId);
+      const review: ReviewDTO | null = await this.reviewService.getReviewById(reviewId);
       if (review) {
         res.status(200).json(review);
       } else {
         res.status(404).json({ message: "Review not found" });
       }
     } catch (error: any) {
-      res
-        .status(500)
-        .json({ message: "Failed to get review", error: error.message });
+      res.status(500).json({ message: "Failed to get review", error: error.message });
     }
   }
 
-  // GET ALL reviews
   async getAllReviews(req: Request, res: Response): Promise<void> {
     try {
       const reviews: ReviewDTO[] = await this.reviewService.getAllReviews();
       res.status(200).json(reviews);
     } catch (error: any) {
-      res
-        .status(500)
-        .json({ message: "Failed to get reviews", error: error.message });
+      res.status(500).json({ message: "Failed to get reviews", error: error.message });
+    }
+  }
+
+  async getReviewsByProductId(req: Request, res: Response): Promise<void> {
+    try {
+      const { productId } = req.params;
+      const reviews: ReviewDTO[] = await this.reviewService.getReviewsByProductId(productId);
+      res.status(200).json(reviews);
+    } catch (error: any) {
+      res.status(500).json({ message: "Failed to get reviews", error: error.message });
     }
   }
 }
