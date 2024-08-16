@@ -10,8 +10,13 @@ class ReviewService {
   }
 
   // UPDATE an existing review
-  async updateReview(reviewId: string, reviewInput: ReviewInputDTO): Promise<ReviewDTO | null> {
-    const review = await Review.findByIdAndUpdate(reviewId, reviewInput, { new: true });
+  async updateReview(
+    reviewId: string,
+    reviewInput: ReviewInputDTO,
+  ): Promise<ReviewDTO | null> {
+    const review = await Review.findByIdAndUpdate(reviewId, reviewInput, {
+      new: true,
+    });
     return review ? (review.toObject() as ReviewDTO) : null;
   }
 
@@ -29,13 +34,13 @@ class ReviewService {
   // GET ALL reviews
   async getAllReviews(): Promise<ReviewDTO[]> {
     const reviews = await Review.find();
-    return reviews.map(review => review.toObject() as ReviewDTO);
+    return reviews.map((review) => review.toObject() as ReviewDTO);
   }
 
   // GET reviews by productId
   async getReviewsByProductId(productId: string): Promise<ReviewDTO[]> {
     const reviews = await Review.find({ productId });
-    return reviews.map(review => review.toObject() as ReviewDTO);
+    return reviews.map((review) => review.toObject() as ReviewDTO);
   }
 }
 

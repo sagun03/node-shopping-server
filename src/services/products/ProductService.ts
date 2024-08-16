@@ -45,10 +45,13 @@ class ProductService {
   }
 
   // GET similar products
-  public async getSimilarProducts(category: string, excludeProductId: string): Promise<ProductDTO[]> {
+  public async getSimilarProducts(
+    category: string,
+    excludeProductId: string,
+  ): Promise<ProductDTO[]> {
     const similarProducts = await Product.find({
       category,
-      _id: { $ne: excludeProductId } // Exclude the current product
+      _id: { $ne: excludeProductId }, // Exclude the current product
     });
     return similarProducts.map(this.mapProductToDTO);
   }

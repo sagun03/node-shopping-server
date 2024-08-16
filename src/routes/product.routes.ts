@@ -1,9 +1,11 @@
-import express, { Request, Response } from 'express';
-import multer from 'multer';
-import ProductController from '../controllers/products/product.controller';
-import { validateProductIdParam, validateProductPostBody } from '../middlewares/product/productMiddleware';
-import { validateImageUpload } from '../middlewares/Products/ProductsCategoryMiddleware';
-
+import express, { Request, Response } from "express";
+import multer from "multer";
+import ProductController from "../controllers/products/product.controller";
+import {
+  validateProductIdParam,
+  validateProductPostBody,
+} from "../middlewares/product/productMiddleware";
+import { validateImageUpload } from "../middlewares/Products/ProductsCategoryMiddleware";
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
@@ -64,10 +66,14 @@ const productController = ProductController.getInstance();
  *       400:
  *         description: Invalid request body
  */
-router.post('/',  upload.any(), validateProductPostBody, async (req: Request, res: Response) => {
-  await productController.createProduct(req, res);
-});
-
+router.post(
+  "/",
+  upload.any(),
+  validateProductPostBody,
+  async (req: Request, res: Response) => {
+    await productController.createProduct(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -126,9 +132,15 @@ router.post('/',  upload.any(), validateProductPostBody, async (req: Request, re
  *       404:
  *         description: Product not found
  */
-router.put('/:id',  upload.single('image'), validateImageUpload, validateProductIdParam, async (req: Request, res: Response) => {
-  await productController.updateProduct(req, res);
-});
+router.put(
+  "/:id",
+  upload.single("image"),
+  validateImageUpload,
+  validateProductIdParam,
+  async (req: Request, res: Response) => {
+    await productController.updateProduct(req, res);
+  },
+);
 
 /**
  * @swagger
