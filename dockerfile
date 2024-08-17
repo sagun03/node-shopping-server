@@ -1,27 +1,22 @@
 # Use the official Node.js image as a base image
 FROM node:18
 
-# Set working directory inside the container
-WORKDIR /src
+# Create directory for CA certificate inside the Docker image
+RUN mkdir -p /src/MYSQL_SSL_CERT
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy the CA certificate into the Docker image
+# Ensure `MYSQL_SSL_CERT/ca-cert.pem` is in the Docker build context
+COPY MYSQL_SSL_CERT/ca-cert.pem /src/MYSQL_SSL_CERT/ca-cert.pem
 
-# Install dependencies
-RUN npm install
+# Set up the working directory
+WORKDIR /app
 
-# Copy the rest of the application code
+# Copy the application code into the Docker image
 COPY . .
 
-# Copy the CA certificate to the container
-ARG DB_CA_CERT_PATH
-COPY ${DB_CA_CERT_PATH} /src/MYSQL_SSL_CERT/ca-cert.pem
+# Set environment variables
+ENV DB_CA_CERT_PATH=/src/MYSQL_SSL_CERT/ca-cert.pem
 
-# Build TypeScript
-RUN npm run build
-
-# Expose the port your app runs on
-EXPOSE 4000
-
-# Command to run your application
+# Install dependencies and run application
+RUN npm install
 CMD ["npm", "start"]
