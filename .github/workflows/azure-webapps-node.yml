@@ -10,7 +10,6 @@ name: Build and Deploy to Azure
 on:
   push:
     branches:
-      - main
       - release
 
 jobs:
@@ -27,6 +26,11 @@ jobs:
     - name: Log in to ACR
       run: echo "${{ secrets.DOCKER_REGISTRY_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password-stdin
 
+    - name: Create CA certificate file
+      run: |
+        mkdir -p MYSQL_SSL_CERT
+        echo "${{ secrets.DB_CA_CERT_BASE64 }}" | base64 -d > MYSQL_SSL_CERT/ca-cert.pem
+
     - name: Build Docker image
       run: |
         docker build \
@@ -40,7 +44,6 @@ jobs:
     - name: Push Docker image
       run: |
         docker push ${{ secrets.DOCKER_REGISTRY_URL }}/jk-node:${{ github.sha }}
-
 
   deploy:
     needs: build
