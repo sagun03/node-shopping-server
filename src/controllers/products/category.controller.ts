@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import CategoryService from "../../services/products/CategoryService";
 import { CategoryDTO, CategoryInputDTO } from "../../dto/products/CategoryDTO";
-import { uploadImageToBlob } from "../../services/productandcategoryazureBlobService";
+// import { uploadImageToBlob } from "../../services/productandcategoryazureBlobService";
 
 class CategoryController {
   private static instance: CategoryController;
@@ -23,10 +23,10 @@ class CategoryController {
     try {
       const categoryInput: CategoryInputDTO = req.body;
 
-      if (req.file) {
-        const imageURL = await uploadImageToBlob(req.file);
-        categoryInput.imageURL = imageURL;
-      }
+      // if (req.file) {
+      //   const imageURL = await uploadImageToBlob(req.file);
+      //   categoryInput.imageURL = imageURL;
+      // }
 
       const createdCategory: CategoryDTO =
         await this.categoryService.createCategory(categoryInput);
@@ -44,10 +44,10 @@ class CategoryController {
       const categoryId: string = req.params.id;
       const categoryInput: CategoryInputDTO = req.body;
 
-      if (req.file) {
-        const imageUrl = await uploadImageToBlob(req.file);
-        categoryInput.imageURL = imageUrl;
-      }
+      // if (req.file) {
+      //   const imageUrl = await uploadImageToBlob(req.file);
+      //   categoryInput.imageURL = imageUrl;
+      // }
 
       const updatedCategory: CategoryDTO | null =
         await this.categoryService.updateCategory(categoryId, categoryInput);
