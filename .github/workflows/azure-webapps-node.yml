@@ -35,11 +35,11 @@ jobs:
           --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
           --build-arg DB_DATABASE=${{ secrets.DB_DATABASE }} \
           --build-arg DB_CA_CERT_PATH=/src/MYSQL_SSL_CERT/ca-cert.pem \
-          -t ${{ secrets.DOCKER_REGISTRY_URL }}/myapp:${{ github.sha }} .
+          -t ${{ secrets.DOCKER_REGISTRY_URL }}/jk-node:${{ github.sha }} .
 
     - name: Push Docker image
       run: |
-        docker push ${{ secrets.DOCKER_REGISTRY_URL }}/myapp:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_REGISTRY_URL }}/jk-node:${{ github.sha }}
 
 
   deploy:
@@ -58,4 +58,4 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'jk-node'
-        images: '${{ secrets.DOCKER_REGISTRY_URL }}/myapp:${{ github.sha }}'
+        images: '${{ secrets.DOCKER_REGISTRY_URL }}/jk-node:${{ github.sha }}'
