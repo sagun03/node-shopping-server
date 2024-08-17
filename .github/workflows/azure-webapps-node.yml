@@ -27,10 +27,20 @@ jobs:
     - name: Log in to ACR
       run: echo "${{ secrets.DOCKER_REGISTRY_PASSWORD }}" | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password-stdin
 
-    - name: Build and push Docker image
+    - name: Build Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_REGISTRY_URL }}/myapp:${{ github.sha }} .
+        docker build \
+          --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+          --build-arg DB_USER=${{ secrets.DB_USER }} \
+          --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+          --build-arg DB_DATABASE=${{ secrets.DB_DATABASE }} \
+          --build-arg DB_CA_CERT_PATH=/src/MYSQL_SSL_CERT/ca-cert.pem \
+          -t ${{ secrets.DOCKER_REGISTRY_URL }}/myapp:${{ github.sha }} .
+
+    - name: Push Docker image
+      run: |
         docker push ${{ secrets.DOCKER_REGISTRY_URL }}/myapp:${{ github.sha }}
+
 
   deploy:
     needs: build
