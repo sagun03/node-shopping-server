@@ -1,78 +1,73 @@
 // src/swaggerSchema/orderManagementSchema.ts
 
 export const orderSchemaDTO = {
-  type: 'object',
+  type: "object",
   properties: {
     orderID: {
-      type: 'integer',
+      type: "integer",
     },
     userId: {
-      type: 'string',
+      type: "string",
     },
     pointsUsed: {
-      type: 'integer',
+      type: "integer",
     },
     totalAmount: {
-      type: 'string',
-      format: 'decimal',
+      type: "string",
+      format: "decimal",
     },
     orderDate: {
-      type: 'string',
-      format: 'date-time',
+      type: "string",
+      format: "date-time",
     },
     deliveryAddressId: {
-      type: 'integer',
+      type: "integer",
       nullable: true,
     },
     paymentId: {
-      type: 'string',
+      type: "string",
       nullable: true,
     },
     status: {
-      type: 'string',
-      enum: ['Delivered', 'Shipped', 'Pending'],
-      default:'Pending'
+      type: "string",
+      enum: ["Delivered", "Shipped", "Pending"],
+      default: "Pending",
     },
     products: {
-      type: 'array',
+      type: "array",
       items: {
-        $ref: '#/components/schemas/ProductDTO',
+        $ref: "#/components/schemas/ProductDTO",
       },
     },
   },
 };
 
-export const orderInputSchemaDTO={
+export const orderInputSchemaDTO = {
   title: "Order",
   type: "object",
   properties: {
     userId: {
-      type: "string"
+      type: "string",
     },
     PointsUsed: {
-      type: "number"
+      type: "number",
     },
     TotalAmount: {
       type: "string",
-     
     },
     DeliveryAddressID: {
       type: "string",
-   
-      nullable: true
+
+      nullable: true,
     },
     PaymentID: {
       type: "string",
-     
-      nullable: true
+
+      nullable: true,
     },
     Status: {
       type: "string",
-      enum: [
-        "pending",
-        "shipped",
-        "delivered",
-      ]
+      enum: ["pending", "shipped", "delivered"],
     },
     Products: {
       type: "array",
@@ -83,33 +78,20 @@ export const orderInputSchemaDTO={
             type: "string",
           },
           Quantity: {
-            type: "number"
+            type: "number",
           },
           UnitPrice: {
             type: "number",
-            format: "double"
+            format: "double",
           },
           subTotal: {
             type: "number",
-            format: "double"
-          }
+            format: "double",
+          },
         },
-        required: [
-          "productID",
-          "Quantity",
-          "UnitPrice",
-          "subTotal"
-        ]
-      }
-    }
+        required: ["productID", "Quantity", "UnitPrice", "subTotal"],
+      },
+    },
   },
-  required: [
-    "userId",
-    "PointsUsed",
-    "TotalAmount",
-    "Status",
-    "Products"
-  ]
-}
-
-
+  required: ["userId", "PointsUsed", "TotalAmount", "Status", "Products"],
+};

@@ -1,6 +1,6 @@
-import express, { Request, Response } from 'express';
-import UserPointsController from '../../controllers/users/userPoints.contoller';
-import { verifyFirebaseToken } from '../../middlewares/auth/firebaseJWT';
+import express, { Request, Response } from "express";
+import UserPointsController from "../../controllers/users/userPoints.contoller";
+import { verifyFirebaseToken } from "../../middlewares/auth/firebaseJWT";
 const router = express.Router();
 const controller = UserPointsController.getControllerInstance();
 
@@ -35,9 +35,13 @@ const controller = UserPointsController.getControllerInstance();
  *             schema:
  *               $ref: '#/components/schemas/UserPointsDTO'
  */
-router.get('/get/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
+router.get(
+  "/get/:id",
+  verifyFirebaseToken,
+  async (req: Request, res: Response) => {
     await controller.getEntry(req, res);
-});
+  },
+);
 
 // end-point for creating new user points entry
 // expects: request body with { userId, transactionType, reason }
@@ -58,9 +62,13 @@ router.get('/get/:id', verifyFirebaseToken, async (req: Request, res: Response) 
  *       200:
  *         description: User points created
  */
-router.post('/create/', verifyFirebaseToken, async (req: Request, res: Response) => {
+router.post(
+  "/create/",
+  verifyFirebaseToken,
+  async (req: Request, res: Response) => {
     await controller.putEntry(req, res);
-});
+  },
+);
 
 // end-point for deleting user points
 // expects: user id as url parameter
@@ -82,8 +90,12 @@ router.post('/create/', verifyFirebaseToken, async (req: Request, res: Response)
  *       200:
  *         description: User points deleted
  */
-router.delete('/remove/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
+router.delete(
+  "/remove/:id",
+  verifyFirebaseToken,
+  async (req: Request, res: Response) => {
     await controller.deleteEntry(req, res);
-});
+  },
+);
 
 export default router;

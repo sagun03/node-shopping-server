@@ -1,7 +1,7 @@
 // middleware/inventoryMiddleware.ts
-import { Request, Response, NextFunction } from 'express';
-import { ZodError } from 'zod';
-import { inventorySchema } from '../../schemas/InventoryManagement/InventorySchema';
+import { Request, Response, NextFunction } from "express";
+import { ZodError } from "zod";
+import { inventorySchema } from "../../schemas/InventoryManagement/InventorySchema";
 
 // Middleware function to validate inventory data against inventorySchema
 export function validateInventoryData() {
@@ -14,11 +14,13 @@ export function validateInventoryData() {
       // Handle validation errors
       if (error instanceof ZodError) {
         const errorMessages = error.errors.map((issue: any) => ({
-          message: `${issue.path.join('.')} ${issue.message}`,
+          message: `${issue.path.join(".")} ${issue.message}`,
         }));
-        res.status(400).json({ error: 'Invalid inventory data', details: errorMessages });
+        res
+          .status(400)
+          .json({ error: "Invalid inventory data", details: errorMessages });
       } else {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: "Internal Server Error" });
       }
     }
   };
@@ -31,7 +33,7 @@ export function validateInventoryId() {
 
     // Check if 'id' contains only digits
     if (!id || !/^\d+$/.test(id)) {
-      return res.status(400).json({ error: 'Invalid inventory ID format' });
+      return res.status(400).json({ error: "Invalid inventory ID format" });
     }
 
     // Continue to next middleware or route handler

@@ -1,30 +1,31 @@
 // validations for address routes
-import { Request, Response, NextFunction } from 'express';
-import { ZodError, z } from 'zod';
-import { messageDTO } from '../../dto/messageDTO';
-import { instanceToPlain } from 'class-transformer';
+import { Request, Response, NextFunction } from "express";
+import { ZodError, z } from "zod";
 
 // address schema for validation
 export const addressSchema = z.object({
-    zipCode: z.string().regex(/^[A-Z\d]{6}$/, "Invalid ZIP code"),
+  // regex for pincode validation
+  pincode: z
+  .string()
+  .regex(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/, "Invalid ZIP code"),
 });
 
 // middleware for validation
-export const validateAddress = (schema : z.ZodSchema) => (req : Request, res : Response, next : NextFunction) => {
-    try {
-        const reqBody = req.body;
-        schema.parse({
-            zipCode: reqBody.zipCode
-        })
-        next();
-    } catch(error) {
-        if(error instanceof ZodError){
-            let message = instanceToPlain(new messageDTO(400, "validations failed!", error.errors));
-            res.status(message.status).send(message);
-        }
-        next(error);
+export const validateAddress = 
+  (schema: z.ZodSchema) => 
+  (req: Request, res: Response, next: NextFunction) => {
+  try {
+    schema.parse({
+      pincode: req.body.pincode,
+    })
+    next();
+  } catch(error) {
+    if(error instanceof ZodError){
+      res.status(400).send({
+        message: "Invalid request body",
+        error: error.errors
+      });
     }
-}
-
-
-
+    next(error);
+  }
+};

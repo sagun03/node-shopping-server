@@ -1,11 +1,18 @@
-import express, { Request, Response } from 'express';
-import cartController from '../controllers/cart.controller';
-import { validateOrder,validateOrderId } from '../middlewares/orderManagementMiddleware/orderMiddleware';
-import { orderSchema } from '../schemas/orderManagementSchema/orderSchema';
-import { verifyFirebaseToken } from '../middlewares/auth/firebaseJWT';
-import { validateCart, validateCartId, validateUserID } from '../middlewares/orderManagementMiddleware/cartMiddleware';
-import { cartSchema } from '../schemas/orderManagementSchema/cartSchema';
-import { validateProductIdParam } from '../middlewares/product/productMiddleware';
+import express, { Request, Response } from "express";
+import cartController from "../controllers/cart.controller";
+// import {
+//   validateOrder,
+//   validateOrderId,
+// } from "../middlewares/orderManagementMiddleware/orderMiddleware";
+// import { orderSchema } from "../schemas/orderManagementSchema/orderSchema";
+// import { verifyFirebaseToken } from "../middlewares/auth/firebaseJWT";
+import {
+  validateCart,
+  validateCartId,
+  validateUserID,
+} from "../middlewares/orderManagementMiddleware/cartMiddleware";
+import { cartSchema } from "../schemas/orderManagementSchema/cartSchema";
+// import { validateProductIdParam } from "../middlewares/product/productMiddleware";
 
 const router = express.Router();
 const CartController = cartController.getInstance();
@@ -33,7 +40,7 @@ const CartController = cartController.getInstance();
  *               items:
  *                 $ref: '#/components/schemas/cartDTO'
  */
-router.get('/allCarts', async (req: Request, res: Response) => {
+router.get("/allCarts", async (req: Request, res: Response) => {
   await CartController.getAllCarts(req, res);
 });
 
@@ -57,9 +64,13 @@ router.get('/allCarts', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/cartDTO'
  */
-router.post('/', validateCart(cartSchema), async (req: Request, res: Response) => {
-  await CartController.createCart(req, res);
-});
+router.post(
+  "/",
+  validateCart(cartSchema),
+  async (req: Request, res: Response) => {
+    await CartController.createCart(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -84,9 +95,13 @@ router.post('/', validateCart(cartSchema), async (req: Request, res: Response) =
  *       404:
  *         description: Cart not found
  */
-router.get('/byUserID', validateUserID(), async (req: Request, res: Response) => {
-  await CartController.getCartByUserId(req, res);
-});
+router.get(
+  "/byUserID",
+  validateUserID(),
+  async (req: Request, res: Response) => {
+    await CartController.getCartByUserId(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -118,9 +133,13 @@ router.get('/byUserID', validateUserID(), async (req: Request, res: Response) =>
  *         description: Cart not founds
  */
 // // UPDATE an existing cart
-router.put('/:id', validateCart(cartSchema), async (req: Request, res: Response) => {
-  await CartController.updateCart(req, res);
-});
+router.put(
+  "/:id",
+  validateCart(cartSchema),
+  async (req: Request, res: Response) => {
+    await CartController.updateCart(req, res);
+  },
+);
 /**
  * @swagger
  * /cart/{id}:
@@ -141,11 +160,15 @@ router.put('/:id', validateCart(cartSchema), async (req: Request, res: Response)
  *       404:
  *         description: Cart not found
  */
-router.delete('/:id', validateCartId(), async (req: Request, res: Response) => {
+router.delete("/:id", validateCartId(), async (req: Request, res: Response) => {
   await CartController.deleteCart(req, res);
 });
-router.delete('/cartProduct/:id', validateCartId(), async (req: Request, res: Response) => {
-  await CartController.deleteCartProduct(req, res);
-});
+router.delete(
+  "/cartProduct/:id",
+  validateCartId(),
+  async (req: Request, res: Response) => {
+    await CartController.deleteCartProduct(req, res);
+  },
+);
 
 export default router;

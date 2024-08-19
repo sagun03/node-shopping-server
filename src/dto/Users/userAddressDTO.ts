@@ -1,18 +1,26 @@
 import mongoose from "mongoose";
 
 export class userAddressDTO{
-    userId : string;
-    street?: string;
-    city?: string;
-    country?: string;
-    zipCode?: string;
+  uid : string;
+  street?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  phone?: number;
 
-    constructor(userId: string, street?: string, city?: string,
-        country?: string, zipCode?: string) {
-        this.userId = userId;
-        this.street = street;
-        this.city = city;
-        this.country = country;
-        this.zipCode = zipCode;
-    }
+  constructor(
+    uid: string,
+    street?: string,
+    city?: string,
+    state?: string,
+    pincode?: string,
+    phone?: number
+  ){
+    this.uid = uid;
+    this.street = street;
+    this.city = city;
+    this.state = state;
+    this.pincode = pincode;
+    this.phone = phone;
+  }
 }

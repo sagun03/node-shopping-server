@@ -1,19 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ProductDTO, ProductInputDTO } from "../../dto/products/ProductDTO";
-import { Product } from '../../models/mongodb/products.model';
+import { Product } from "../../models/mongodb/products.model";
 
 class ProductService {
   constructor() {}
 
   // CREATE a new product
-  public async createProduct(productInput: ProductInputDTO): Promise<ProductDTO> {
+  public async createProduct(
+    productInput: ProductInputDTO,
+  ): Promise<ProductDTO> {
     const newProduct = new Product(productInput);
     const savedProduct = await newProduct.save();
     return this.mapProductToDTO(savedProduct);
   }
 
   // UPDATE an existing product
-  public async updateProduct(productId: string, productInput: ProductInputDTO): Promise<ProductDTO | null> {
-    const updatedProduct = await Product.findByIdAndUpdate(productId, productInput, { new: true });
+  public async updateProduct(
+    productId: string,
+    productInput: ProductInputDTO,
+  ): Promise<ProductDTO | null> {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      productInput,
+      { new: true },
+    );
     return updatedProduct ? this.mapProductToDTO(updatedProduct) : null;
   }
 
@@ -34,6 +44,18 @@ class ProductService {
     return products.map(this.mapProductToDTO);
   }
 
+  // GET similar products
+  public async getSimilarProducts(
+    category: string,
+    excludeProductId: string,
+  ): Promise<ProductDTO[]> {
+    const similarProducts = await Product.find({
+      category,
+      _id: { $ne: excludeProductId }, // Exclude the current product
+    });
+    return similarProducts.map(this.mapProductToDTO);
+  }
+
   // Utility function to map Product model to ProductDTO
   private mapProductToDTO(product: any): ProductDTO {
     return {
@@ -42,13 +64,16 @@ class ProductService {
       description: product.description,
       categoryId: product.categoryId?.toString() || "",
       category: product.category,
+      isPopular: product.isPopular,
       sizes: product.sizes.map((size: any) => ({
         size: size.size,
         price: size.price,
         images: size.images,
-        inStock: size.inStock
+        inStock: size.inStock,
+        isPopular: size.isPopular,
+        subTitle: size.subTitle,
       })),
-      reviews: product.reviews.map((reviewId: string) => reviewId.toString())
+      reviews: product.reviews.map((reviewId: string) => reviewId.toString()),
     };
   }
 }

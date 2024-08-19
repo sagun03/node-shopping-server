@@ -1,48 +1,75 @@
 import { plainToClass } from "class-transformer";
-import User from "../../models/mongodb/userModels/user.model";
 import userAddress from "../../models/mongodb/userModels/userAddress.model";
 import { userAddressDTO } from "../../dto/Users/userAddressDTO";
 
 class UserAddressService {
-    private static instance : UserAddressService;
+  private static instance: UserAddressService;
 
-    private constructor() {}
+  private constructor() {}
 
-    static getServiceInstance() {
-        if(!UserAddressService.instance)
-            UserAddressService.instance = new UserAddressService;
-        return UserAddressService.instance;
+  static getServiceInstance() {
+    if (!UserAddressService.instance) {
+      UserAddressService.instance = new UserAddressService();
     }
+    return UserAddressService.instance;
+  }
 
-    // create user address service
-    async createAddress(transact: any) : Promise<userAddressDTO> {
-        const document = await User.findOne({ userId: transact.userId });
-        if(!document)
-            throw new Error('User not found!');
-        const addressDetail = new userAddressDTO(transact.userId, transact.street, transact.city, transact.country, transact.zipCode);
-        const newEntry = new userAddress(addressDetail);
-        const savedEntry = await newEntry.save();
-        if(!savedEntry)
-            throw new Error('failed to save address entry!');
-        return plainToClass(userAddressDTO, savedEntry.toObject());
+  // create user address service
+  async createAddress(resource: any): Promise<userAddressDTO> {
+    // save document in address collection
+    try {
+      // check if address already exists
+      const existingDoc = await userAddress.findOne({
+        uid: { $eq: resource.uid },
+        street: resource.street,
+        pincode: resource.pincode
+      });
+      if (existingDoc) {
+        throw new Error("Address already exists");
+      }
+      const document = new userAddress(resource);
+      const savedDocument = await document.save();
+      return plainToClass(userAddress, savedDocument.toObject());
+    } catch (err) {
+      throw new Error(`403-${err}`);
     }
+  }
 
-    // get user address service
-    async getAddressEntry(userId:string) : Promise<userAddressDTO> {
-        const document = await userAddress.findOne({userId});
-        if(!document)
-            throw new Error('Unable to find address entry for user!');
-        return plainToClass(userAddress, document.toObject());
+  // get user address service
+  async getAddressEntry(uid: string): Promise<userAddressDTO[]> {
+    const addressDocs = await userAddress.find({ uid: { $eq: uid } });
+    if (!addressDocs) {
+      throw new Error("404 unavailable");
     }
+    return addressDocs.map((doc) => plainToClass(userAddress, doc.toObject()));
+  }
 
-    // delete entry
-    async deleteEntry(userId:string) : Promise<Boolean> {
-        const deletionResult = await userAddress.deleteOne({userId});
-        if(deletionResult.deletedCount == 1)
-            return true;
-        else
-            throw new Error('address deletion failed, non-exitent!')
+  // delete entry
+  async deleteEntry(userId: string, dataId: string): Promise<boolean> {
+    const deletionResult = await userAddress.deleteOne({
+      uid: { $eq: userId },
+      _id: { $eq: dataId }
+    });
+    if (deletionResult.deletedCount === 1) {
+      return true;
+    } else {
+      throw new Error("404 unavailable");
     }
+  }
+
+  // update entry
+  async updateEntry(resource: any): Promise<userAddressDTO> {
+    const document = await userAddress.findOne({
+      uid: { $eq: resource.uid },
+      _id: { $eq: resource._id }
+    });
+    if (!document) {
+      throw new Error("404 unavailable");
+    }
+    document.set(resource);
+    const updatedDocument = await document.save();
+    return plainToClass(userAddress, updatedDocument.toObject());
+  }
 }
 
 export default UserAddressService;

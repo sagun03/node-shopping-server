@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import CategoryService from "../../services/products/CategoryService";
 import { CategoryDTO, CategoryInputDTO } from "../../dto/products/CategoryDTO";
-import { uploadImageToBlob } from '../../services/productandcategoryazureBlobService';
+import { uploadImageToBlob } from "../../services/productandcategoryazureBlobService";
 
 class CategoryController {
   private static instance: CategoryController;
@@ -22,16 +22,19 @@ class CategoryController {
   async createCategory(req: Request, res: Response): Promise<void> {
     try {
       const categoryInput: CategoryInputDTO = req.body;
-      
+
       if (req.file) {
         const imageURL = await uploadImageToBlob(req.file);
         categoryInput.imageURL = imageURL;
       }
 
-      const createdCategory: CategoryDTO = await this.categoryService.createCategory(categoryInput);
+      const createdCategory: CategoryDTO =
+        await this.categoryService.createCategory(categoryInput);
       res.status(201).json(createdCategory);
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to create category", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to create category", error: error.message });
     }
   }
 
@@ -40,20 +43,23 @@ class CategoryController {
     try {
       const categoryId: string = req.params.id;
       const categoryInput: CategoryInputDTO = req.body;
-      
+
       if (req.file) {
         const imageUrl = await uploadImageToBlob(req.file);
         categoryInput.imageURL = imageUrl;
       }
 
-      const updatedCategory: CategoryDTO | null = await this.categoryService.updateCategory(categoryId, categoryInput);
+      const updatedCategory: CategoryDTO | null =
+        await this.categoryService.updateCategory(categoryId, categoryInput);
       if (updatedCategory) {
         res.status(200).json(updatedCategory);
       } else {
         res.status(404).json({ message: "Category not found" });
       }
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to update category", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to update category", error: error.message });
     }
   }
 
@@ -64,7 +70,9 @@ class CategoryController {
       await this.categoryService.deleteCategory(categoryId);
       res.status(200).json({ message: "Category has been deleted" });
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to delete category", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to delete category", error: error.message });
     }
   }
 
@@ -72,24 +80,30 @@ class CategoryController {
   async getCategoryById(req: Request, res: Response): Promise<void> {
     try {
       const categoryId: string = req.params.id;
-      const category: CategoryDTO | null = await this.categoryService.getCategoryById(categoryId);
+      const category: CategoryDTO | null =
+        await this.categoryService.getCategoryById(categoryId);
       if (category) {
         res.status(200).json(category);
       } else {
         res.status(404).json({ message: "Category not found" });
       }
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to get category", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to get category", error: error.message });
     }
   }
 
   // GET ALL categories
   async getAllCategories(req: Request, res: Response): Promise<void> {
     try {
-      const categories: CategoryDTO[] = await this.categoryService.getAllCategories();
+      const categories: CategoryDTO[] =
+        await this.categoryService.getAllCategories();
       res.status(200).json(categories);
     } catch (error: any) {
-      res.status(500).json({ message: "Failed to get categories", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to get categories", error: error.message });
     }
   }
 }

@@ -1,12 +1,14 @@
-import express, { Request, Response } from 'express';
-import multer from 'multer';
-import ProductController from '../controllers/products/product.controller';
-import { validateProductIdParam, validateProductPostBody } from '../middlewares/product/productMiddleware';
-import { validateImageUpload } from '../middlewares/Products/ProductsCategoryMiddleware';
-
+import express, { Request, Response } from "express";
+import multer from "multer";
+import ProductController from "../controllers/products/product.controller";
+import {
+  validateProductIdParam,
+  validateProductPostBody,
+} from "../middlewares/product/productMiddleware";
+import { validateImageUpload } from "../middlewares/Products/ProductsCategoryMiddleware";
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: "uploads/" });
 const productController = ProductController.getInstance();
 
 /**
@@ -15,7 +17,6 @@ const productController = ProductController.getInstance();
  *   name: Products
  *   description: Product management API
  */
-
 
 /**
  * @swagger
@@ -26,11 +27,37 @@ const productController = ProductController.getInstance();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/ProductInputDTO'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               categoryId:
+ *                 type: string
+ *               sizes:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     size:
+ *                       type: string
+ *                     price:
+ *                       type: number
+ *                     images:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     inStock:
+ *                       type: boolean
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
- *       200:
+ *       201:
  *         description: The product was successfully created
  *         content:
  *           application/json:
@@ -39,10 +66,14 @@ const productController = ProductController.getInstance();
  *       400:
  *         description: Invalid request body
  */
-router.post('/',  upload.any(), validateProductPostBody, async (req: Request, res: Response) => {
-  await productController.createProduct(req, res);
-});
-
+router.post(
+  "/",
+  upload.any(),
+  validateProductPostBody,
+  async (req: Request, res: Response) => {
+    await productController.createProduct(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -60,9 +91,35 @@ router.post('/',  upload.any(), validateProductPostBody, async (req: Request, re
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/ProductInputDTO'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               categoryId:
+ *                 type: string
+ *               sizes:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     size:
+ *                       type: string
+ *                     price:
+ *                       type: number
+ *                     images:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     inStock:
+ *                       type: boolean
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       200:
  *         description: The product was successfully updated
@@ -75,9 +132,15 @@ router.post('/',  upload.any(), validateProductPostBody, async (req: Request, re
  *       404:
  *         description: Product not found
  */
-router.put('/:id',  upload.single('image'), validateImageUpload, validateProductIdParam, async (req: Request, res: Response) => {
-  await productController.updateProduct(req, res);
-});
+router.put(
+  "/:id",
+  upload.single("image"),
+  validateImageUpload,
+  validateProductIdParam,
+  async (req: Request, res: Response) => {
+    await productController.updateProduct(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -98,9 +161,13 @@ router.put('/:id',  upload.single('image'), validateImageUpload, validateProduct
  *       404:
  *         description: Product not found
  */
-router.delete('/:id', validateProductIdParam, async (req: Request, res: Response) => {
-  await productController.deleteProduct(req, res);
-});
+router.delete(
+  "/:id",
+  validateProductIdParam,
+  async (req: Request, res: Response) => {
+    await productController.deleteProduct(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -125,9 +192,13 @@ router.delete('/:id', validateProductIdParam, async (req: Request, res: Response
  *       404:
  *         description: Product not found
  */
-router.get('/:id', validateProductIdParam, async (req: Request, res: Response) => {
-  await productController.getProductById(req, res);
-});
+router.get(
+  "/:id",
+  validateProductIdParam,
+  async (req: Request, res: Response) => {
+    await productController.getProductById(req, res);
+  },
+);
 
 /**
  * @swagger
@@ -145,7 +216,7 @@ router.get('/:id', validateProductIdParam, async (req: Request, res: Response) =
  *               items:
  *                 $ref: '#/components/schemas/ProductDTO'
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   await productController.getAllProducts(req, res);
 });
 

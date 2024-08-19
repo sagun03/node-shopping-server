@@ -1,77 +1,84 @@
 import { Request, Response } from "express";
-import { messageDTO } from "../../dto/messageDTO";
 import UserAddressService from "../../services/users/userAddressService";
-import { instanceToPlain } from "class-transformer";
 
 class UserAddressController {
-    private serviceInstance : UserAddressService;
-    private static instance : UserAddressController;
+  private serviceInstance : UserAddressService;
+  private static instance : UserAddressController;
 
-    // implement singelton pattern
-    private constructor() {
-        this.serviceInstance = UserAddressService.getServiceInstance()
-    };
+  // implement singelton pattern
+  private constructor() {
+    this.serviceInstance = UserAddressService.getServiceInstance()
+  };
 
-    // return controller instance
-    static getControllerInstance() : UserAddressController {
-        if(!UserAddressController.instance)
-            UserAddressController.instance = new UserAddressController();
-        return UserAddressController.instance;
+  // return controller instance
+  static getControllerInstance() : UserAddressController {
+    if(!UserAddressController.instance)
+      UserAddressController.instance = new UserAddressController();
+    return UserAddressController.instance;
+  }
+
+  // creating new address entry for user
+  async putEntry(req: Request, res: Response): Promise<void> {
+    const resource = req.body;
+    try {
+      const data = await this.serviceInstance.createAddress(resource);
+      res.status(200).send({
+        message: "address entry created!"
+      });
+    } catch (err:any) {
+      res.status(500).send({
+        message: `${err} - address entry creation failed!`
+      });
     }
+  }
 
-    // creating new address entry for user
-    async putEntry(req: Request, res: Response): Promise<void> {
-        const transact = req.body;
-        try {
-          const data = await this.serviceInstance.createAddress(transact);
-          const message = new messageDTO(200, "address entry creation success", data);
-          res.status(200).send(instanceToPlain(message));
-        } catch (err:any) {
-          console.error('Error creating address entry: ', err); // Log the error
-          const message = new messageDTO(500, "Internal Server Error", err.message);
-          res.status(500).send(instanceToPlain(message));
-        }
-    }
+  // get existing points entry
+  async getEntry(req: Request, res: Response) : Promise<void> {
+    const uid = req.params.id;
+    this.serviceInstance.getAddressEntry(uid)
+    .then(data => {
+      res.status(200).send({
+        message: "address entry found!",
+        addressData: data
+      })
+    }).catch(err => {
+      res.status(404).send({
+        message: `${err} - address entry not found!`,
+      })
+    })
+  }
 
-    // get existing points entry
-    async getEntry(req: Request, res: Response) : Promise<void> {
-        const userId = req.params.id;
-        this.serviceInstance.getAddressEntry(userId)
-        .then(data => {
-            const message = new messageDTO(
-                200,
-                "address entry found!",
-                data
-            )
-            res.status(200).send(instanceToPlain(message));
-        }).catch(err => {
-            const message = new messageDTO(
-                500,
-                err
-            )
-            res.status(500).send(instanceToPlain(message));
-        })
-    }
+  // delete Entry
+  async deleteEntry(req: Request, res: Response) : Promise<void> {
+    const uid = req.params.id;
+    const dataId = req.query.id as string;
+    this.serviceInstance.deleteEntry(uid, dataId)
+    .then(data => {
+      res.status(200).send({
+        message: "address entry deleted!"
+      })
+    }).catch(err => {
+      res.status(404).send({
+        message: `${err} - address entry not found!`,
+      })
+    })
+  }
 
-    // delete Entry
-    async deleteEntry(req: Request, res: Response) : Promise<void> {
-        const userId = req.params.id;
-        this.serviceInstance.deleteEntry(userId)
-        .then(data => {
-            const message = new messageDTO(
-                200,
-                "address entry deletion success!",
-                data
-            )
-            res.status(200).send(instanceToPlain(message));
-        }).catch(err => {
-            const message = new messageDTO(
-                500,
-                err
-            )
-            res.status(500).send(instanceToPlain(message));
-        })
-    }
+  // update entry
+  async updateEntry(req: Request, res: Response) : Promise<void> {
+    const resource = req.body;
+    this.serviceInstance.updateEntry(resource)
+    .then(data => {
+      res.status(200).send({
+        message: "address entry updated!",
+        addressData: data
+      })
+    }).catch(err => {
+      res.status(404).send({
+        message: `${err} - address entry not found!`,
+      })
+    })
+  }
    
 }
 

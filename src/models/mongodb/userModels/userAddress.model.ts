@@ -1,34 +1,41 @@
-import mongoose from 'mongoose';
-import { userAddressDTO } from '../../../dto/Users/userAddressDTO';
+import mongoose from "mongoose";
+import { userAddressDTO } from "../../../dto/Users/userAddressDTO";
 
 // getting schema class from mongoose
 const { Schema } = mongoose;
 
 // creating userAddress schema
 const userAddressSchema = new Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    uid: {
+      type: String,
+      required: true
     },
     street: {
-        type: String
+      type: String
     },
     city: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
-    country: {
-        type: String,
-        required: true
+    state: {
+      type: String,
+      required: true
     },
-    zipCode: {
-        type: String,
-        required: true
-    }
-})
+    pincode: {
+      type: String,
+      required: true
+    },
+    phone: {
+      type: Number,
+      required: true
+    },
+  }
+);
 
 // creating userAddress model
-const userAddress = mongoose.model<userAddressDTO>('UserAddress', userAddressSchema);
+const userAddress = mongoose.model<userAddressDTO>(
+  "UserAddress", 
+  userAddressSchema,
+);
 
 export default userAddress;

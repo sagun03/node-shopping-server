@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable quotes */
 /* eslint-disable no-undef */
 const router = require("express").Router();
