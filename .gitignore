@@ -2,3 +2,4 @@
 node_modules
 package-lock.json
 serviceAccountKey.json
+MYSQL_SSL_CERT/
