@@ -88,10 +88,8 @@ class OrderController {
     try {
       const orderId: string = req.params.id;
       const orderInput: orderInputDTO = req.body;
-      const updatedOrder: orderDTO[] | null = await this.orderService.updateOrder(
-        orderId,
-        orderInput,
-      );
+      const updatedOrder: orderDTO[] | null =
+        await this.orderService.updateOrder(orderId, orderInput);
       if (updatedOrder) {
         res.status(200).json(updatedOrder);
       } else {
