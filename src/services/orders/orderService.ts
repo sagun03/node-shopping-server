@@ -29,7 +29,7 @@ class OrderService {
   // CREATE a new order
   public async createOrder(
     orderInput: orderInputDTO,
-  ): Promise<orderDTO | null> {
+  ): Promise<orderDTO[] | null> {
     const t = await sequelize.transaction();
 
     try {
@@ -131,29 +131,50 @@ class OrderService {
     }
   };
 
-  public async getOrderById(userId: string): Promise<orderDTO | null> {
+  public async getOrderById(userId: string): Promise<orderDTO[] | null> {
     const currentDate = new Date();
-    const existingOrder = await Order.findOne({
-      where: { userId: userId },
-    });
-    console.log(existingOrder, "existingOrder");
-    if (existingOrder) {
-      const orderItems = await OrderItem.findAll({
-        where: { OrderID: existingOrder?.dataValues?.OrderId },
+
+    try {
+      const existingOrders = await Order.findAll({
+        where: { userId: userId },
       });
-      return this.mapOrderToDTO(existingOrder, orderItems);
-    } else {
-      return {
-        orderID: 0,
-        userId: userId,
-        pointsUsed: 0,
-        totalAmount: "0",
-        orderDate: currentDate,
-        deliveryAddressId: 0,
-        paymentId: 0,
-        status: "",
-        products: [],
-      };
+
+      if (existingOrders.length === 0) {
+        // No orders found for the user
+        return [
+          {
+            orderID: 0,
+            userId: userId,
+            pointsUsed: 0,
+            totalAmount: "0",
+            orderDate: currentDate,
+            deliveryAddressId: 0,
+            paymentId: 0,
+            status: "",
+            products: [],
+          },
+        ];
+      }
+
+      // Process each order and fetch related order items
+      const orderDTOs = await Promise.all(
+        existingOrders.map(async (order: any) => {
+          const orderItems = await OrderItem.findAll({
+            where: { OrderID: order.OrderId },
+          });
+
+          // Map the order and its items to the DTO
+          return this.mapOrderToDTO(order, orderItems);
+        }),
+      );
+      console.log(orderDTOs, "orderDTOs");
+
+      // Return the DTOs, you might need to adjust this based on your requirements
+      return orderDTOs.length > 0 ? orderDTOs : null;
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      // Handle error and return null or an appropriate response
+      return null;
     }
   }
 
@@ -170,7 +191,7 @@ class OrderService {
   public async updateOrder(
     orderId: string,
     orderInput: orderInputDTO,
-  ): Promise<orderDTO | null> {
+  ): Promise<orderDTO[] | null> {
     const [updatedRowsCount] = await Order.update(orderInput, {
       where: { OrderId: orderId },
     });
