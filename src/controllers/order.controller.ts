@@ -71,7 +71,7 @@ class OrderController {
         res.status(400).json({ message: "User ID is required" });
         return;
       }
-      const product: orderDTO | null =
+      const product: orderDTO[] | null =
         await this.orderService.getOrderById(userId);
       if (product) {
         res.status(200).json(product);
@@ -88,7 +88,7 @@ class OrderController {
     try {
       const orderId: string = req.params.id;
       const orderInput: orderInputDTO = req.body;
-      const updatedOrder: orderDTO | null = await this.orderService.updateOrder(
+      const updatedOrder: orderDTO[] | null = await this.orderService.updateOrder(
         orderId,
         orderInput,
       );
