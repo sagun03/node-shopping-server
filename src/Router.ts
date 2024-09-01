@@ -9,6 +9,7 @@ import UserPointsRouters from "./routes/user/userPoints.routes";
 import UserAddressRouters from "./routes/user/userAddress.routes";
 import UserRouters from "./routes/user/user.routes";
 import cartRoutes from "./routes/cart.routes";
+import paymentRoutes from "./routes/payment.routes";
 const router = Router();
 // Health Check
 router.get("/health-check", (req: Request, res: Response) => {
@@ -26,5 +27,6 @@ router.use("/categories", CategoryRoutes);
 router.use("/user", UserRouters);
 router.use("/user/points", UserPointsRouters);
 router.use("/user/address", UserAddressRouters);
+router.use("/payment", paymentRoutes);
 
 export default router;
