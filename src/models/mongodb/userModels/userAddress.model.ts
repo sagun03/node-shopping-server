@@ -10,6 +10,9 @@ const userAddressSchema = new Schema({
     type: String,
     required: true,
   },
+  name: {
+    type: String,
+  },
   street: {
     type: String,
   },
@@ -25,9 +28,16 @@ const userAddressSchema = new Schema({
     type: String,
     required: true,
   },
-  phone: {
+  mobile: {
     type: Number,
     required: true,
+  },
+  defaultAddress: {
+    type: Boolean,
+    default: false,
+  },
+  pref: {
+    type: String,
   },
 });
 

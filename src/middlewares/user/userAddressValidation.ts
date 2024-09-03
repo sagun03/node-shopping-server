@@ -14,6 +14,7 @@ export const addressSchema = z.object({
 export const validateAddress =
   (schema: z.ZodSchema) =>
   (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
     try {
       schema.parse({
         pincode: req.body.pincode,

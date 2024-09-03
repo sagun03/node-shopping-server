@@ -143,7 +143,7 @@ router.delete(
  *         description: Invalid request body
  */
 router.put(
-  "/update/:id",
+  "/update",
   verifyFirebaseToken,
   validateAddress(addressSchema),
   async (req: Request, res: Response) => {
