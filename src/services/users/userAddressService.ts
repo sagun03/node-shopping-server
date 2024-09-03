@@ -29,6 +29,12 @@ class UserAddressService {
       }
       const document = new userAddress(resource);
       const savedDocument = await document.save();
+      if (resource.defaultAddress) {
+        await userAddress.updateMany(
+          { uid: { $eq: resource.uid } },
+          { defaultAddress: false },
+        );
+      }
       return plainToClass(userAddress, savedDocument.toObject());
     } catch (err) {
       throw new Error(`403-${err}`);
@@ -67,6 +73,12 @@ class UserAddressService {
       throw new Error("404 unavailable");
     }
     document.set(resource);
+    if (resource.defaultAddress) {
+      await userAddress.updateMany(
+        { uid: { $eq: resource.uid } },
+        { defaultAddress: false },
+      );
+    }
     const updatedDocument = await document.save();
     return plainToClass(userAddress, updatedDocument.toObject());
   }
