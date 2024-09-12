@@ -56,6 +56,7 @@ const connectDatabases = async () => {
     const mysqlConnection = await connectToMySQL();
     console.log("MySQL Database connection established!");
 
+
     const mongoDBConnection = await connectToMongoDB();
     console.log("MongoDB connection established!");
 
