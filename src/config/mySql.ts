@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 import fs from "fs";
