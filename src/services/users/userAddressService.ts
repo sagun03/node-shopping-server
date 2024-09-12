@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { plainToClass } from "class-transformer";
 import userAddress from "../../models/mongodb/userModels/userAddress.model";
 import { userAddressDTO } from "../../dto/Users/userAddressDTO";

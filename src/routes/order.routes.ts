@@ -6,7 +6,6 @@ import {
 } from "../middlewares/orderManagementMiddleware/orderMiddleware";
 import { orderSchema } from "../schemas/orderManagementSchema/orderSchema";
 import { validateUserID } from "../middlewares/orderManagementMiddleware/cartMiddleware";
-import { verifyFirebaseToken } from "../middlewares/auth/firebaseJWT";
 
 const router = express.Router();
 const orderController = OrderController.getInstance();
