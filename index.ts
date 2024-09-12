@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
-// import { connectToMySQL } from "./src/config/mySql";
+import { connectToMySQL } from "./src/config/mySql";
 import connectToMongoDB from "./src/config/mongoDB";
 import router from "./src/Router";
 import setupSwagger from "./swagger";
@@ -48,14 +48,14 @@ admin.initializeApp({
 const connectDatabases = async () => {
   try {
     // // Uncomment to connect to MySQL if needed
-    // const mysqlConnection = await connectToMySQL();
-    // console.log("MySQL Database connection established!");
+    const mysqlConnection = await connectToMySQL();
+    console.log("MySQL Database connection established!");
 
     const mongoDBConnection = await connectToMongoDB();
     console.log("MongoDB connection established!");
 
     // return { mysqlConnection, mongoDBConnection };
-    return { mongoDBConnection };
+    return { mysqlConnection, mongoDBConnection };
   } catch (error) {
     console.log(error);
     throw new Error("Failed to connect to databases");

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import OrderRoutes from "./routes/order.routes";
+// import OrderRoutes from "./routes/order.routes";
 import ProductRoutes from "./routes/product.routes";
 import InventoryRoutes from "./routes/inventory.routes";
 import OfferRoutes from "./routes/Offers.routes";
@@ -17,7 +17,7 @@ router.get("/health-check", (req: Request, res: Response) => {
   res.send("Server is running");
 });
 // Routes
-router.use("/orders", OrderRoutes);
+// router.use("/orders", OrderRoutes);
 router.use("/cart", cartRoutes);
 router.use("/products", ProductRoutes);
 router.use("/inventory", InventoryRoutes);
