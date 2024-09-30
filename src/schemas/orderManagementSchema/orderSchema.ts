@@ -1,6 +1,6 @@
 import { z } from "zod";
 const orderProductSchema = z.object({
-  productID: z.string(),
+  productId: z.string(),
   Quantity: z.number(),
   UnitPrice: z.number(),
   subTotal: z.number(),

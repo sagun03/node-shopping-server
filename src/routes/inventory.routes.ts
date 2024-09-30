@@ -25,7 +25,7 @@ const inventoryController = InventoryController.getInstance();
  *       properties:
  *         id:
  *           type: string
- *         productID:
+ *         productId:
  *           type: string
  *         offerId:
  *           type: string
@@ -39,7 +39,7 @@ const inventoryController = InventoryController.getInstance();
  *     InventoryInputDTO:
  *       type: object
  *       properties:
- *         productID:
+ *         productId:
  *           type: string
  *         offerId:
  *           type: string

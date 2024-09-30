@@ -25,7 +25,7 @@ export interface orderInputDTO {
   status: string;
   Products: [
     {
-      productID: string;
+      productId: string;
       Quantity: number;
       UnitPrice: number;
       subTotal: number;

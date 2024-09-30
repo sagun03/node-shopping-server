@@ -94,7 +94,7 @@ class cartService {
   ): Promise<void> => {
     const sampleData: cartInputItemInputDTO = {
       CartID: CartID,
-      ProductID: prodData?.productID,
+      ProductID: prodData?.productId,
       Quantity: prodData?.Quantity,
       unitPrice: prodData?.unitPrice,
       size: prodData?.size,
@@ -114,7 +114,7 @@ class cartService {
     const existingCartItem = await CartItem.findOne({
       where: {
         CartID: CartID,
-        ProductID: prodData?.productID,
+        ProductID: prodData?.productId,
         size: prodData?.size,
       },
       transaction: transaction,
@@ -133,7 +133,7 @@ class cartService {
         {
           where: {
             CartID: CartID,
-            ProductID: prodData?.productID,
+            ProductID: prodData?.productId,
             size: prodData?.size,
           },
           transaction: transaction,

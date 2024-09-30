@@ -14,7 +14,7 @@ export interface cartInputDTO {
   userId: string;
   Products: [
     {
-      productID: string;
+      productId: string;
       Quantity: number;
       UnitPrice: number;
       size: string;

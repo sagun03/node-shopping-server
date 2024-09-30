@@ -1,7 +1,7 @@
 // InventoryDTO.ts
 export interface InventoryDTO {
   id: string;
-  productID: string;
+  productId: string;
   OfferId: string;
   quantity: number;
   location: string;
@@ -9,7 +9,7 @@ export interface InventoryDTO {
 }
 
 export interface InventoryInputDTO {
-  productID: string;
+  productId: string;
   offerId: string;
   quantity: number;
   location: string;

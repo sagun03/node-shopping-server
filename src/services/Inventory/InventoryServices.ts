@@ -41,7 +41,7 @@ class InventoryService {
     return {
       id: inventory._id,
       OfferId: inventory.OfferIds,
-      productID: inventory.productID,
+      productId: inventory.productId,
       quantity: inventory.quantity,
       location: inventory.location,
       status: inventory.status,

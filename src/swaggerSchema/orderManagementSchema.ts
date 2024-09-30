@@ -74,7 +74,7 @@ export const orderInputSchemaDTO = {
       items: {
         type: "object",
         properties: {
-          productID: {
+          productId: {
             type: "string",
           },
           Quantity: {
@@ -89,7 +89,7 @@ export const orderInputSchemaDTO = {
             format: "double",
           },
         },
-        required: ["productID", "Quantity", "UnitPrice", "subTotal"],
+        required: ["productId", "Quantity", "UnitPrice", "subTotal"],
       },
     },
   },

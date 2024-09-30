@@ -85,7 +85,7 @@ class OrderService {
   ): Promise<void> => {
     const sampleData: orderItemInputDTO = {
       OrderID: orderID,
-      ProductID: prodData?.productID,
+      ProductID: prodData?.productId,
       Quantity: prodData?.Quantity,
       UnitPrice: prodData?.UnitPrice,
       Subtotal: prodData?.subTotal.toFixed(2),
@@ -102,7 +102,7 @@ class OrderService {
     prodData: any,
   ): Promise<void> => {
     const existingOrderItem = await OrderItem.findOne({
-      where: { OrderID: orderID, ProductID: prodData?.productID },
+      where: { OrderID: orderID, ProductID: prodData?.productId },
       transaction: transaction,
     });
 
@@ -121,7 +121,7 @@ class OrderService {
           Subtotal: updatedSubtotal,
         },
         {
-          where: { OrderID: orderID, ProductID: prodData?.productID },
+          where: { OrderID: orderID, ProductID: prodData?.productId },
           transaction: transaction,
         },
       );
@@ -206,7 +206,7 @@ class OrderService {
         async (prodData: any) => {
           const sampleData: orderItemInputDTO = {
             OrderID: orderId,
-            ProductID: prodData.productID,
+            ProductID: prodData.productId,
             Quantity: prodData.Quantity,
             UnitPrice: prodData.UnitPrice,
             Subtotal: prodData.subTotal,

@@ -34,7 +34,7 @@ export const cartInputSchemaDTO = {
       items: {
         type: "object",
         properties: {
-          productID: {
+          productId: {
             type: "string",
           },
           Quantity: {
@@ -45,7 +45,7 @@ export const cartInputSchemaDTO = {
             format: "double",
           },
         },
-        required: ["productID", "Quantity", "UnitPrice"],
+        required: ["productId", "Quantity", "UnitPrice"],
       },
     },
   },
